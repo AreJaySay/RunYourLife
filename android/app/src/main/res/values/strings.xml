@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Run Your Life</string>
+    <!-- Replace "343254889799245" with your Facebook App ID here. -->
+    <string name="facebook_app_id">439802344857903</string>
+</resources>
