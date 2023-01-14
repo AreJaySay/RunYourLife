@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:run_your_life/models/device_model.dart';
-import 'package:run_your_life/screens/checkin/components/my_ressources/components/components/view_ressources.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
+import 'package:run_your_life/widgets/materialbutton.dart';
 import 'package:run_your_life/widgets/no_data.dart';
 import 'package:intl/intl.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../../utils/palettes/app_colors.dart';
 
@@ -16,6 +17,7 @@ class MyRessourcesDocs extends StatefulWidget {
 
 class _MyRessourcesDocsState extends State<MyRessourcesDocs> {
   final Routes _routes = new Routes();
+  final Materialbutton _materialButton = new Materialbutton();
 
   @override
   Widget build(BuildContext context) {
@@ -30,8 +32,43 @@ class _MyRessourcesDocsState extends State<MyRessourcesDocs> {
         return ZoomTapAnimation(
           end: 0.99,
           onTap: (){
-            _routes.navigator_push(context, ViewRessources());
-          },
+            showDialog<void>(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: WebView(
+                            initialUrl: widget.docs[index]["documents"]["file_path"],
+                            javascriptMode: JavascriptMode.unrestricted,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: double.infinity,
+                            height: 110,
+                            alignment: Alignment.topCenter,
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Container(
+                              width: double.infinity,
+                              height: 55,
+                              margin: EdgeInsets.only(top: 20),
+                              child: _materialButton.materialButton("RETOURNER", (){
+                                Navigator.of(context).pop(null);
+                              }),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                });
+            },
           child: Container(
             width: double.infinity,
             height: 100,
@@ -67,12 +104,11 @@ class _MyRessourcesDocsState extends State<MyRessourcesDocs> {
                           height: 5,
                         ),
                         Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.docs[index]["documents"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
-                        // Text("0 commentaires",style: TextStyle(color: Colors.grey,fontSize: 12,fontFamily: "AppFontStyle"),),
                         Spacer(),
                         Row(
                           children: [
                             Container(
-                              child: Text(widget.docs[index]["documents"]["file_type"] == "image/jpeg" ? "Image" : widget.docs[index]["documents"]["file_type"] == "video/mp4" ? "Vidéo" : "Lien",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
+                              child: Text("Docs",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
                               decoration: BoxDecoration(
                                   color: AppColors.pinkColor,
                                   borderRadius: BorderRadius.circular(3)
@@ -82,7 +118,8 @@ class _MyRessourcesDocsState extends State<MyRessourcesDocs> {
                             SizedBox(
                               width: 5,
                             ),
-                            widget.docs[index]["documents"]["file_type"] == "application/pdf" ? Container(
+                            widget.docs[index]["documents"]["file_type"] == "application/pdf" ?
+                            Container(
                               child: Text("Read",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
                               decoration: BoxDecoration(
                                   color: Colors.grey[400],

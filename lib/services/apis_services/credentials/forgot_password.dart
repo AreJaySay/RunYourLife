@@ -29,7 +29,7 @@ class ForgotPasswordServices{
           _routes.navigator_pushreplacement(context, EmailSent());
         }else{
           Navigator.of(context).pop(null);
-          _snackbarMessage.snackbarMessage(context, is_error: true, message: respo["message"]);
+          _snackbarMessage.snackbarMessage(context, is_error: true, message: respo["message"] == "The given data was invalid" ? "Donnée incorrecte." :  respo["message"]);
         }
       });
     }catch(e){

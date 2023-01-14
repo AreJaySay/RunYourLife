@@ -38,7 +38,7 @@ class _PinMessagesState extends State<PinMessages> {
       stream: messageStreamServices.pinned,
       builder: (context, snapshot) {
         return Scaffold(
-          appBar: _appBars.whiteappbar(context, title: "Pinned Messages"),
+          appBar: _appBars.whiteappbar(context, title: "Messages épinglés"),
           body: Container(
             width: double.infinity,
             height: double.infinity,
@@ -120,7 +120,7 @@ class _PinMessagesState extends State<PinMessages> {
                     SizedBox(
                       height: 3,
                     ),
-                    Text("Ce message direct n'a pas de messages épinglés .. pour le moment !",style: TextStyle(fontSize: 15.5,color: Colors.black,fontFamily: "AppFontStyle"),textAlign: TextAlign.center,),
+                    Text("Ce chat direct n'a pas de messages épinglés .. pour le moment !",style: TextStyle(fontSize: 15.5,color: Colors.black,fontFamily: "AppFontStyle"),textAlign: TextAlign.center,),
                   ],
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -200,7 +200,7 @@ class _PinMessagesState extends State<PinMessages> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: DateFormat.yMMMd("fr").format(DateTime.parse(snapshot.data![index]["created_at"].toString())) == DateFormat.yMMMd("fr").format(DateTime.now()) ?
+                            child: DateFormat.yMMMd("fr").format(DateTime.parse(snapshot.data![index]["created_at"].toString())) == DateFormat.yMMMd("fr").format(DateTime.now().toUtc().add(Duration(hours: 2))) ?
                             Text("Aujourd'hui, ${DateFormat("HH:mm").format(DateTime.parse(snapshot.data![index]["created_at"].toString()))}",style: TextStyle(fontSize: 11,color: Colors.grey),) :
                             Text(DateFormat.yMMMd("fr").format(DateTime.parse(snapshot.data![index]["created_at"].toString())),style: TextStyle(fontSize: 11,color: Colors.grey),),
                           ),

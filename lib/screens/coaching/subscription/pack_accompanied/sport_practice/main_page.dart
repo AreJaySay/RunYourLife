@@ -32,7 +32,7 @@ class SportMainPage extends StatefulWidget {
 
 class _SportMainPageState extends State<SportMainPage> {
   List<Widget> _notpregnant = [Container(),SportMakeChoices(),NotPregnant1stPage(),Pregnant5thPage(),Pregnant6thPage()];
-  List<Widget> _pregnant = [Container(),SportMakeChoices(),Pregnant1stPage(),Pregnant2ndPage(),Pregnant3rdPage(),Pregnant4thPage(),Pregnant6thPage()];
+  List<Widget> _pregnant = [Container(),SportMakeChoices(),Pregnant1stPage(),Pregnant2ndPage(),Pregnant3rdPage(),Pregnant4thPage(),Pregnant5thPage(),Pregnant6thPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final Step5Service _step5service = new Step5Service();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
@@ -58,10 +58,11 @@ class _SportMainPageState extends State<SportMainPage> {
             width: double.infinity,
             height: double.infinity,
             child: SafeArea(
-              child: ListView(
+              child: !snapshot.hasData ? Container() :
+              ListView(
                 padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
                 children: [
-                  MyStepper(snapshot.data ? 6 : 4,range: double.parse(_currentPage.toString()),),
+                  MyStepper(snapshot.data ? 7 : 4,range: double.parse(_currentPage.toString()),),
                   SizedBox(
                     height: 30,
                   ),
@@ -133,7 +134,7 @@ class _SportMainPageState extends State<SportMainPage> {
                         ),
                         _materialbutton.materialButton("SUIVANT", () {
                           setState(() {
-                            if(_currentPage > (snapshot.data ? 5 : 3)){
+                            if(_currentPage > (snapshot.data ? 6 : 3)){
                               _screenLoaders.functionLoader(context);
                               if(subscriptionDetails.currentdata[0]["sport"] != null){
                                 setState(() {
@@ -147,6 +148,7 @@ class _SportMainPageState extends State<SportMainPage> {
                                 }
                               });
                             }else{
+                              print("asdasd");
                               _currentPage++;
                             }
                           });

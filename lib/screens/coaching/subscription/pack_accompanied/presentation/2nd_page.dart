@@ -18,7 +18,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Es-tu marié? Ou dans une relation engagée ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Es-tu marié ? Ou engagé en couple".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -30,7 +30,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step1subs.isMarried == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step1subs.isMarried == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -42,10 +42,10 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step1subs.isMarried == "Yes" ? 1 : 2,
+                          groupValue: step1subs.isMarried == "Oui" ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step1subs.isMarried = "Yes";
+                              step1subs.isMarried = "Oui";
                             });
                           },
                         ),
@@ -60,7 +60,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step1subs.isMarried = "Yes";
+                  step1subs.isMarried = "Oui";
                 });
               },
             ),
@@ -72,7 +72,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color:  step1subs.isMarried == "No" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color:  step1subs.isMarried == "Non" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -84,10 +84,10 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 2,
-                          groupValue:  step1subs.isMarried == "No" ? 2 : 1,
+                          groupValue:  step1subs.isMarried == "Non" ? 2 : 1,
                           onChanged: (val) {
                             setState(() {
-                              step1subs.isMarried = "No";
+                              step1subs.isMarried = "Non";
                             });
                           },
                         ),
@@ -102,7 +102,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step1subs.isMarried = "No";
+                  step1subs.isMarried = "Non";
                 });
               },
             ),
@@ -111,7 +111,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
         SizedBox(
           height: 30,
         ),
-        Text("Avez-vous des enfants ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("As-tu des enfants ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -123,7 +123,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step1subs.haveChildren == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step1subs.haveChildren == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -135,10 +135,10 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step1subs.haveChildren == "Yes" ? 1 : 2,
+                          groupValue: step1subs.haveChildren == "Oui" ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step1subs.haveChildren = "Yes";
+                              step1subs.haveChildren = "Oui";
                             });
                           },
                         ),
@@ -153,7 +153,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step1subs.haveChildren = "Yes";
+                  step1subs.haveChildren = "Oui";
                 });
               },
             ),
@@ -165,7 +165,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step1subs.haveChildren == "No" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step1subs.haveChildren == "Non" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -177,10 +177,10 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 2,
-                          groupValue: step1subs.haveChildren == "No" ? 2 : 1,
+                          groupValue: step1subs.haveChildren == "Non" ? 2 : 1,
                           onChanged: (val) {
                             setState(() {
-                              step1subs.haveChildren = "No";
+                              step1subs.haveChildren = "Non";
                             });
                           },
                         ),
@@ -195,7 +195,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step1subs.haveChildren = "No";
+                  step1subs.haveChildren = "Non";
                 });
               },
             ),
@@ -204,7 +204,11 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
         SizedBox(
           height: 30,
         ),
-        Text("0: je vis seul, 1: peu de soutien, 2: fortement appuyé/modéré, 3: modérément/fortement soutenu, 4:très soutenu",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("A quel point te sens-tu soutenu par les personnes chez toi à la maison".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        SizedBox(
+          height: 10,
+        ),
+        Text("0 : je vis seul(e)\n1: peu de soutien\n2: peu/modéremment soutenu(e)\n3: modéremment/hautement soutenu(e)\n4:très soutenu(e)",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
@@ -212,7 +216,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
           height: 70,
           child: FlutterSlider(
             values: [step1subs.peopeSupport],
-            max: 5,
+            max: 4,
             min: 0,
             handlerWidth: 50,
             handlerHeight: 40,
@@ -248,7 +252,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
         SizedBox(
           height: 20,
         ),
-        Text("Faites-vous des courses pour votre foyer ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Fais-tu les courses pour ton foyer ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -260,7 +264,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step1subs.shopforHousehold == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step1subs.shopforHousehold == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -272,10 +276,10 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step1subs.shopforHousehold == "Yes" ? 1 : 2,
+                          groupValue: step1subs.shopforHousehold == "Oui" ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step1subs.shopforHousehold = "Yes";
+                              step1subs.shopforHousehold = "Oui";
                             });
                           },
                         ),
@@ -290,7 +294,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step1subs.shopforHousehold = "Yes";
+                  step1subs.shopforHousehold = "Oui";
                 });
               },
             ),
@@ -302,7 +306,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step1subs.shopforHousehold == "No" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step1subs.shopforHousehold == "Non" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -314,10 +318,10 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 2,
-                          groupValue:  step1subs.shopforHousehold == "No" ? 2 : 1,
+                          groupValue:  step1subs.shopforHousehold == "Non" ? 2 : 1,
                           onChanged: (val) {
                             setState(() {
-                              step1subs.shopforHousehold = "No";
+                              step1subs.shopforHousehold = "Non";
                             });
                           },
                         ),
@@ -332,7 +336,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step1subs.shopforHousehold = "No";
+                  step1subs.shopforHousehold = "Non";
                 });
               },
             ),
@@ -341,7 +345,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
         SizedBox(
           height: 30,
         ),
-        Text("Cuisinez-vous pour votre foyer ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Fais-tu la cuisine pour ton foyer ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -353,7 +357,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step1subs.cookforHousehold == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step1subs.cookforHousehold == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -365,10 +369,10 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step1subs.cookforHousehold == "Yes" ? 1 : 2,
+                          groupValue: step1subs.cookforHousehold == "Oui" ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step1subs.cookforHousehold = "Yes";
+                              step1subs.cookforHousehold = "Oui";
                             });
                           },
                         ),
@@ -383,7 +387,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step1subs.cookforHousehold = "Yes";
+                  step1subs.cookforHousehold = "Oui";
                 });
               },
             ),
@@ -395,7 +399,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step1subs.cookforHousehold == "No" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step1subs.cookforHousehold == "Non" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -407,10 +411,10 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 2,
-                          groupValue: step1subs.cookforHousehold == "No" ? 2 : 1,
+                          groupValue: step1subs.cookforHousehold == "Non" ? 2 : 1,
                           onChanged: (val) {
                             setState(() {
-                              step1subs.cookforHousehold = "No";
+                              step1subs.cookforHousehold = "Non";
                             });
                           },
                         ),
@@ -425,7 +429,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step1subs.cookforHousehold = "No";
+                  step1subs.cookforHousehold = "Non";
                 });
               },
             ),

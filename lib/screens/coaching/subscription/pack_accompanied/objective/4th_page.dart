@@ -11,7 +11,23 @@ class Objective4thPage extends StatefulWidget {
 }
 
 class _Objective4thPageState extends State<Objective4thPage> {
-  DateTime _selectedDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now().toUtc().add(Duration(hours: 2));
+  DateTime? selectedDate;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        locale: Locale('fr'),
+        initialDate:  DateTime.now().toUtc().add(Duration(hours: 2)),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        step4subs.date_to_reach_goal = selectedDate.toString();
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -28,62 +44,35 @@ class _Objective4thPageState extends State<Objective4thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Quel délai tu t'accordes pouratteindre ton objectif ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Quel est le délai que vous vous accordez pour atteindre votre objectif ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        SizedBox(
+          height: 10,
+        ),
+        step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") ?
+        Text("Pour une perte de poids:\n- Confortable : 9 à 18 semaines\n- Raisonnable : 4 à 9 semaines\n- Extrême : 3 à 4 semaines",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),) :
+        Text("Selon ton niveau sportif\n- Débutant : 11 à 16 mois\n- Intermédiaire : 22 à 33 mois\n- Avancé : 44 à 66 mois",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
-        Container(
-          width: double.infinity,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text("Jour",style: TextStyle(color: AppColors.darpinkColor,fontFamily: "AppFontStyle"),),
-              Text("Mois",style: TextStyle(color: AppColors.darpinkColor,fontFamily: "AppFontStyle"),),
-              Text("Année",style: TextStyle(color: AppColors.darpinkColor,fontFamily: "AppFontStyle"),),
-            ],
+        GestureDetector(
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            height: 50,
+            width: double.infinity,
+            alignment: Alignment.centerLeft,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey.shade400),
+              borderRadius: BorderRadius.circular(1000),
+            ),
+            child: Text(selectedDate == null ? "Date" : DateFormat("dd/MM/yyyy").format(DateTime.parse(selectedDate.toString())) ,style: TextStyle(color: selectedDate == null ? Colors.grey : Colors.black,fontFamily: "AppFontStyle",fontSize: 15.5),),
           ),
+          onTap: (){
+            _selectDate(context);
+          },
         ),
         SizedBox(
-          height: 20,
+          height: 30,
         ),
-        Container(
-          width: double.infinity,
-          height: 300,
-          child: ScrollDatePicker(
-            minimumDate: DateTime.now(),
-            maximumDate: DateTime.parse('2050-01-01 12:00:42.172724'),
-            selectedDate: _selectedDate,
-            locale: Locale('fr'),
-            onDateTimeChanged: (DateTime value) {
-              setState(() {
-                _selectedDate = value;
-                step4subs.date_to_reach_goal = _selectedDate.toString();
-              });
-            },
-            scrollViewOptions: DatePickerScrollViewOptions(
-              day: ScrollViewDetailOptions(margin: EdgeInsets.only(right: 30)),
-              month: ScrollViewDetailOptions(margin: EdgeInsets.only(left: 30)),
-              year: ScrollViewDetailOptions(margin: EdgeInsets.only(left: 30))
-            ),
-            options: DatePickerOptions(
-              itemExtent: 40,
-              diameterRatio: 8,
-            ),
-            indicator: Container(
-              width: double.infinity,
-              height: 45,
-              color: AppColors.appmaincolor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(_selectedDate.day.toString(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: "AppFontStyle"),),
-                  Text(DateFormat("MMMM","fr").format(DateTime.parse(_selectedDate.toString()))[0].toUpperCase()+DateFormat("MMMM","fr").format(DateTime.parse(_selectedDate.toString())).substring(1).toLowerCase(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: "AppFontStyle"),),
-                  Text(_selectedDate.year.toString()+"    ",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 16,fontFamily: "AppFontStyle"),)
-                ],
-              ),
-            ),
-          ),
-        )
       ],
     );
   }

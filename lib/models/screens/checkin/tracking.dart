@@ -2,7 +2,6 @@ import '../../../services/stream_services/subscriptions/subscription_details.dar
 
 
 class Tracking{
-  String type;
   double carbohydrate;
   double vegetable;
   double lipid;
@@ -11,7 +10,6 @@ class Tracking{
   static List<double> gramslider = [tracking.protein,tracking.lipid,tracking.carbohydrate,tracking.vegetable];
 
   Tracking({
-    this.type = "",
     this.carbohydrate = 0,
     this.vegetable = 0,
     this.lipid = 0,
@@ -20,7 +18,7 @@ class Tracking{
   });
 
   Map<String, dynamic> toMap() => {
-    "type": type,
+    "type": subscriptionDetails.currentdata[0]["coach_macros"][0]["type"].toString(),
     "carbohydrate": carbohydrate.toString(),
     "vegetable": vegetable.toString(),
     "lipid": lipid.toString(),

@@ -12,7 +12,7 @@ class Health6thPage extends StatefulWidget {
 }
 
 class _Health6thPageState extends State<Health6thPage> {
-  final TextEditingController _syndrome = new TextEditingController()..text=step3subs.premenstrual_syndrome == "None" ? "" : step3subs.premenstrual_syndrome;
+  final TextEditingController _syndrome = new TextEditingController()..text=step3subs.premenstrual_syndrome == "Non" ||  step3subs.premenstrual_syndrome == "none" || step3subs.premenstrual_syndrome == "N/A" ? "" : step3subs.premenstrual_syndrome;
 
   @override
   void dispose() {
@@ -27,13 +27,9 @@ class _Health6thPageState extends State<Health6thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Un syndrome prémenstruel ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("As-tu un syndrôme prémenstruel (mal à la poitrine, bouffée de chaleur, changement d'humeur, douleurs bas du ventre, ou bas du dos, constipation gazs, ballonements, rétention d'eau ?)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
-        ),
-        Text("Mal à la poitrine, bouffée de chaleur, changement d'humeur, douleurs bas du ventre, ou bas du dos, constipation, gazs, ballonnements, rétention d'eau...",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-        SizedBox(
-          height: 20,
         ),
         TextField(
           controller: _syndrome,
@@ -66,12 +62,12 @@ class _Health6thPageState extends State<Health6thPage> {
         ZoomTapAnimation(
           end: 0.99,
           child: Container(
-            width: 140,
+            width: 130,
             padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: step3subs.premenstrual_syndrome == "None" ? AppColors.appmaincolor : Colors.transparent,)
+                border: Border.all(color: step3subs.premenstrual_syndrome == "Non" ? AppColors.appmaincolor : Colors.transparent,)
             ),
             child: Row(
               children: [
@@ -83,11 +79,11 @@ class _Health6thPageState extends State<Health6thPage> {
                     child: Radio(
                       activeColor: AppColors.appmaincolor,
                       value: 2,
-                      groupValue: step3subs.premenstrual_syndrome == "None" ? 2 : 1,
+                      groupValue: step3subs.premenstrual_syndrome == "Non" ? 2 : 1,
                       onChanged: (val) {
                         setState(() {
                           _syndrome.text = "";
-                          step3subs.premenstrual_syndrome = "None";
+                          step3subs.premenstrual_syndrome = "Non";
                         });
                       },
                     ),
@@ -96,14 +92,14 @@ class _Health6thPageState extends State<Health6thPage> {
                 SizedBox(
                   width: 15,
                 ),
-                Text('Aucun',style: new TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+                Text('Non',style: new TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
               ],
             ),
           ),
           onTap: (){
             setState(() {
               _syndrome.text = "";
-              step3subs.premenstrual_syndrome = "None";
+              step3subs.premenstrual_syndrome = "Non";
             });
           },
         ),

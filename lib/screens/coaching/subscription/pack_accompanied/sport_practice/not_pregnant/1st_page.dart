@@ -15,7 +15,7 @@ class _NotPregnant1stPageState extends State<NotPregnant1stPage> {
   final Materialbutton _materialbutton = new Materialbutton();
   final Routes _routes = new Routes();
   final AppBars _appBars = AppBars();
-  List<String> _reasons = ["Je ne suis pas confiante en mes qualités sportives","Je ne trouve pas d'endroit dans lequel je suis à l'aise","je n'ai pas de place pour pratiquer","Je n'ai pas d'énergie pour pratiquer","Je n'ai pas le temps","Je n'ai pas de motivation / Je ne suis pas certain.e de l'importance que cela a pour moi"];
+  List<String> _reasons = ["Je ne suis pas confiante en mes qualités sportives","Je ne trouve pas d'endroit dans lequel je suis à l'aise de pratiquer un sport","Je n'ai pas de place pour pratiquer","Je n'ai pas d'énergie pour pratiquer","Je n'ai pas le temps","Je n'ai pas de motivation / je ne suis pas certain(e) de l'importance que cela a pour moi"];
   List<double> _values = [step5subs.confident_on_athletic_ability,step5subs.comfortable_place,step5subs.place_to_practice,step5subs.energy_to_practice,step5subs.time,step5subs.motivation];
 
   @override
@@ -24,14 +24,18 @@ class _NotPregnant1stPageState extends State<NotPregnant1stPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Pour quel(s) raison(s) ne pratiques-tu pas de sport ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("POUR QUEL(S) RAISON(S) NE PRATIQUES-TU PAS DE SPORT ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
-          height: 15,
+          height: 10,
         ),
-        Text("1 : ça n'a jamais été un obstacle \n5 : c'est très fréquemment un obstacle",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1: ça n'a jamais été un obstacle\n5 : c'est très frequemment un obstacle",style: TextStyle(fontFamily: "AppFontStyle"),),
         SizedBox(
-          height: 25,
+          height: 20,
         ),
+        // Text("1 : ça n'a jamais été un obstacle \n5 : c'est très fréquemment un obstacle",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        // SizedBox(
+        //   height: 25,
+        // ),
         for(var x = 0; x < _reasons.length; x++)...{
           Text(_reasons[x].toUpperCase(), style: TextStyle(color: AppColors.appmaincolor, fontSize: 14,fontFamily: "AppFontStyle"),),
           Container(

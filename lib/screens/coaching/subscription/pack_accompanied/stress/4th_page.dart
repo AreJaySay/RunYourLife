@@ -13,9 +13,9 @@ class _Stress4thPageState extends State<Stress4thPage> {
   List<String> _spendoutside = [
     "<3 min",
     "3-4 min",
-    "5-8 min (<1hour/week)",
-    "9-16 min (1-2 h/week)",
-    " + de 17 min (2h/week)"
+    "5-8 min (<1heure/semaine)",
+    "9-16 min (1-2 h/semaine)",
+    " + de 17 min (2h/semaine)"
   ];
 
   @override
@@ -24,7 +24,7 @@ class _Stress4thPageState extends State<Stress4thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Combien de temps passez-vous dehors chaque jour ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Combien de temps passes-tu dehors chaque jour".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

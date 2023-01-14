@@ -10,7 +10,7 @@ class Health3rdPage extends StatefulWidget {
 }
 
 class _Health3rdPageState extends State<Health3rdPage> {
-  TextEditingController _familyBack = new TextEditingController()..text=step3subs.family_medical_history == "None" ? "" : step3subs.family_medical_history;
+  TextEditingController _familyBack = new TextEditingController()..text=step3subs.family_medical_history == "Non" ? "" : step3subs.family_medical_history;
 
   @override
   void dispose() {
@@ -25,14 +25,14 @@ class _Health3rdPageState extends State<Health3rdPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("antécédents médicaux familiaux ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("As-tu des antécédents médicaux familiaux (trouble de la thyroïde, maladie autoimmune (diabète, lupus, hashimoto, ...)  obésité, diabtète de type 2, AVC ) ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
-        Text("Trouble de la thyroïde, maladie auto-immune (diabète, lupus, Hashimoto…), obésité, diabètes de type 2, AVC...",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-        SizedBox(
-          height: 20,
-        ),
+        // Text("Trouble de la thyroïde, maladie auto-immune (diabète, lupus, Hashimoto…), obésité, diabètes de type 2, AVC...",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        // SizedBox(
+        //   height: 20,
+        // ),
         TextField(
           controller: _familyBack,
           maxLines: 4,
@@ -67,7 +67,7 @@ class _Health3rdPageState extends State<Health3rdPage> {
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: step3subs.family_medical_history == "None" ? AppColors.appmaincolor : Colors.transparent,)
+                border: Border.all(color: step3subs.family_medical_history == "Non" ? AppColors.appmaincolor : Colors.transparent,)
             ),
             child: Row(
               children: [
@@ -79,11 +79,11 @@ class _Health3rdPageState extends State<Health3rdPage> {
                     child: Radio(
                       activeColor: AppColors.appmaincolor,
                       value: 2,
-                      groupValue: step3subs.family_medical_history == "None" ? 2 : 1,
+                      groupValue: step3subs.family_medical_history == "Non" ? 2 : 1,
                       onChanged: (val) {
                         setState(() {
                           _familyBack.text = "";
-                          step3subs.family_medical_history = "None";
+                          step3subs.family_medical_history = "Non";
                         });
                       },
                     ),
@@ -92,14 +92,14 @@ class _Health3rdPageState extends State<Health3rdPage> {
                 SizedBox(
                   width: 15,
                 ),
-                Text('Aucun',style: new TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+                Text('Non',style: new TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
               ],
             ),
           ),
           onTap: (){
             setState(() {
               _familyBack.text = "";
-              step3subs.family_medical_history = "None";
+              step3subs.family_medical_history = "Non";
             });
           },
         ),

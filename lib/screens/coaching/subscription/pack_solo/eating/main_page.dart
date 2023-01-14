@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:run_your_life/screens/coaching/subscription/form_completed.dart';
+import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/12th_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/1st_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/2nd_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/3rd_page.dart';
@@ -22,7 +23,7 @@ class PackSoloEatingMainPage extends StatefulWidget {
 }
 
 class _PackSoloEatingMainPageState extends State<PackSoloEatingMainPage> {
-  List<Widget> _screens = [Container(),Eating1stPage(),Eating2ndPage(),Eating3rdPage()];
+  List<Widget> _screens = [Container(),Eating1stPage(),Eating2ndPage(),Eating12thPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final Step2Service _step2service = new Step2Service();

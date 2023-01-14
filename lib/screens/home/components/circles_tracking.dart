@@ -13,9 +13,11 @@ import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:intl/intl.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
+import '../../../widgets/finish_questioner_popup.dart';
+
 class CirclesTracking extends StatefulWidget {
-  final bool isMacroSolo, isHome;
-  CirclesTracking({this.isMacroSolo = false,this.isHome = true});
+  final bool isHome;
+  CirclesTracking({this.isHome = true});
   @override
   _CirclesTrackingState createState() => _CirclesTrackingState();
 }
@@ -30,13 +32,67 @@ class _CirclesTrackingState extends State<CirclesTracking> {
     return StreamBuilder<Map>(
       stream: homeStreamServices.subject,
       builder: (context, snapshot) {
-        return ZoomTapAnimation(
+        return subscriptionDetails.currentdata[0]["macro_status"] == false ?
+        ZoomTapAnimation(
+          end: 0.99,
+          onTap: ()async{
+            await showModalBottomSheet(
+                backgroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
+            isScrollControlled: true,
+            context: context, builder: (context){
+            return FinishQuestionerPopup();
+            });
+          },
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade300,
+                  blurRadius: 5.0, // has the effect of softening the shadow
+                  spreadRadius: 0.0, // has the effect of extending the shadow
+                  offset: Offset(
+                    0.0, // horizontal, move right 10
+                    1.0, // vertical, move down 10
+                  ),
+                )
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: DeviceModel.isMobile ? MainAxisAlignment.spaceBetween : MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                for(var x = 0; x < _tracking.length; x++)...{
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircularPercentIndicator(
+                        radius: DeviceModel.isMobile ? 34.0 : 40,
+                        lineWidth: 7,
+                        animation: true,
+                        percent: 1,
+                        center: Text("--",style: TextStyle(fontWeight: FontWeight.w800,color: Colors.grey,fontSize: 20,fontFamily: "AppFontStyle"),),
+                        circularStrokeCap: CircularStrokeCap.butt,
+                        progressColor: Colors.grey[300],
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(_tracking[x],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: Colors.grey),)
+                    ],
+                  )},
+              ],
+            ),
+          ),
+        ) :
+        ZoomTapAnimation(
           onTap:(){
-            // if(!widget.isMacroSolo){
-              if(subscriptionDetails.currentdata[0]["form_status"] == true){
-                _routes.navigator_push(context, MyTracking());
-              }
-            // }
+            _routes.navigator_push(context, MyTracking());
           },
           end: 0.99,
           child: Container(
@@ -60,7 +116,7 @@ class _CirclesTrackingState extends State<CirclesTracking> {
               mainAxisAlignment: DeviceModel.isMobile ? MainAxisAlignment.spaceBetween : MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                if(subscriptionDetails.currentdata[0]["form_status"] == false || !snapshot.hasData)...{
+                if(!snapshot.hasData)...{
                   for(var x = 0; x < _tracking.length; x++)...{
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -85,7 +141,7 @@ class _CirclesTrackingState extends State<CirclesTracking> {
                         SizedBox(
                           height: 8,
                         ),
-                        Text(_tracking[x],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: subscriptionDetails.currentdata[0]["form_status"] == false ? Colors.grey : Colors.black),)
+                        Text(_tracking[x],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: AppColors.appmaincolor),)
                       ],
                     )},
                 }else if(snapshot.data!["clientTracking"].toString() == "null" || snapshot.data!["clientTracking"]["message"] == "no data available")...{
@@ -113,7 +169,7 @@ class _CirclesTrackingState extends State<CirclesTracking> {
                         SizedBox(
                           height: 8,
                         ),
-                        Text(_tracking[x],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: subscriptionDetails.currentdata[0]["form_status"] == false ? Colors.grey : Colors.black),)
+                        Text(_tracking[x],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: AppColors.appmaincolor),)
                       ],
                     )}
                 }else...{
@@ -125,7 +181,8 @@ class _CirclesTrackingState extends State<CirclesTracking> {
                         radius: 35.0,
                         lineWidth: 7,
                         animation: true,
-                        percent: subscriptionDetails.currentdata[0]["coach_macros"].toString() == "[]" ? 1.0 : snapshot.data!["clientTracking"]["type"] == "grams" ? double.parse(snapshot.data!["clientTracking"]["protein"].toString()).floor() >= double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["protein"].toString()) ? 1.0 : double.parse(snapshot.data!["clientTracking"]["protein"])/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["protein"].toString()) : snapshot.data!["clientTracking"]["protein"].toString() == "25.0" ? 1.0 : double.parse(snapshot.data!["clientTracking"]["protein"])/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["protein"].toString()),
+                        animationDuration: 600,
+                        percent: subscriptionDetails.currentdata[0]["coach_macros"].toString() == "[]" ? 1.0 : double.parse(snapshot.data!["clientTracking"]["protein"].toString()) >= double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["protein"].toString()) ? 1.0 : double.parse(snapshot.data!["clientTracking"]["protein"].toString())/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["protein"].toString()),
                         center: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -140,7 +197,7 @@ class _CirclesTrackingState extends State<CirclesTracking> {
                       SizedBox(
                         height: 8,
                       ),
-                      Text(_tracking[_tracking.length - 1],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: subscriptionDetails.currentdata[0]["form_status"] == false ? Colors.grey : Colors.black),)
+                      Text(_tracking[0],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: Colors.black),)
                     ],
                   ),
                   Column(
@@ -151,7 +208,8 @@ class _CirclesTrackingState extends State<CirclesTracking> {
                         radius: 35.0,
                         lineWidth: 7,
                         animation: true,
-                        percent: subscriptionDetails.currentdata[0]["coach_macros"].toString() == "[]" ? 1.0 : snapshot.data!["clientTracking"]["type"] == "grams" ? double.parse(snapshot.data!["clientTracking"]["lipid"].toString()).floor() >= double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["lipid"].toString()) ? 1.0 : double.parse(snapshot.data!["clientTracking"]["lipid"])/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["lipid"].toString()) : snapshot.data!["clientTracking"]["lipid"].toString() == "25.0" ? 1.0 : double.parse(snapshot.data!["clientTracking"]["lipid"])/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["lipid"].toString()),
+                        animationDuration: 600,
+                        percent: subscriptionDetails.currentdata[0]["coach_macros"].toString() == "[]" ? 1.0 : double.parse(snapshot.data!["clientTracking"]["lipid"].toString()).floor() >= double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["lipid"].toString()) ? 1.0 : double.parse(snapshot.data!["clientTracking"]["lipid"].toString())/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["lipid"].toString()),
                         center: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,7 +224,7 @@ class _CirclesTrackingState extends State<CirclesTracking> {
                       SizedBox(
                         height: 8,
                       ),
-                      Text(_tracking[1],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: subscriptionDetails.currentdata[0]["form_status"] == false ? Colors.grey : Colors.black),)
+                      Text(_tracking[1],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: Colors.black),)
                     ],
                   ),
                   Column(
@@ -177,7 +235,8 @@ class _CirclesTrackingState extends State<CirclesTracking> {
                         radius: 35.0,
                         lineWidth: 7,
                         animation: true,
-                        percent: subscriptionDetails.currentdata[0]["coach_macros"].toString() == "[]" ? 1.0 : snapshot.data!["clientTracking"]["type"] == "grams" ? double.parse(snapshot.data!["clientTracking"]["carbohydrate"].toString()).floor() >= double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["carbohydrate"].toString()) ? 1.0 : double.parse(snapshot.data!["clientTracking"]["carbohydrate"])/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["carbohydrate"].toString()) : snapshot.data!["clientTracking"]["carbohydrate"].toString() == "25.0" ? 1.0 : double.parse(snapshot.data!["clientTracking"]["carbohydrate"])/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["carbohydrate"].toString()),
+                        animationDuration: 600,
+                        percent: subscriptionDetails.currentdata[0]["coach_macros"].toString() == "[]" ? 1.0 : double.parse(snapshot.data!["clientTracking"]["carbohydrate"].toString()).floor() >= double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["carbohydrate"].toString()) ? 1.0 : double.parse(snapshot.data!["clientTracking"]["carbohydrate"].toString())/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["carbohydrate"].toString()),
                         center: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -192,7 +251,7 @@ class _CirclesTrackingState extends State<CirclesTracking> {
                       SizedBox(
                         height: 8,
                       ),
-                      Text(_tracking[2],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: subscriptionDetails.currentdata[0]["form_status"] == false ? Colors.grey : Colors.black),)
+                      Text(_tracking[2],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: Colors.black),)
                     ],
                   ),
                   Column(
@@ -203,7 +262,8 @@ class _CirclesTrackingState extends State<CirclesTracking> {
                         radius: 35.0,
                         lineWidth: 7,
                         animation: true,
-                        percent: subscriptionDetails.currentdata[0]["coach_macros"].toString() == "[]" ? 1.0 : snapshot.data!["clientTracking"]["type"] == "grams" ? double.parse(snapshot.data!["clientTracking"]["vegetable"].toString()).floor() >= double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["vegetable"].toString()) ? 1.0 : double.parse(snapshot.data!["clientTracking"]["vegetable"])/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["vegetable"].toString()) : snapshot.data!["clientTracking"]["vegetable"].toString() == "25.0" ? 1.0 : double.parse(snapshot.data!["clientTracking"]["vegetable"])/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["vegetable"].toString()),
+                        animationDuration: 600,
+                        percent: subscriptionDetails.currentdata[0]["coach_macros"].toString() == "[]" ? 1.0 : double.parse(snapshot.data!["clientTracking"]["vegetable"].toString()).floor() >= double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["vegetable"].toString()) ? 1.0 : double.parse(snapshot.data!["clientTracking"]["vegetable"].toString())/double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0]["vegetable"].toString()),
                         center: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -218,7 +278,7 @@ class _CirclesTrackingState extends State<CirclesTracking> {
                       SizedBox(
                         height: 8,
                       ),
-                      Text(_tracking[3],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: subscriptionDetails.currentdata[0]["form_status"] == false ? Colors.grey : Colors.black),)
+                      Text(_tracking[3],style: TextStyle(fontSize: 13.0,fontFamily: "AppFontStyle", color: Colors.black),)
                     ],
                   ),
                 }

@@ -28,16 +28,12 @@ class PresentationMainPage extends StatefulWidget {
 }
 
 class _PresentationMainPageState extends State<PresentationMainPage> {
-  List<Widget> _screens = [Container(),Presentation1stPage()];
+  List<Widget> _screens = [Container(),Presentation1stPage(),Presentation2ndPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final Step1Service _step1service = new Step1Service();
-  final Step7Service _step7service = new Step7Service();
-  final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final Routes _routes = new Routes();
-  final AppBars _appBars = AppBars();
-  final FillUpLater _fillUpLater = new FillUpLater();
   int _currentPage = 1;
 
   @override
@@ -57,9 +53,9 @@ class _PresentationMainPageState extends State<PresentationMainPage> {
                 SizedBox(
                   height: 30,
                 ),
-                MyStepper(1,range: double.parse(_currentPage.toString()),),
+                MyStepper(2,range: double.parse(_currentPage.toString()),),
                 SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -120,7 +116,7 @@ class _PresentationMainPageState extends State<PresentationMainPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 30,
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -129,73 +125,67 @@ class _PresentationMainPageState extends State<PresentationMainPage> {
                 SizedBox(
                   height: 50,
                 ),
-                Container(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Column(
-                    children: [
-                      _materialbutton.materialButton("SUIVANT", () {
-                        if(step1subs.weight == "" || step1subs.height == ""){
-                          _snackbarMessage.snackbarMessage(context, message: "Le poids et la taille sont requis. Veuillez ne pas le laisser vide !", is_error: true);
-                        }else{
-                          setState(() {
-                            step1subs.target_weight = "N/A";
-                            if(_currentPage > 0){
-                              _screenLoaders.functionLoader(context);
-                              if(subscriptionDetails.currentdata[0]["client_info"] != null){
-                                setState(() {
-                                  step1subs.id = subscriptionDetails.currentdata[0]["client_info"]["id"].toString();
-                                });
-                              }
-                              _step1service.submit(context).then((value){
-                                if(value != null){
-                                  Navigator.of(context).pop(null);
-                                  _routes.navigator_push(context, EatingMainPage());
-                                }
-                              });
-                            }else{
-                              _currentPage++;
-                            }
-                          });
-                        }
-                      }),
-                      SizedBox(
-                        height: 15,
-                      ),
-                       InkWell(
-                        child: Container(
-                          width: double.infinity,
-                          height: 55,
-                          child: Center(
-                            child: Text("PLUS TARD",style: TextStyle(fontFamily: "AppFontStyle",color: AppColors.darpinkColor,fontWeight: FontWeight.w600),),
-                          ),
-                        ),
-                        onTap: (){
-                          if(step1subs.weight == "" || step1subs.height == ""){
-                            _snackbarMessage.snackbarMessage(context, message: "Le poids et la taille sont requis. Veuillez ne pas le laisser vide !", is_error: true);
-                          }else{
-                            setState((){
-                              step1subs.target_weight = "N/A";
-                              _screenLoaders.functionLoader(context);
-                              if(subscriptionDetails.currentdata[0]["client_info"] != null){
-                                setState(() {
-                                  step1subs.id = subscriptionDetails.currentdata[0]["client_info"]["id"].toString();
-                                });
-                              }
-                              _step1service.submit(context).then((value){
-                                if(value != null){
-                                  Navigator.of(context).pop(null);
-                                  _routes.navigator_push(context, Landing(), transitionType: PageTransitionType.fade);
-                                }
-                              });
+                  child: _materialbutton.materialButton("SUIVANT", () {
+                    if(step1subs.weight == "" || step1subs.height == ""){
+                      _snackbarMessage.snackbarMessage(context, message: "Le poids et la taille sont requis. Veuillez ne pas le laisser vide !", is_error: true);
+                    }else{
+                      setState(() {
+                        step1subs.target_weight = "N/A";
+                        if(_currentPage > 1){
+                          _screenLoaders.functionLoader(context);
+                          if(subscriptionDetails.currentdata[0]["client_info"] != null){
+                            setState(() {
+                              step1subs.id = subscriptionDetails.currentdata[0]["client_info"]["id"].toString();
                             });
                           }
-                        },
-                      ),
-                    ],
-                  ),
+                          _step1service.submit(context).then((value){
+                            if(value != null){
+                              Navigator.of(context).pop(null);
+                              _routes.navigator_push(context, EatingMainPage());
+                            }
+                          });
+                        }else{
+                          _currentPage++;
+                        }
+                      });
+                    }
+                  }),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 15,
+                ),
+                InkWell(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    width: double.infinity,
+                    height: 55,
+                    child: Center(
+                      child: Text("PLUS TARD",style: TextStyle(fontFamily: "AppFontStyle",color: AppColors.darpinkColor,fontWeight: FontWeight.w600),),
+                    ),
+                  ),
+                  onTap: (){
+                    if(step1subs.weight == "" || step1subs.height == ""){
+                      _snackbarMessage.snackbarMessage(context, message: "Le poids et la taille sont requis. Veuillez ne pas le laisser vide !", is_error: true);
+                    }else{
+                      setState((){
+                        step1subs.target_weight = "N/A";
+                        _screenLoaders.functionLoader(context);
+                        if(subscriptionDetails.currentdata[0]["client_info"] != null){
+                          setState(() {
+                            step1subs.id = subscriptionDetails.currentdata[0]["client_info"]["id"].toString();
+                          });
+                        }
+                        _step1service.submit(context).then((value){
+                          if(value != null){
+                            Navigator.of(context).pop(null);
+                            _routes.navigator_push(context, Landing(), transitionType: PageTransitionType.fade);
+                          }
+                        });
+                      });
+                    }
+                  },
                 ),
               ],
             ),

@@ -32,7 +32,7 @@ class Measures{
     "hips": hips,
     "upper_thigh": upper_thigh,
     "calf": calf,
-    "date": DateFormat("yyyy-MM-dd","fr").format(DateTime.now()).toString(),
+    "date": DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString(),
     "client_id": Auth.loggedUser!["id"].toString(),
     "subscription_id": subscriptionDetails.currentdata[0]["id"].toString(),
   };

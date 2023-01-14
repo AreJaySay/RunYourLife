@@ -25,7 +25,7 @@ class _ProfileAppBarState extends State<ProfileAppBar> {
       stream: profileStreamServices.subject,
       builder: (context, snapshot) {
         return !snapshot.hasData ? Container( ): Container(
-          height: 120,
+          height: 110,
           padding: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -42,7 +42,7 @@ class _ProfileAppBarState extends State<ProfileAppBar> {
             ],
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               snapshot.data!["logo"] == "" ?
@@ -98,59 +98,55 @@ class _ProfileAppBarState extends State<ProfileAppBar> {
                 },
               ),
               SizedBox(
-                width: Auth.isNotSubs! ? 10 : 5,
+                width: 10,
               ),
               Expanded(
-                child: Container(
-                  height: 80,
-                  child: Column(
-                    mainAxisAlignment: Auth.isNotSubs! ? MainAxisAlignment.center : MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("${snapshot.data!["first_name"].toString() == "null" ? "" : snapshot.data!["first_name"].toString().toUpperCase()} ${snapshot.data!["last_name"].toString() == "null" ? "" : snapshot.data!["last_name"].toString().toUpperCase()}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),maxLines: 2,overflow: TextOverflow.ellipsis,),
-                      Auth.isNotSubs! || subscriptionDetails.currentdata[0]["price"].toString() == "null" ?
-                      Padding(
-                        padding: EdgeInsets.only(top: 5),
-                        child: Text("Non abonné"),
-                      ) :
-                      Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            subscriptionDetails.currentdata[0]["price"]['plan_id'] == 1 ? Container() :
-                            Image(
-                              color: AppColors.appmaincolor,
-                              width: 20,
-                              fit: BoxFit.cover,
-                              filterQuality: FilterQuality.high,
-                              image:AssetImage("assets/icons/coaching.png",)
-                            ),
-                            subscriptionDetails.currentdata[0]["price"]['plan_id'] == 1 ? Container() : SizedBox(
-                              width: 3,
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("PACK ${subscriptionDetails.currentdata[0]["price"]["plan"]["name"].toString()}".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontSize: 13.5,fontFamily: "AppFontStyle",),),
-                                Text(subscriptionDetails.currentdata[0]["coach"]["full_name"].toString(),style: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 13.5,fontFamily: "AppFontStyle",),)
-                              ],
-                            )
-                          ],
-                        ),
+                child: Column(
+                  mainAxisAlignment: Auth.isNotSubs! ? MainAxisAlignment.center : MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Text("${snapshot.data!["first_name"].toString() == "null" ? "" : snapshot.data!["first_name"].toString().toUpperCase()} ${snapshot.data!["last_name"].toString() == "null" ? "" : snapshot.data!["last_name"].toString().toUpperCase()}",style: TextStyle(fontSize: 20,fontWeight: FontWeight.w600),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                    Auth.isNotSubs! || subscriptionDetails.currentdata[0]["price"].toString() == "null" ?
+                    Padding(
+                      padding: EdgeInsets.only(top: 5),
+                      child: Text("Non abonné"),
+                    ) :
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? Container() :
+                          Image(
+                            color: AppColors.appmaincolor,
+                            width: 20,
+                            fit: BoxFit.cover,
+                            filterQuality: FilterQuality.high,
+                            image:AssetImage("assets/icons/coaching.png",)
+                          ),
+                          subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? Container() : SizedBox(
+                            width: 3,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("PACK ${subscriptionDetails.currentdata[0]["price"]["plan"]["name"].toString()}".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontSize: 13.5,fontFamily: "AppFontStyle",),),
+                              Text(subscriptionDetails.currentdata[0]["coach"]["full_name"].toString(),style: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 13.5,fontFamily: "AppFontStyle",),)
+                            ],
+                          )
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                  ],
                 ),
               ),
-              InkWell(
-                child: Icon(Icons.more_vert,size: 32,color: Colors.grey,),
-                onTap: (){
-                  print("asd");
-                  _routes.navigator_push(context, Parameters());
-                },
-              )
             ],
           ),
         );

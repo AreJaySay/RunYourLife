@@ -3,8 +3,6 @@ import 'package:rxdart/rxdart.dart';
 
 class HomeStreamServices{
   // SCHEDULING
-
-
   HomeStreamServices._pr();
   static final HomeStreamServices _instance = HomeStreamServices._pr();
   static HomeStreamServices get instance => _instance;
@@ -23,6 +21,23 @@ class HomeStreamServices{
 
   updateTrack({required Map data}){
     tracking.add(data);
+  }
+
+  // LATEST CHECKIN
+  BehaviorSubject<Map> latestCheckin = new BehaviorSubject();
+  Stream get latestCheckinStream => latestCheckin.stream;
+  Map get currentlatestCheckin => latestCheckin.value;
+
+  updateLatestCheckin({required Map data}){
+    latestCheckin.add(data);
+  }
+
+  // TRACKING BY MONTH
+  BehaviorSubject<List> month = new BehaviorSubject();
+  List get currentMonth => month.value;
+
+  updateMonth({required List data}){
+    month.add(data);
   }
 
   //MEETING SCHEDULE

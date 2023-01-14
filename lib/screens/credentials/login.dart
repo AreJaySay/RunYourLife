@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
       onTap: FocusScope.of(context).unfocus,
       child: Scaffold(
         appBar: _keyboardVisible ? null :
-        _appBars.preferredSize(height: 70,logowidth: 95),
+        _appBars.preferredSize(height: 70,logowidth: 90),
         body: Container(
           width: double.infinity,
           height: double.infinity,

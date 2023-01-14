@@ -25,7 +25,7 @@ class _Stress1stPageState extends State<Stress1stPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Quel est ton métier ou ta formation ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Quel métier ou études  fais -tu ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
@@ -53,11 +53,11 @@ class _Stress1stPageState extends State<Stress1stPage> {
         SizedBox(
           height: 20,
         ),
-        Text("Est-ce que ce métier/cette formation est stressant.e ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Est-ce que ce métier/études est/sont stressant(es)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
-        Text("1 : pas stressant \n3 : modérément \n5 : très stressant",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1: Pas stressant\n3 : Modéremment \n5: Très stressant",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -104,11 +104,11 @@ class _Stress1stPageState extends State<Stress1stPage> {
         SizedBox(
           height: 20,
         ),
-        Text("Est-ce que ce métier/cette formation est épanouissant.e ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Est-ce que ce métier/études est/sont épanouissant(es)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
-        Text("1 : pas épanouissante \n3 : modérément \n5 : très épanouissante",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1: Pas épanouissant\n3 : Modéremment\n5: Très épanouissant",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

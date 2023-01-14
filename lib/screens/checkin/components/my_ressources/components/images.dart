@@ -3,7 +3,10 @@ import 'package:run_your_life/models/device_model.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/widgets/no_data.dart';
 import 'package:intl/intl.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../../utils/palettes/app_colors.dart';
+import '../../../../../widgets/materialbutton.dart';
 
 class MyRessourcesImages extends StatefulWidget {
   final List images;
@@ -14,6 +17,7 @@ class MyRessourcesImages extends StatefulWidget {
 
 class _MyRessourcesImagesState extends State<MyRessourcesImages> {
   final Routes _routes = new Routes();
+  final Materialbutton _materialButton = new Materialbutton();
 
   @override
   Widget build(BuildContext context) {
@@ -25,69 +29,110 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> {
       padding: EdgeInsets.only(left: 20,right: 20,bottom: 30),
       itemCount: widget.images.length,
       itemBuilder: (context, index){
-        return Container(
-          width: double.infinity,
-          height: 100,
-          margin: EdgeInsets.only(top: 20),
-          child: Row(
-            children: [
-              Container(
-                height: DeviceModel.isMobile ? 120 : 150,
-                width: 150,
-                decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(10),
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image:  NetworkImage("https://api.runyourlife.checkmy.dev/documents/coach/${widget.images[index]["documents"]["coach_id"].toString()}/${widget.images[index]["documents"]["file_path"]}")
-                    )
-                ),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 5),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(widget.images[index]["documents"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.images[index]["documents"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
-                      // Text("0 commentaires",style: TextStyle(color: Colors.grey,fontSize: 12,fontFamily: "AppFontStyle"),),
-                      Spacer(),
-                      Row(
-                        children: [
-                          Container(
-                            child: Text(widget.images[index]["documents"]["file_type"] == "image/jpeg" ? "Image" : widget.images[index]["documents"]["file_type"] == "video/mp4" ? "Vidéo" : "Lien",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
-                            decoration: BoxDecoration(
-                                color: AppColors.pinkColor,
-                                borderRadius: BorderRadius.circular(3)
-                            ),
-                            padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+        return ZoomTapAnimation(
+          end: 0.99,
+          onTap: (){
+            showDialog<void>(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return Container(
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: WebView(
+                            initialUrl: widget.images[index]["documents"]["file_path"],
+                            javascriptMode: JavascriptMode.unrestricted,
                           ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          widget.images[index]["documents"]["file_type"] == "application/pdf" ? Container(
-                            child: Text("Read",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
-                            decoration: BoxDecoration(
-                                color: Colors.grey[400],
-                                borderRadius: BorderRadius.circular(3)
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            width: double.infinity,
+                            height: 110,
+                            alignment: Alignment.topCenter,
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Container(
+                              width: double.infinity,
+                              height: 55,
+                              margin: EdgeInsets.only(top: 20),
+                              child: _materialButton.materialButton("RETOURNER", (){
+                                Navigator.of(context).pop(null);
+                              }),
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                          ) : Container()
-                        ],
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                });
+          },
+          child: Container(
+            width: double.infinity,
+            height: 100,
+            margin: EdgeInsets.only(top: 20),
+            child: Row(
+              children: [
+                Container(
+                  height: DeviceModel.isMobile ? 120 : 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image:  NetworkImage("https://api.runyourlife.fr/documents/coach/${widget.images[index]["documents"]["coach_id"].toString()}/${widget.images[index]["documents"]["file_path"]}")
                       )
-                    ],
                   ),
                 ),
-              )
-            ],
+                SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 5),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(widget.images[index]["documents"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.images[index]["documents"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
+                        // Text("0 commentaires",style: TextStyle(color: Colors.grey,fontSize: 12,fontFamily: "AppFontStyle"),),
+                        Spacer(),
+                        Row(
+                          children: [
+                            Container(
+                              child: Text("Image",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
+                              decoration: BoxDecoration(
+                                  color: AppColors.pinkColor,
+                                  borderRadius: BorderRadius.circular(3)
+                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            widget.images[index]["documents"]["file_type"] == "application/pdf" ? Container(
+                              child: Text("Read",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
+                              decoration: BoxDecoration(
+                                  color: Colors.grey[400],
+                                  borderRadius: BorderRadius.circular(3)
+                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                            ) : Container()
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },

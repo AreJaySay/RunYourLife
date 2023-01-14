@@ -16,7 +16,7 @@ class Base64Converter{
     final encodedStr = base64String;
     Uint8List bytes = base64.decode(encodedStr);
     String dir = (await getApplicationDocumentsDirectory()).path;
-    File file = File("$dir/" + DateTime.now().millisecondsSinceEpoch.toString() + "$extension");
+    File file = File("$dir/" + DateTime.now().toUtc().add(Duration(hours: 2)).millisecondsSinceEpoch.toString() + "$extension");
     await file.writeAsBytes(bytes);
     return file.path;
   }

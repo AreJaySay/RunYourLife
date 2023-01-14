@@ -45,7 +45,7 @@ class _AccountCreatedState extends State<AccountCreated> with TickerProviderStat
     double circleSize = 120;
     double iconSize = 90;
     return Scaffold(
-      appBar: _appBars.preferredSize(height: 70,logowidth: 95),
+      appBar: _appBars.preferredSize(height: 70,logowidth: 90),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -71,7 +71,7 @@ class _AccountCreatedState extends State<AccountCreated> with TickerProviderStat
                         SizedBox(
                           height: 15,
                         ),
-                        Text("Votre compte a été créé, vérifiez \nvos mails pour continuer !",textAlign: TextAlign.center,style: TextStyle(fontSize: 16,fontFamily: "AppFontStyle"),),
+                        Text("Ton compte a été créé.\nVérifie tes mails pour continuer !",textAlign: TextAlign.center,style: TextStyle(fontSize: 16,fontFamily: "AppFontStyle"),),
                         SizedBox(
                           height: 40,
                         ),

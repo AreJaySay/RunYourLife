@@ -44,7 +44,7 @@ class _EnterEmailAddressState extends State<EnterEmailAddress> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBars.preferredSize(height: 70,logowidth: 95),
+      appBar: _appBars.preferredSize(height: 70,logowidth: 90),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -87,7 +87,7 @@ class _EnterEmailAddressState extends State<EnterEmailAddress> {
             Spacer(),
             _materialbutton.materialButton("RÉINITIALISER", () {
               if(_email.text.isEmpty){
-                _snackbarMessage.snackbarMessage(context, message: "Email address cannot be empty.", is_error: true);
+                _snackbarMessage.snackbarMessage(context, message: "L'adresse électronique ne peut pas être vide.", is_error: true);
               }else{
                 _screenLoaders.functionLoader(context);
                 _passwordServices.enter_email(context,email: _email.text);

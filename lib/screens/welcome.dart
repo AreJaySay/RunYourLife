@@ -20,23 +20,32 @@ class _WelcomeState extends State<Welcome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        child: Stack(
-          children: [
-            Image.asset("assets/important_assets/new_background.png",width: double.infinity,filterQuality: FilterQuality.high,fit: BoxFit.fitWidth,),
-            Image.asset("assets/important_assets/new_background.png",width: double.infinity,filterQuality: FilterQuality.high,fit: BoxFit.contain,),
-            Container(
-              width: double.infinity,
-              height: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-              child: _delayedWidgets.delayedWidget(
-                delayDuration: 200,
-                delayedAnimations: DelayedAnimations.SLIDE_FROM_BOTTOM,
-                animationDuration: 200,
-                widget: SafeArea(
-                  child: Column(
+      body: Stack(
+        children: [
+          Image.asset("assets/important_assets/emptyback.png",width: double.infinity,height: double.infinity,filterQuality: FilterQuality.high,fit: BoxFit.cover,),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: Image(
+                  width: 190,
+                  filterQuality: FilterQuality.high,
+                  image: AssetImage("assets/important_assets/newbackground_white.png"),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: _delayedWidgets.delayedWidget(
+                  delayDuration: 200,
+                  delayedAnimations: DelayedAnimations.SLIDE_FROM_BOTTOM,
+                  animationDuration: 200,
+                  widget: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -64,16 +73,16 @@ class _WelcomeState extends State<Welcome> {
                           _routes.navigator_push(context, CreateAccount());
                         },
                       ),
-                      SizedBox(
-                        height: 20,
-                      ),
                     ],
                   ),
                 ),
               ),
-            )
-          ],
-        ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

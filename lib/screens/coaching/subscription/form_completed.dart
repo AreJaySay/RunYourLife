@@ -28,7 +28,7 @@ class _FormCompletedState extends State<FormCompleted> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBars.preferredSize(height: 70,logowidth: 95),
+      appBar: _appBars.preferredSize(height: 70,logowidth: 90),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 30),
         width: double.infinity,
@@ -59,7 +59,7 @@ class _FormCompletedState extends State<FormCompleted> {
                   SizedBox(
                     height: 15,
                   ),
-                  Text("Tes réponses vont être transmises au coach qui prendra contact avec toi pour démarrer le coaching.",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
+                  Text("J’ai bien reçu les réponses à ton questionnaire, je vais maintenant les traiter afin de te donner des conseils au plus proche de tes objectifs et ta situation. Cela va me prendre au maximum 24h, en attendant tu peux aller dans ton journal de bord pour débuter ! Consulte aussi tes emails, des instructions pour la suite te seront envoyées.",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle",fontSize: 15),),
                 ],
               ),
             ),

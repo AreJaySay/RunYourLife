@@ -76,11 +76,11 @@ class _SearchNotificationState extends State<SearchNotification> {
                   groupSeparatorBuilder: (String value) => Padding(
                     padding: EdgeInsets.only(right: 20,left: 20,bottom: 15,top: 25),
                     child: Text(
-                      DateTime.now().difference(DateTime.parse(value)).inDays == 0 ?
+                      DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(value)).inDays == 0 ?
                       "AUJOURD'HUI" :
-                      DateTime.now().difference(DateTime.parse(value)).inDays == 1 ?
+                      DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(value)).inDays == 1 ?
                       "HIER" :
-                      DateTime.now().difference(DateTime.parse(value)).inDays > 1 && DateTime.now().difference(DateTime.parse(value)).inDays < 7 ?
+                      DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(value)).inDays > 1 && DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(value)).inDays < 7 ?
                       "IL Y A UNE SEMAINE" :
                       DateFormat.yMMMd("fr").format(DateTime.parse(value.toString())),
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),

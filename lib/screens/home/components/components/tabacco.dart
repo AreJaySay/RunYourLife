@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:another_xlider/another_xlider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:run_your_life/functions/loaders.dart';
 import 'package:run_your_life/models/screens/home/tracking.dart';
 import 'package:run_your_life/services/apis_services/screens/home.dart';
@@ -23,12 +24,12 @@ class _TabaccoTrackingState extends State<TabaccoTracking> {
   final HomeServices _homeServices = new HomeServices();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final AppBars _appBars = AppBars();
-  final TextEditingController _tobbaco = new TextEditingController()..text=homeTracking.smoke.toString() == "null" ? "" : homeTracking.smoke.toString();
+  final TextEditingController _tobbaco = new TextEditingController()..text=homeTracking.smoke.toString() == "null" ? "" : homeTracking.smoke.floor().toString();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBars.whiteappbar(context, title: "TRACKING JOURNÉE"),
+      appBar: _appBars.whiteappbar(context, title: "SUIVI DE LA JOURNÉE"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -52,69 +53,48 @@ class _TabaccoTrackingState extends State<TabaccoTracking> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text("As-tu fumé aujourd’hui ?",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
+                  Text("Entre le nombre de cigarette",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
                   SizedBox(
                     height: 20,
                   ),
                   Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(1000),
-                      border: Border.all(color: Colors.grey)
-                    ),
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      style: TextStyle(fontFamily: "AppFontStyle"),
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                        border: InputBorder.none,
-                        hintStyle: TextStyle(fontFamily: "AppFontStyle",color: Colors.grey),
-                        hintText: "Entrez le nombre de cigarettes",
+                    height: 70,
+                    child: FlutterSlider(
+                      values: [homeTracking.smoke],
+                      max: 20,
+                      min: 0,
+                      handlerWidth: 65,
+                      handlerHeight: 45,
+                      tooltip: FlutterSliderTooltip(
+                          alwaysShowTooltip: false,
+                          disabled: true
                       ),
-                      onChanged: (value){
+                      trackBar: FlutterSliderTrackBar(
+                        inactiveTrackBarHeight: 10,
+                        activeTrackBarHeight: 10,
+                        activeTrackBar: BoxDecoration(
+                            color: AppColors.appmaincolor,
+                            borderRadius: BorderRadius.circular(1000)
+                        ),
+                        inactiveTrackBar: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(1000)
+                        ),
+                      ),
+                      handler: FlutterSliderHandler(
+                          decoration: BoxDecoration(
+                              color: AppColors.appmaincolor,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Text(homeTracking.smoke.floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
+                      ),
+                      onDragging: (handlerIndex, lowerValue, upperValue) {
                         setState(() {
-                          homeTracking.smoke = double.parse(value.toString());
+                          homeTracking.smoke = lowerValue;
                         });
                       },
                     ),
                   ),
-                  // Container(
-                  //   height: 70,
-                  //   child: FlutterSlider(
-                  //     values: [homeTracking.smoke],
-                  //     max: 10,
-                  //     min: 0,
-                  //     handlerWidth: 65,
-                  //     handlerHeight: 45,
-                  //     tooltip: FlutterSliderTooltip(
-                  //         alwaysShowTooltip: false,
-                  //         disabled: true
-                  //     ),
-                  //     trackBar: FlutterSliderTrackBar(
-                  //       inactiveTrackBarHeight: 10,
-                  //       activeTrackBarHeight: 10,
-                  //       activeTrackBar: BoxDecoration(
-                  //           color: homeTracking.smoke > 6 ? Colors.redAccent : AppColors.appmaincolor,
-                  //           borderRadius: BorderRadius.circular(1000)
-                  //       ),
-                  //       inactiveTrackBar: BoxDecoration(
-                  //           color: Colors.grey[200],
-                  //           borderRadius: BorderRadius.circular(1000)
-                  //       ),
-                  //     ),
-                  //     handler: FlutterSliderHandler(
-                  //         decoration: BoxDecoration(
-                  //             color: homeTracking.smoke > 6 ? Colors.redAccent : AppColors.appmaincolor,
-                  //             borderRadius: BorderRadius.circular(10)
-                  //         ),
-                  //         child: Text(homeTracking.smoke.floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
-                  //     ),
-                  //     onDragging: (handlerIndex, lowerValue, upperValue) {
-                  //       setState(() {
-                  //         homeTracking.smoke = lowerValue;
-                  //       });
-                  //     },
-                  //   ),
-                  // ),
                   Spacer(),
                   _materialbutton.materialButton("VALIDER", () {
                     _screenLoaders.functionLoader(context);
@@ -128,19 +108,7 @@ class _TabaccoTrackingState extends State<TabaccoTracking> {
                     });
                   }),
                   SizedBox(
-                    height: 15,
-                  ),
-                  InkWell(
-                    child: Container(
-                      width: double.infinity,
-                      height: 55,
-                      child: Center(
-                        child: Text("ANNULER",style: TextStyle(fontFamily: "AppFontStyle",color: AppColors.darpinkColor,fontWeight: FontWeight.w600),),
-                      ),
-                    ),
-                    onTap: (){
-                      Navigator.of(context).pop(null);
-                    },
+                    height: 40,
                   ),
                 ],
               ),

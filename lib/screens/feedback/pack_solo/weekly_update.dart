@@ -4,7 +4,9 @@ import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/utils/palettes/app_gradient_colors.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import '../../../functions/loaders.dart';
 import '../../../models/device_model.dart';
+import '../../../services/apis_services/subscriptions/choose_plan.dart';
 import '../../../services/stream_services/screens/coaching.dart';
 import '../../coaching/components/enter_card.dart';
 import '../../coaching/components/view_details.dart';
@@ -16,6 +18,8 @@ class WeeklyUpdate extends StatefulWidget {
 
 class _WeeklyUpdateState extends State<WeeklyUpdate> {
   final Routes _routes = new Routes();
+  final ScreenLoaders _screenLoaders = new ScreenLoaders();
+  final ChoosePlanService _choosePlanService = new ChoosePlanService();
 
   @override
   Widget build(BuildContext context) {
@@ -79,14 +83,12 @@ class _WeeklyUpdateState extends State<WeeklyUpdate> {
                   ZoomTapAnimation(
                     end: 0.99,
                     onTap: (){
-                      showModalBottomSheet(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
-                          isScrollControlled: true,
-                          context: context, builder: (context){
-                        return EnterCreditCard(title: "SUBSCRIBE TO MACRO SOLO",details:coachingStreamServices.currentdata[1],);
-                      });
+                      // _screenLoaders.functionLoader(context);
+                      // _choosePlanService.choosePlan(context, planDetails: coachingStreamServices.currentdata[1], code: "", card_number: "4242424242424242", expiration_date_month: "11", expiration_date_year: "2023", cvc: "314").then((value){
+                      //   if(value != null){
+                      //     _routes.navigator_pushreplacement(context, ViewCoachingDetails(planDetails: coachingStreamServices.currentdata[1],choosePlan: value,));
+                      //   }
+                      // });
                     },
                     child: Container(
                       width: double.infinity,

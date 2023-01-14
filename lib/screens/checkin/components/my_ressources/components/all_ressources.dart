@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:run_your_life/models/device_model.dart';
 import 'package:run_your_life/screens/checkin/components/my_ressources/components/components/view_ressources.dart';
+import 'package:run_your_life/screens/checkin/components/my_ressources/components/videos_component/video_design.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
+import 'package:run_your_life/widgets/materialbutton.dart';
 import 'package:run_your_life/widgets/no_data.dart';
-import 'package:simple_url_preview/simple_url_preview.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:intl/intl.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class AllRessources extends StatefulWidget {
   final List ressources;
@@ -17,6 +19,7 @@ class AllRessources extends StatefulWidget {
 
 class _AllRessourcesState extends State<AllRessources> {
   final Routes _routes = new Routes();
+  final Materialbutton _materialButton = new Materialbutton();
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +38,56 @@ class _AllRessourcesState extends State<AllRessources> {
             height: 100,
             margin: EdgeInsets.only(top: 20),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                widget.ressources[index]["documents"]["file_type"] == "image/jpeg"?
+                // InkWell(
+                //   child: Container(
+                //     child: Transform.scale(
+                //       scale: 1,
+                //       child: SizedBox(
+                //         width: 23,
+                //         height: 23,
+                //         child: Checkbox(
+                //           checkColor: AppColors.pinkColor,
+                //           activeColor: Colors.white,
+                //           value: true,
+                //           shape: CircleBorder(
+                //               side: BorderSide.none
+                //           ),
+                //           splashRadius: 20,
+                //           side: BorderSide(
+                //               width: 0,
+                //               color: Colors.transparent,
+                //               style: BorderStyle.none
+                //           ),
+                //           onChanged: (value) {
+                //             // setState(() {
+                //             //   _result[index].viewStatus = _result[index].viewStatus == 0 ? 1 : 0;
+                //             // });
+                //             // // _screenLoaders.functionLoader(context);
+                //             // _objectiveApi.changeStatus(id: _result[index].id.toString(), status: _result[index].viewStatus.toString()).then((value){
+                //             //   init();
+                //             // });
+                //           },
+                //         ),
+                //       ),
+                //     ),
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       border: Border.all(color: AppColors.pinkColor ,width: 2),
+                //       borderRadius: BorderRadius.circular(1000),
+                //     ),
+                //     padding: EdgeInsets.all(3),
+                //   ),
+                //   onTap: (){
+                //
+                //   },
+                // ),
+                // SizedBox(
+                //   width: 10,
+                // ),
+                widget.ressources[index]["documents"]["file_type"] == "image/jpeg" || widget.ressources[index]["documents"]["file_type"] == "image/png" || widget.ressources[index]["documents"]["file_type"] == "image/jpg"?
                 Container(
                   height: DeviceModel.isMobile ? 120 : 150,
                   width: 150,
@@ -45,7 +96,7 @@ class _AllRessourcesState extends State<AllRessources> {
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image:  NetworkImage("https://api.runyourlife.checkmy.dev/documents/coach/${widget.ressources[index]["documents"]["coach_id"].toString()}/${widget.ressources[index]["documents"]["file_path"]}")
+                          image:  NetworkImage(widget.ressources[index]["documents"]["file_path"])
                       )
                   ),
                 ) : widget.ressources[index]["documents"]["file_type"] == "video/mp4" ?
@@ -110,7 +161,7 @@ class _AllRessourcesState extends State<AllRessources> {
                         Row(
                           children: [
                             Container(
-                              child: Text(widget.ressources[index]["documents"]["file_type"] == "image/jpeg" ? "Image" : widget.ressources[index]["documents"]["file_type"] == "video/mp4" ? "Vidéo" : "Lien",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
+                              child: Text(widget.ressources[index]["documents"]["file_type"] == "image/jpeg" || widget.ressources[index]["documents"]["file_type"] == "image/png" || widget.ressources[index]["documents"]["file_type"] == "image/jpg" ? "Image" : widget.ressources[index]["documents"]["file_type"] == "video/mp4" ? "Vidéo" : widget.ressources[index]["documents"]["file_type"] == "link/url" ? "Lien" : "Docs",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
                               decoration: BoxDecoration(
                                 color: AppColors.pinkColor,
                                 borderRadius: BorderRadius.circular(3)
@@ -120,7 +171,8 @@ class _AllRessourcesState extends State<AllRessources> {
                             SizedBox(
                               width: 5,
                             ),
-                            widget.ressources[index]["documents"]["file_type"] == "application/pdf" ? Container(
+                            widget.ressources[index]["documents"]["file_type"] == "application/pdf" ?
+                            Container(
                               child: Text("Read",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
                               decoration: BoxDecoration(
                                   color: Colors.grey[400],
@@ -138,7 +190,13 @@ class _AllRessourcesState extends State<AllRessources> {
             ),
           ),
           onTap: (){
-            _routes.navigator_push(context, ViewRessources());
+            showDialog<void>(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return ViewRessources(ressource: widget.ressources[index],);
+                });
+            // _routes.navigator_push(context, ViewRessources());
           },
         );
       },

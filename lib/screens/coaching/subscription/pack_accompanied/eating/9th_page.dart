@@ -10,7 +10,7 @@ class Eating9thPage extends StatefulWidget {
 }
 
 class _Eating9thPageState extends State<Eating9thPage> {
-  List<String> _alcoholcons = ["Jamais","Rarement (quelques fois par an)","Occasionnellement (quelques fois par mois)","Régulièrement (quelques fois par semaine)","Quotidiennement (1-2 fois par jour)","Quotidiennement (>2 fois par jour)"];
+  List<String> _alcoholcons = ["Jamais","Rarement (quelque fois par an)","Occasionnellement: quelques fois par mois","Régulièrement: quelques fois par semaine","Quotidiennement: 1 à 2 fois par jour","Quotidiennement: plus de 2 fois par jour"];
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class _Eating9thPageState extends State<Eating9thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("QUELLE EST TA CONSOMMATION D'ALCOOL ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("QUELLE EST TA CONSOMMATION D’ALCOOL ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

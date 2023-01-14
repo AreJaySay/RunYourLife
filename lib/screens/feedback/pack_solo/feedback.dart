@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:run_your_life/screens/feedback/pack_solo/weekly_update.dart';
 import 'package:run_your_life/screens/messages/messages.dart';
 import 'package:run_your_life/services/apis_services/screens/feedback.dart';
+import 'package:run_your_life/services/apis_services/screens/home.dart';
 import 'package:run_your_life/utils/palettes/app_gradient_colors.dart';
 import 'package:run_your_life/widgets/notification_notifier.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -11,6 +13,7 @@ import '../../../services/other_services/routes.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import '../../../services/stream_services/screens/feedback.dart';
 
+import '../../../services/stream_services/subscriptions/subscription_details.dart';
 import '../../../widgets/message_notifier.dart';
 import '../components/coach/listview_widget.dart';
 import '../components/shimmer_loader.dart';
@@ -25,17 +28,20 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
   final List<String> _secondchar = ["SEMAINE","DERNIÈRE","SEMAINE DY 11/04"];
   final FeedbackServices _feedbackServices = new FeedbackServices();
   final Routes _routes = new Routes();
+  final HomeServices _homeServices = new HomeServices();
   ScrollController _scrollController = new ScrollController();
 
   @override
   void initState() {
+    _homeServices.getSchedule();
+    _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
     _feedbackServices.getFeedback().then((value){
       for(int x = 0; x < value.length; x++){
-        if(DateTime.now().difference(DateTime.parse(value[x]["created_at"])).inDays <= 7){
+        if(DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(value[x]["created_at"])).inDays <= 7){
           if(!coachFeedBack.currentWeek.toString().contains(value[x].toString())){
             coachFeedBack.currentWeek.add(value[x]);
           }
-        }else if(DateTime.now().difference(DateTime.parse(value[x]["created_at"])).inDays > 7 && DateTime.now().difference(DateTime.parse(value[x]["created_at"])).inDays <= 14){
+        }else if(DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(value[x]["created_at"])).inDays > 7 && DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(value[x]["created_at"])).inDays <= 14){
           if(!coachFeedBack.lastWeek.toString().contains(value[x].toString())){
             coachFeedBack.lastWeek.add(value[x]);
           }
@@ -122,41 +128,35 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
                           SliverPadding(
                             padding:  EdgeInsets.only(bottom: 5,),
                             sliver: SliverList(
-                              delegate: new SliverChildListDelegate([
+                              delegate: SliverChildListDelegate([
                                 SizedBox(
                                   height: 30,
                                 ),
-                                ZoomTapAnimation(
-                                  child: Stack(
-                                    children: [
-                                     Container(
-                                        margin: EdgeInsets.symmetric(horizontal: 20),
-                                        width: double.infinity,
-                                        alignment: Alignment.bottomRight,
-                                        child: Image(
-                                          image: AssetImage("assets/icons/lock.png"),
-                                          width: 50,
-                                          filterQuality: FilterQuality.high,
-                                          fit: BoxFit.cover,
-                                          color: Colors.black54,
-                                        ),
+                                Stack(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 20),
+                                      width: double.infinity,
+                                      alignment: Alignment.bottomRight,
+                                      child: Image(
+                                        image: AssetImage("assets/icons/lock.png"),
+                                        width: 50,
+                                        filterQuality: FilterQuality.high,
+                                        fit: BoxFit.cover,
+                                        color: Colors.black54,
                                       ),
-                                      Container(
-                                        margin: EdgeInsets.symmetric(horizontal: 20),
-                                        width: double.infinity,
-                                        height: 65,
-                                        decoration: BoxDecoration(
-                                            color: AppColors.pinkColor,
-                                            borderRadius: BorderRadius.circular(10)
-                                        ),
-                                        child: Center(child: Text("PROGRAMMER UN POINT HEBDO",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 20),
+                                      width: double.infinity,
+                                      height: 65,
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.8),
+                                          borderRadius: BorderRadius.circular(10)
                                       ),
-                                    ],
-                                  ),
-                                  end: 0.99,
-                                  onTap: (){
-                                    _routes.navigator_push(context, WeeklyUpdate());
-                                  },
+                                      child: Center(child: Text("PROCHAIN RENDEZ-VOUS",style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
                                   height: 10,
@@ -177,30 +177,13 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
                           }else if(snapshot.data!.isEmpty)...{
                             Container(
                               width: double.infinity,
-                              height: 130,
+                              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
                               decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10)
                               ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text("C'EST ",style: TextStyle(fontSize: 16,color: AppColors.pinkColor,fontFamily: "AppFontStyle"),),
-                                      Text("CALME PAR ICI...",style: TextStyle(fontSize: 16,color: AppColors.pinkColor,fontFamily: "AppFontStyle",fontWeight: FontWeight.w600),),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 3,
-                                  ),
-                                  Text("Bientôt des feedbacks de votre coach !",style: TextStyle(fontSize: 15.5,color: Colors.black,fontFamily: "AppFontStyle"),),
-                                ],
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                              ),
-                            )
+                              child: Center(child: Text("Cet abonnement ne vous permet pas d'obtenir un feedback de votre coach. Cependant, vous pouvez vous rendre sur la page de votre profil en bas de page et mettre à niveau votre abonnement pour que le mois prochain vous puissiez bénéficier d'un suivi 100% personnalisé et d'un contact permanent avec un coach !",style: TextStyle(fontSize: 15.5,color: Colors.black,fontFamily: "AppFontStyle"),textAlign: TextAlign.center,)),
+                            ),
                           }else...{
                             // CURRENT WEEK
                             if(coachFeedBack.currentWeek.isNotEmpty)...{
@@ -232,7 +215,7 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
                                 SizedBox(
                                     height: 17
                                 ),
-                                CoachListViewWidget(coachFeedBack.lastWeek[x]),
+                                CoachListViewWidget(coachFeedBack.lastWeek[x],isMacroSolo: true,),
                               }
                             },
                             if(coachFeedBack.otherWeek.isNotEmpty)...{
@@ -249,7 +232,7 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
                                 SizedBox(
                                     height: 17
                                 ),
-                                CoachListViewWidget(coachFeedBack.otherWeek[x]),
+                                CoachListViewWidget(coachFeedBack.otherWeek[x],isMacroSolo: true,),
                               }
                             },
                           }

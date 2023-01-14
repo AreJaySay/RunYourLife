@@ -23,8 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
             Image(
               width: 150,
               color: AppColors.appmaincolor,
-              fit: BoxFit.cover,
-              image: AssetImage("assets/important_assets/logo.png"),
+              filterQuality: FilterQuality.high,
+              image: AssetImage("assets/important_assets/logo_new_white.png"),
             ),
             SizedBox(
               height: 40,

@@ -27,7 +27,7 @@ class PackSoloObjectiveMainPage extends StatefulWidget {
 
 class _PackSoloObjectiveMainPageState extends State<PackSoloObjectiveMainPage> {
   List<Widget> _firstScreen = [Container(),Objective1stPage(),Objective4thPage()];
-  List<Widget> _secondSreen = [Container(),Objective1stPage(),Objective2ndPage()];
+  List<Widget> _secondSreen = [Container(),Objective1stPage(),Objective2ndPage(),Objective4thPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
@@ -50,7 +50,7 @@ class _PackSoloObjectiveMainPageState extends State<PackSoloObjectiveMainPage> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
               children: [
-                MyStepper(2,range: double.parse(_currentPage.toString()),),
+                MyStepper(step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)" ? 3 : 2,range: double.parse(_currentPage.toString()),),
                 SizedBox(
                   height: 30,
                 ),
@@ -116,7 +116,7 @@ class _PackSoloObjectiveMainPageState extends State<PackSoloObjectiveMainPage> {
                       SizedBox(
                         height: 40,
                       ),
-                      step4subs.goal == "Perdre du poids (au moins 5kg)" || step4subs.goal == "Contruire du muscle (et augmenter ton poids de corps)" ?
+                      step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)" ?
                       _secondSreen[_currentPage] :
                       _firstScreen[_currentPage],
                       SizedBox(
@@ -124,7 +124,7 @@ class _PackSoloObjectiveMainPageState extends State<PackSoloObjectiveMainPage> {
                       ),
                       _materialbutton.materialButton("SUIVANT", () {
                         setState(() {
-                          if(_currentPage > 1){
+                          if( _currentPage > (step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)" ? 2 : 1)){
                             _screenLoaders.functionLoader(context);
                             _step4service.submit(context).then((value){
                               if(value != null){

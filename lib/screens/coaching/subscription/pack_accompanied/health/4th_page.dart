@@ -22,7 +22,7 @@ class _Health4thPageState extends State<Health4thPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    step3subs.eating_disorder = "Yes";
+    step3subs.eating_disorder = "Oui";
   }
 
   @override
@@ -40,14 +40,14 @@ class _Health4thPageState extends State<Health4thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("As-tu souffert de troubles de comportements alimentaires (TCA) ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("TCA : as-tu souffert de troubles de comportements alimentaires (anorexie, boulimie, phobie ...)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
-        Text("Anorexie, boulimie, phobie, …",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-        SizedBox(
-          height: 20,
-        ),
+        // Text("Anorexie, boulimie, phobie, …",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        // SizedBox(
+        //   height: 20,
+        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -56,7 +56,7 @@ class _Health4thPageState extends State<Health4thPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step3subs.eating_disorder == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step3subs.eating_disorder == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -68,10 +68,10 @@ class _Health4thPageState extends State<Health4thPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step3subs.eating_disorder == "Yes" ? 1 : 2,
+                          groupValue: step3subs.eating_disorder == "Oui" ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step3subs.eating_disorder = "Yes";
+                              step3subs.eating_disorder = "Oui";
                             });
                           },
                         ),
@@ -86,7 +86,7 @@ class _Health4thPageState extends State<Health4thPage> {
               ),
               onTap: (){
                 setState(() {
-                  step3subs.eating_disorder = "Yes";
+                  step3subs.eating_disorder = "Oui";
                 });
               },
             ),
@@ -142,11 +142,11 @@ class _Health4thPageState extends State<Health4thPage> {
          mainAxisAlignment: MainAxisAlignment.start,
          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("A QUELLE ÂGE ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+            Text("Si oui, à quel âge ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
             SizedBox(
               height: 15,
             ),
-            TextFields(_disorderage,hintText: "jours/cycle",onChanged: (text){
+            TextFields(_disorderage,hintText: "Quel âge",onChanged: (text){
               setState(() {
                 step3subs.eating_disorder_age = text;
               });
@@ -154,7 +154,7 @@ class _Health4thPageState extends State<Health4thPage> {
             SizedBox(
               height: 40,
             ),
-            Text("COMMENT Y AS-TU REMÉDIE ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+            Text("Si oui, comment y as-tu remédier ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
             SizedBox(
               height: 15,
             ),
@@ -186,7 +186,7 @@ class _Health4thPageState extends State<Health4thPage> {
             SizedBox(
               height: 40,
             ),
-            Text("AS-TU ENCORE CERTAINES CRAINTES OU COMPORTEMENTS ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+            Text("As-tu encore certaines craintes, comportements ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
             SizedBox(
               height: 15,
             ),

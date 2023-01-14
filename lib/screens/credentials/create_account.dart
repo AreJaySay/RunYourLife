@@ -45,7 +45,7 @@ class _CreateAccountState extends State<CreateAccount> {
     final DateTime? picked = await showDatePicker(
         context: context,
         locale: Locale('fr'),
-        initialDate:  DateTime.now(),
+        initialDate:  DateTime.now().toUtc().add(Duration(hours: 2)),
         firstDate: DateTime(1900),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate) {
@@ -82,7 +82,7 @@ class _CreateAccountState extends State<CreateAccount> {
       onTap: FocusScope.of(context).unfocus,
       child: Scaffold(
         appBar: _keyboardVisible ? null :
-        _appBars.preferredSize(height: 70,logowidth: 95),
+        _appBars.preferredSize(height: 70,logowidth: 90),
         body: Container(
           width: double.infinity,
           height: double.infinity,
@@ -130,7 +130,7 @@ class _CreateAccountState extends State<CreateAccount> {
                       SizedBox(
                         height: 10,
                       ),
-                      TextFields(_phonenumber, hintText: "Numéro de téléphone (Optionnelle)"),
+                      TextFields(_phonenumber, hintText: "Numéro de téléphone",inputType: TextInputType.number,),
                       SizedBox(
                         height: 10,
                       ),
@@ -156,6 +156,8 @@ class _CreateAccountState extends State<CreateAccount> {
                     _snackbarMessage.snackbarMessage(context, message: "Prénom ne peut pas être vide !", is_error: true);
                   }else if(_email.text.isEmpty){
                     _snackbarMessage.snackbarMessage(context, message: "Adresse mail ne peut pas être vide !", is_error: true);
+                  }else if(_phonenumber.text.isEmpty){
+                    _snackbarMessage.snackbarMessage(context, message: "Le numéro de téléphone est requis !", is_error: true);
                   }else if(step1subs.birthdate == ""){
                     _snackbarMessage.snackbarMessage(context, message: "La date de naissance ne peut pas être vide !", is_error: true);
                   }else if(_password.text.isEmpty){
@@ -176,45 +178,6 @@ class _CreateAccountState extends State<CreateAccount> {
                     });
                   }
                 }),
-                // SizedBox(
-                //   height: 30,
-                // ),
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: Divider(
-                //           thickness: 1.1,
-                //           color: Colors.black
-                //       ),
-                //     ),
-                //     SizedBox(
-                //       width: 15,
-                //     ),
-                //     Text("Se connecter avec",style: TextStyle(color: Colors.black,fontSize: 15,fontFamily: "AppFontStyle")),
-                //     SizedBox(
-                //       width: 15,
-                //     ),
-                //     Expanded(
-                //       child: Divider(
-                //         color: Colors.black,
-                //         thickness: 1.1,
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // SizedBox(
-                //   height: 20,
-                // ),
-                // Container(
-                //   height: 55,
-                //   child: _materialbutton.materialButton("Google", () {
-                //
-                //   }, icon: "assets/icons/google.png",spacing: 15,bckgrndColor: Colors.white,textColor: AppColors.appmaincolor,fontsize: 17),
-                //   decoration: BoxDecoration(
-                //       border: Border.all(color: AppColors.appmaincolor),
-                //       borderRadius: BorderRadius.circular(1000)
-                //   ),
-                // ),
                 SizedBox(
                   height: 40,
                 ),

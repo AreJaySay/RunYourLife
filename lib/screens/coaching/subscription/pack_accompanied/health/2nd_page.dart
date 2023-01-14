@@ -10,7 +10,7 @@ class Health2ndPage extends StatefulWidget {
 }
 
 class _Health2ndPageState extends State<Health2ndPage> {
-  TextEditingController _traitment = new TextEditingController()..text=step3subs.medical_treatment == "None" ? "" : step3subs.medical_treatment;
+  TextEditingController _traitment = new TextEditingController()..text=step3subs.medical_treatment == "Non" ? "" : step3subs.medical_treatment;
 
   @override
   void dispose() {
@@ -25,7 +25,7 @@ class _Health2ndPageState extends State<Health2ndPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("DES TRAITEMENTS MÉDICAUX ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("As-tu ou prends tu un traitement médicamenteux ou autres ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -58,12 +58,12 @@ class _Health2ndPageState extends State<Health2ndPage> {
           height: 30,
         ),
         ZoomTapAnimation(end: 0.99,child: Container(
-            width: 140,
+            width: 130,
             padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: step3subs.medical_treatment == "None" ? AppColors.appmaincolor : Colors.transparent,)
+                border: Border.all(color: step3subs.medical_treatment == "Non" ? AppColors.appmaincolor : Colors.transparent,)
             ),
             child: Row(
               children: [
@@ -75,11 +75,11 @@ class _Health2ndPageState extends State<Health2ndPage> {
                     child: Radio(
                       activeColor: AppColors.appmaincolor,
                       value: 2,
-                      groupValue: step3subs.medical_treatment == "None" ? 2 : 1,
+                      groupValue: step3subs.medical_treatment == "Non" ? 2 : 1,
                       onChanged: (val) {
                         setState(() {
                           _traitment.text = "";
-                          step3subs.medical_treatment = "None";
+                          step3subs.medical_treatment = "Non";
                         });
                       },
                     ),
@@ -88,14 +88,14 @@ class _Health2ndPageState extends State<Health2ndPage> {
                 SizedBox(
                   width: 15,
                 ),
-                Text('Aucun',style: new TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+                Text('Non',style: new TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
               ],
             ),
           ),
           onTap: (){
             setState(() {
               _traitment.text = "";
-              step3subs.medical_treatment = "None";
+              step3subs.medical_treatment = "Non";
             });
           },
         ),

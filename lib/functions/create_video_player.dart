@@ -8,4 +8,11 @@ class CreateVideoPlayer{
     await controller.setLooping(true);
     return controller;
   }
+
+  Future<VideoPlayerController> documentVideo({String? video}) async {
+    final VideoPlayerController controller = VideoPlayerController.network(video!);
+    await controller.initialize();
+    await controller.setLooping(true);
+    return controller;
+  }
 }

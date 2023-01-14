@@ -76,64 +76,6 @@ class _MyRessourcesState extends State<MyRessources> with SingleTickerProviderSt
                       controller: _scrollController,
                       headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
                         return <Widget>[
-                          SliverAppBar(
-                              pinned: false,
-                              backgroundColor: AppColors.appmaincolor,
-                              snap: false,
-                              floating: true,
-                              expandedHeight: 80,
-                              automaticallyImplyLeading: false,
-                              flexibleSpace: Container(
-                                decoration: BoxDecoration(
-                                  gradient: AppGradientColors.gradient,
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.shade300,
-                                      blurRadius: 3.0, // has the effect of softening the shadow
-                                      spreadRadius: 1.0, // has the effect of extending the shadow
-                                      offset: Offset(
-                                        5.0, // horizontal, move right 10
-                                        3.5, // vertical, move down 10
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                child: SafeArea(
-                                  child: Container(
-                                    alignment: Alignment.bottomCenter,
-                                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        InkWell(
-                                        child: Container(
-                                          width: 35,
-                                          height: 35,
-                                            alignment: Alignment.center,
-                                            child: Center(
-                                              child: Platform.isAndroid ? Icon(Icons.arrow_back,color:AppColors.pinkColor,size: 22,) :  Icon(Icons.arrow_back_ios_sharp,color: AppColors.pinkColor,size: 22,),
-                                            ),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius: BorderRadius.circular(1000)
-                                            ),
-                                          ),
-                                          onTap: (){
-                                            Navigator.of(context).pop(null);
-                                          },
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text("MES LECTURES DE LA SEMAINE",style: TextStyle(color: Colors.white,fontSize: 19,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),),
-                                      ],
-                                    ),
-                                    height: 80,
-                                  ),
-                                ),
-                              )
-                          ),
                           SliverPadding(
                             padding:  EdgeInsets.only(top: 10,bottom: 5,),
                             sliver: SliverList(
@@ -146,6 +88,7 @@ class _MyRessourcesState extends State<MyRessources> with SingleTickerProviderSt
                                   indicatorColor: AppColors.appmaincolor,
                                   labelColor: AppColors.appmaincolor,
                                   indicatorWeight: 6,
+                                  isScrollable: true,
                                   tabs: <Widget>[
                                     Tab(
                                       text: "Toutes",
@@ -177,7 +120,7 @@ class _MyRessourcesState extends State<MyRessources> with SingleTickerProviderSt
 
                           !snapshot.hasData ?
                           RessourceShimmerLoader() :
-                          MyRessourcesImages(images: snapshot.data!.where((s) => s["documents"]["file_type"] == "image/jpeg").toList(),),
+                          MyRessourcesImages(images: snapshot.data!.where((s) => s["documents"]["file_type"] == "image/jpeg" || s["documents"]["file_type"] == "image/png" || s["documents"]["file_type"] == "image/jpg").toList(),),
 
                           !snapshot.hasData ?
                           RessourceShimmerLoader() :

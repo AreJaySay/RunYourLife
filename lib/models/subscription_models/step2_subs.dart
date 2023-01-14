@@ -99,9 +99,9 @@ class Step2Subs{
 
     Widget richtext({required Map formInfo}){
       return ReadMoreText(
-        subscriptionDetails.currentdata[0]["plan_id"] == 1 ?
-        "Préférence alimentaire : ${formInfo["food_preference"] == null ? "N/A" : formInfo["food_preference"].toString()}\n"
-        "Repas par jour : ${formInfo["meals_per_day"] == null ? "N/A" : formInfo["meals_per_day"].toString()}\n"
+        subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ?
+        "Préférence alimentaire: ${formInfo["food_preference"] == null ? "N/A" : formInfo["food_preference"].toString()}\n"
+        "Repas par jour: ${formInfo["meals_per_day"] == null ? "N/A" : formInfo["meals_per_day"].toString()}\n"
         "Calories par jour: ${formInfo["calories_today"] == null ? "N/A" : formInfo["calories_today"].toString()}\n" :
         "Préférence alimentaire: ${formInfo["food_preference"] == null ? "N/A" : formInfo["food_preference"].toString()}\n"
         "Repas par jour: ${formInfo["meals_per_day"] == null ? "N/A" : formInfo["meals_per_day"].toString()}\n"
@@ -113,7 +113,7 @@ class Step2Subs{
         "Autres boissons que l’eau: ${formInfo["drink_other_than_water"] == null ? "N/A" : formInfo["drink_other_than_water"].toString()}\n"
         "Café par jour: ${formInfo["coffee_per_day"] == null ? "N/A" : formInfo["coffee_per_day"].toString()}\n"
         "Alcool par semaine: ${formInfo["alcohol_per_week"] == null ? "N/A" : formInfo["alcohol_per_week"].toString()}\n"
-        "Suppléments alimentaires: ${formInfo["food_supplement"] == null ? "N/A" : formInfo["food_supplement"].toString()} ",
+        "Suppléments alimentaires: ${formInfo["food_supplement"] == null ? "N/A" : formInfo["food_supplement"].toString()}",
         trimLines: 4,
         colorClickableText: Colors.pink,
         trimMode: TrimMode.Line,

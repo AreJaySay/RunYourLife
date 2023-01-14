@@ -15,6 +15,7 @@ import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:run_your_life/widgets/appbar.dart';
 import 'package:run_your_life/widgets/image_picker.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
+import 'package:run_your_life/widgets/textfields.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:intl/intl.dart';
 
@@ -26,7 +27,7 @@ class EditInformation extends StatefulWidget {
 
 class _EditInformationState extends State<EditInformation> {
   final AppBars _appBars = new AppBars();
-  final List<String> _fields = ["Nom","Prénom","Numéro de téléphone","Address","Adresse mail","Mot de passe"];
+  final List<String> _fields = ["Nom","Prénom","Numéro de téléphone","Adresse","Adresse mail"];
   final List<String> _myinfos = [Auth.loggedUser!["first_name"].toString(),Auth.loggedUser!["last_name"].toString(),Auth.loggedUser!["phone_1"].toString(),Auth.loggedUser!["address_1"].toString(),Auth.loggedUser!["email"].toString(), Auth.pass!];
   final Materialbutton _materialbutton = new Materialbutton();
   final CredentialsServices _credentialsServices = new CredentialsServices();
@@ -35,13 +36,23 @@ class _EditInformationState extends State<EditInformation> {
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   String _selected = "";
   final List<TextEditingController> _controllers = [
-    TextEditingController()..text=Auth.loggedUser!["first_name"].toString(),
-    TextEditingController()..text=Auth.loggedUser!["last_name"].toString(),
-    TextEditingController()..text=Auth.loggedUser!["phone_1"].toString(),
-    TextEditingController()..text=Auth.loggedUser!["address_1"].toString(),
-    TextEditingController()..text=Auth.loggedUser!["email"].toString(),
-    TextEditingController()
+    TextEditingController()..text=Auth.loggedUser!["first_name"].toString() == "null" ? "" : Auth.loggedUser!["first_name"].toString(),
+    TextEditingController()..text=Auth.loggedUser!["last_name"].toString() == "null" ? "" : Auth.loggedUser!["last_name"].toString(),
+    TextEditingController()..text=Auth.loggedUser!["phone_1"].toString() == "null" ? "" : Auth.loggedUser!["phone_1"].toString(),
+    TextEditingController()..text=Auth.loggedUser!["address_1"].toString() == "null" ? "" : Auth.loggedUser!["address_1"].toString(),
+    TextEditingController()..text=Auth.loggedUser!["email"].toString() == "null" ? "" : Auth.loggedUser!["email"].toString(),
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    auth.first_name = Auth.loggedUser!["first_name"].toString();
+    auth.last_name = Auth.loggedUser!["last_name"].toString();
+    auth.phone_1 = Auth.loggedUser!["phone_1"].toString();
+    auth.address_1 = Auth.loggedUser!["address_1"].toString();
+    auth.email2 = Auth.loggedUser!["email"].toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +78,7 @@ class _EditInformationState extends State<EditInformation> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
-                  child: Text("UPLOAD PROFILE PHOTO",style: TextStyle(color: AppColors.appmaincolor,fontFamily: "AppFontStyle")),
+                  child: Text("Photo de profil".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontFamily: "AppFontStyle")),
                 ),
               ),
               onTap: ()async{
@@ -84,14 +95,23 @@ class _EditInformationState extends State<EditInformation> {
               },
             ),
             SizedBox(
-              height: 15,
+              height: 25,
             ),
             for(int x = 0;x < _fields.length;x++)...{
-              EditTextFields(title: _fields[x], myinfos: _myinfos[x],selected: _selected,controller: _controllers[x],action: (){
-                setState((){
-                  _selected = _fields[x];
-                  print(_selected);
-                });
+              TextFields(_controllers[x],hintText: _fields[x],onChanged: (text){
+                if(x == 0){
+                  auth.first_name = text;
+                }else if(x == 1){
+                  auth.last_name = text;
+                }else if(x == 2){
+                  auth.phone_1 = text;
+                }else if(x == 3){
+                  auth.address_1 = text;
+                }else if(x == 4){
+                  auth.email2 = text;
+                }else{
+                  Auth.pass = text;
+                }
               },),
               SizedBox(
                 height: 15,
@@ -103,7 +123,11 @@ class _EditInformationState extends State<EditInformation> {
             _materialbutton.materialButton("ENREGISTRER", () {
               print(auth.toMap());
               _screenLoaders.functionLoader(context);
-              _credentialsServices.editaccount(context, isPhoto: false);
+              _credentialsServices.editaccount(context, isPhoto: false).then((value){
+                if(value != null){
+                  _snackbarMessage.snackbarMessage(context, message: "Mise à jour effectuée.");
+                }
+              });
             }),
             SizedBox(
               height: 30,
@@ -114,157 +138,3 @@ class _EditInformationState extends State<EditInformation> {
     );
   }
 }
-
-class EditTextFields extends StatefulWidget {
-  String title,myinfos,selected;
-  final TextEditingController controller;
-  final VoidCallback action;
-  EditTextFields({required this.title, required this.myinfos ,required this.selected, required this.controller, required this.action});
-  @override
-  State<EditTextFields> createState() => _EditTextFieldsState();
-}
-
-class _EditTextFieldsState extends State<EditTextFields> {
-  final Materialbutton _materialbutton = new Materialbutton();
-  bool _isEdit = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    if(widget.title == "Nom"){
-      auth.first_name = widget.myinfos;
-    }else if(widget.title == "Prénom"){
-      auth.last_name =  widget.myinfos;
-    }else if(widget.title == "Numéro de téléphone"){
-      auth.phone_1 =  widget.myinfos;
-    }else if(widget.title == "Address"){
-      auth.address_1 =  widget.myinfos;
-    }else if(widget.title == "Adresse mail"){
-      auth.email2 =  widget.myinfos;
-    }else{
-      Auth.pass = Auth.pass;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        widget.selected == widget.title ?
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          height: 70,
-          width: double.infinity,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.appmaincolor)
-          ),
-          child: TextField(
-            style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),
-            controller: widget.controller,
-            textAlignVertical: TextAlignVertical.center,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              hintStyle: TextStyle(color: Colors.grey[400],fontFamily: "AppFontStyle"),
-              prefixText: "${widget.title}:   ",
-            ),
-            onChanged: (text){
-              setState((){
-                if(widget.title == "Nom"){
-                  auth.first_name = text;
-                }else if(widget.title == "Prénom"){
-                  auth.last_name = text;
-                }else if(widget.title == "Numéro de téléphone"){
-                  auth.phone_1 = text;
-                }else if(widget.title == "Address"){
-                  auth.address_1 = text;
-                }else if(widget.title == "Adresse mail"){
-                  auth.email2 = text;
-                }else{
-                  Auth.pass = widget.controller.text.isEmpty ? Auth.pass : text;
-                }
-              });
-            },
-          )  ,
-        ) : Container(
-          padding: EdgeInsets.symmetric(horizontal: 15),
-          width: double.infinity,
-          height: 70,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10)
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(widget.title,style: TextStyle(color: Colors.grey,fontFamily: "AppFontStyle"),),
-                    SizedBox(
-                      height: 3,
-                    ),
-                    Text(widget.myinfos.toString() == "null" ? "--" : widget.title == "Mot de passe" ? widget.myinfos.replaceAll(RegExp(r"."), "*") : widget.myinfos,style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
-                  ],
-                ),
-              ),
-              ZoomTapAnimation(
-                end: 0.99,
-                child: Image(
-                  width: 23,
-                  color: Colors.grey,
-                  image: AssetImage("assets/icons/editform.png"),
-                ),
-                onTap: widget.action
-              ),
-            ],
-          ),
-        ),
-        widget.selected == widget.title  ? Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          width: double.infinity,
-          height: 80,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Container(
-                  height: 50,
-                  child: _materialbutton.materialButton("VALIDER", () {
-                    setState((){
-                      widget.myinfos = widget.controller.text;
-                      widget.selected = "";
-                    });
-                  }),
-                ),
-              ),
-              Expanded(
-                child: InkWell(
-                    onTap: (){
-                      setState((){
-                        if( widget.myinfos != "null"){
-                          widget.controller.text = widget.myinfos;
-                        }
-                        widget.selected = "";
-                      });
-                    },
-                    child: Container(
-                      width: double.infinity,
-                      height: 55,
-                      child: Center(child: Text("ANNULER",style: TextStyle(fontFamily: "AppFontStyle",color: AppColors.darpinkColor,fontWeight: FontWeight.w600,fontSize: 15),)),
-                    )
-                ),
-              ),
-            ],
-          ),
-        ) : Container()
-      ],
-    );
-  }
-}
-

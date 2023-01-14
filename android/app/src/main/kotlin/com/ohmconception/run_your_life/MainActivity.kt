@@ -1,4 +1,4 @@
-package com.ohmconception.run_your_life
+package com.runyourlife4.runyourlife
 
 import io.flutter.embedding.android.FlutterActivity
 

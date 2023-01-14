@@ -57,29 +57,6 @@ class _FormDesignState extends State<FormDesign> {
         SizedBox(
           height: 25,
         ),
-        // ZoomTapAnimation(
-        //   end: 0.99,
-        //   child: Image(
-        //     width: 23,
-        //     color: AppColors.appmaincolor,
-        //     image: AssetImage("assets/icons/editform.png"),
-        //   ),
-        //   onTap: (){
-        //     if(widget.title == "Alimentation"){
-        //       step2subs.editStep2(context, details: widget.formInfo);
-        //     }else if(widget.title == "Antécédents médicaux"){
-        //       step3subs.editStep3(context, details: widget.formInfo);
-        //     }else if(widget.title == "Objectifs"){
-        //       step4subs.editStep4(context, details: widget.formInfo);
-        //     }else if(widget.title == "Pratique sportive"){
-        //       step5subs.editStep5(context, details: widget.formInfo);
-        //     }else if(widget.title == "Stress"){
-        //       step6subs.editStep6(context, details: widget.formInfo);
-        //     }else{
-        //       step7subs.editStep7(context, details: widget.formInfo);
-        //     }
-        //   },
-        // )
       ],
     );
   }

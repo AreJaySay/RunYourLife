@@ -22,7 +22,7 @@ class _Presentation1stPageState extends State<Presentation1stPage> {
     final DateTime? picked = await showDatePicker(
         context: context,
         locale: Locale('fr'),
-        initialDate:  DateTime.now(),
+        initialDate:  DateTime.now().toUtc().add(Duration(hours: 2)),
         firstDate: DateTime(1900),
         lastDate: DateTime(2101));
     if (picked != null && picked != selectedDate) {

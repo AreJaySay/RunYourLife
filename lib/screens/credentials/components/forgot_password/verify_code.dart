@@ -26,7 +26,6 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
   final TextEditingController _verifycode = new TextEditingController();
   final TextEditingController _newPassword = new TextEditingController();
   final TextEditingController _confirmPassword = new TextEditingController();
-  String _code = "";
   bool _onEditing = false;
   Timer? _timer;
   int _start = 60;
@@ -90,6 +89,9 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
                   child: ListView(
                     padding: EdgeInsets.symmetric(vertical: 40,horizontal: 20),
                     children: [
+                      SizedBox(
+                        height: 20,
+                      ),
                       Text("Le code de vérification".toUpperCase(),style: TextStyle(fontSize: 20,color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),),
                       SizedBox(
                         height: 40,
@@ -137,7 +139,7 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
                         height: 30,
                       ),
                       _materialbutton.materialButton("ENTREZ LE CODE DE VÉRIFICATION", () {
-                        if(_code == ""){
+                        if(_verifycode.text.isEmpty){
                           _snackbarMessage.snackbarMessage(context, message: "Entrez le code de vérification.", is_error: true);
                         }else if(_newPassword.text.isEmpty){
                           _snackbarMessage.snackbarMessage(context, message: "Entrez le nouveau mot de passe.", is_error: true);
@@ -147,7 +149,7 @@ class _EnterVerificationCodeState extends State<EnterVerificationCode> {
                           _snackbarMessage.snackbarMessage(context, message: "Le nouveau mot de passe et le mot de passe de confirmation ne correspondent pas.", is_error: true);
                         }else{
                           _screenLoaders.functionLoader(context);
-                          _passwordServices.reset_password(context,token: _code.toString(),newpass: _newPassword.text);
+                          _passwordServices.reset_password(context,token: _verifycode.text,newpass: _newPassword.text);
                         }
                       }),
                       SizedBox(

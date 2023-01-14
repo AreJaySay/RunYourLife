@@ -17,9 +17,10 @@ class _Pregnant5thPageState extends State<Pregnant5thPage> {
   final AppBars _appBars = AppBars();
   List<String> _goals = [
     "Je n'ai pas de douleur",
-    "J'ai de petites douleurs que je ne remarque presque pas. Je n'y pense pas",
-    "J'ai quelques douleurs occasionnelles, cela m'embête...",
-    "J'ai des douleurs, cela me gêne et ça interfère avec ma routine d'entrainement",
+    "J'ai de petites douleurs, que je ne remarque presque pas. Je n'y pense pas",
+    "J'ai quelques douleurs, ça reste occasionnel, cela m'embête ...",
+    // "4 : je remarque des douleurs, je m'y habitue et je m'entraine avec malgré tout",
+    "J'ai des douleurs, cela me gêne et ça interfère avec ma routine d'entrainement"
   ];
 
   @override
@@ -28,7 +29,7 @@ class _Pregnant5thPageState extends State<Pregnant5thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Des douleurs qui empêchent de t'entrainer librement ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Est ce que tu as une ou des douleurs qui t'empêche de t'entraîner librement".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

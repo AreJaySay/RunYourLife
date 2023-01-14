@@ -53,10 +53,9 @@ class MessageServices{
           "type": type,
         }
       ).then((respo) async {
+        print(respo.body);
         var data = json.decode(respo.body);
-        print(data);
         if (respo.statusCode == 200 || respo.statusCode == 201){
-
           messageStreamServices.appendmessage(data: data['data']);
           return data;
         }else{

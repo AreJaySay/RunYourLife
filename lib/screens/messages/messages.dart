@@ -43,7 +43,7 @@ class _MessagesState extends State<Messages> {
   final ScrollController _scrollController = new ScrollController();
   final ShimmeringLoader _shimmeringLoader = new ShimmeringLoader();
   List<File> _fileImages = [];
-  List<String> _pdfNames = [];
+  List<String> _extensions = [];
   List<String> _base64Images = [];
   bool _isVisible = false;
   bool _showFilePopup = false;
@@ -68,7 +68,7 @@ class _MessagesState extends State<Messages> {
       for(int x = 0; x < value.paths.length; x++){
         setState(() {
           _fileImages.add(File(value.paths[x]!));
-          _pdfNames.add("Image");
+          _extensions.add(value.names.single!);
           Uint8List bytes = File(value.paths[x]!).readAsBytesSync();
           _base64Images.add("data:image/jpeg;base64,"+base64Encode(bytes));
           _showFilePopup = true;
@@ -99,7 +99,7 @@ class _MessagesState extends State<Messages> {
     ).then((value) {
       setState(() {
         _fileImages.add(File(value!.files.single.path!));
-        _pdfNames.add(value.names.single!);
+        _extensions.add(value.names.single!);
         Uint8List bytes = File(value.files.single.path!).readAsBytesSync();
         _base64Images.add("data:file/pdf;base64," + base64Encode(bytes));
         _showFilePopup = true;
@@ -109,26 +109,22 @@ class _MessagesState extends State<Messages> {
 
   Future _pickVideo() async {
     await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-      type: FileType.custom,
-      allowedExtensions: [
-        'mp4',
-      ],
+      allowMultiple: false,
+      type: FileType.video,
     ).then((value) {
       setState(() {
         _fileImages.add(File(value!.files.single.path!));
-        _pdfNames.add("Video");
-        _createVideoPlayer
-            .createVideoPlayer(fileimage: File(value.files.single.path!))
+        _extensions.add(value.names.single!);
+        _createVideoPlayer.createVideoPlayer(fileimage: File(value.files.single.path!))
             .then((value) {
           setState(() {
             _videocontroller.add(value);
           });
         });
         Uint8List bytes = File(value.files.single.path!).readAsBytesSync();
-        _base64Images.add("data:video/mpeg;base64," + base64Encode(bytes));
+        _base64Images.add("data:video/mp4;base64," + base64Encode(bytes));
         _showFilePopup = true;
-        print("Videos ${_fileImages.toString()}");
+        print("Videos ${_extensions.toString()}");
       });
     });
   }
@@ -487,7 +483,7 @@ class _MessagesState extends State<Messages> {
                                                               image: AssetImage(
                                                                   "assets/icons/pdf.png"),
                                                             ),
-                                                            Text(_pdfNames[x],
+                                                            Text(_extensions[x],
                                                                 style: TextStyle(
                                                                     fontSize:
                                                                         11,
@@ -515,14 +511,8 @@ class _MessagesState extends State<Messages> {
                                                                     BorderRadius
                                                                         .circular(
                                                                             5)),
-                                                            child: Center(
-                                                              child: Image(
-                                                                width: 45,
-                                                                color: AppColors
-                                                                    .appmaincolor,
-                                                                image: AssetImage(
-                                                                    "assets/icons/video.png"),
-                                                              ),
+                                                            child: _videocontroller.toString() == "[]" ? Container() : Center(
+                                                              child: VideoPlayer(_videocontroller[x])
                                                             ),
                                                           )
                                                         : Container(
@@ -568,10 +558,10 @@ class _MessagesState extends State<Messages> {
                                                       setState(() {
                                                         _fileImages.remove(
                                                             _fileImages[x]);
-                                                        if (_pdfNames.length !=
+                                                        if (_extensions.length !=
                                                             0) {
-                                                          _pdfNames.remove(
-                                                              _pdfNames[x]);
+                                                          _extensions.remove(
+                                                              _extensions[x]);
                                                         }
                                                         if (_fileImages
                                                                 .length ==
@@ -959,7 +949,7 @@ class _MessagesState extends State<Messages> {
                                                   : _base64Images,
                                               filename: _fileImages.length == 0
                                                   ? []
-                                                  : _pdfNames,
+                                                  : _extensions,
                                             )
                                                 .then((value) {
                                               if (value != null) {
@@ -967,12 +957,14 @@ class _MessagesState extends State<Messages> {
                                                   _sending = null;
                                                   _fileImages.clear();
                                                   _base64Images.clear();
+                                                  _extensions.clear();
                                                 });
                                               } else {
                                                 setState(() {
                                                   _sending = null;
                                                   _fileImages.clear();
                                                   _base64Images.clear();
+                                                  _extensions.clear();
                                                 });
                                                 _snackbarMessage.snackbarMessage(
                                                     context,

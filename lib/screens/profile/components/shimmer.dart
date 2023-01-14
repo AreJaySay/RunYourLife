@@ -11,11 +11,9 @@ class _ShimmerLoaderState extends State<ShimmerLoader> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      child: ListView(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+      child: Column(
         children: [
           Row(
             children: [

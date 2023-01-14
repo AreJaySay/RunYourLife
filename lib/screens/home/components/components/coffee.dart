@@ -24,7 +24,7 @@ class _CoffeeTrackingState extends State<CoffeeTracking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBars.whiteappbar(context, title: "TRACKING JOURNÉE"),
+      appBar: _appBars.whiteappbar(context, title: "SUIVI DE LA JOURNÉE"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -48,11 +48,15 @@ class _CoffeeTrackingState extends State<CoffeeTracking> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text("Combien de tasse(s) de café avez-vous bu aujourd’hui ?",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
+                  Text("Combien de café as-tu bu aujourd’hui ?",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle",fontSize: 15),),
                   SizedBox(
                     height: 10,
                   ),
-                  Text("1 tasse de café = 10 cl",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
+                  Text("1 tasse de 10 cl = 1 (type expresso)",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Text("1 tasse de 25 cl = 2 (type allongé, filtre)",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
                   SizedBox(
                     height: 20,
                   ),
@@ -60,7 +64,7 @@ class _CoffeeTrackingState extends State<CoffeeTracking> {
                     height: 70,
                     child: FlutterSlider(
                       values: [homeTracking.coffee],
-                      max: 10,
+                      max: 20,
                       min: 0,
                       handlerWidth: 65,
                       handlerHeight: 45,
@@ -72,7 +76,7 @@ class _CoffeeTrackingState extends State<CoffeeTracking> {
                         inactiveTrackBarHeight: 10,
                         activeTrackBarHeight: 10,
                         activeTrackBar: BoxDecoration(
-                            color: homeTracking.coffee > 6 ? Colors.redAccent : AppColors.appmaincolor,
+                            color: homeTracking.coffee > 3 ? Colors.redAccent : AppColors.appmaincolor,
                             borderRadius: BorderRadius.circular(1000)
                         ),
                         inactiveTrackBar: BoxDecoration(
@@ -82,7 +86,7 @@ class _CoffeeTrackingState extends State<CoffeeTracking> {
                       ),
                       handler: FlutterSliderHandler(
                           decoration: BoxDecoration(
-                              color: homeTracking.coffee > 6 ? Colors.redAccent : AppColors.appmaincolor,
+                              color: homeTracking.coffee > 3 ? Colors.redAccent : AppColors.appmaincolor,
                               borderRadius: BorderRadius.circular(10)
                           ),
                           child: Text(homeTracking.coffee.floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
@@ -107,19 +111,7 @@ class _CoffeeTrackingState extends State<CoffeeTracking> {
                     });
                   }),
                   SizedBox(
-                    height: 15,
-                  ),
-                  InkWell(
-                    child: Container(
-                      width: double.infinity,
-                      height: 55,
-                      child: Center(
-                        child: Text("ANNULER",style: TextStyle(fontFamily: "AppFontStyle",color: AppColors.darpinkColor,fontWeight: FontWeight.w600),),
-                      ),
-                    ),
-                    onTap: (){
-                      Navigator.of(context).pop(null);
-                    },
+                    height: 40,
                   ),
                 ],
               ),

@@ -3,11 +3,11 @@ class Objective {
   final int idObjective;
   final int clientId;
   final int position;
-  final int viewStatus;
+  int viewStatus;
   final DateTime createdAt;
   final DateTime updatedAt;
   final SubObjective? objective;
-  const Objective({
+   Objective({
     required this.objective,
     required this.clientId,
     required this.idObjective,
@@ -15,7 +15,7 @@ class Objective {
     required this.id,
     required this.position,
     required this.updatedAt,
-    required this.viewStatus,
+    this.viewStatus = 0,
   });
 
   factory Objective.fromJson(Map<String, dynamic> json) => Objective(

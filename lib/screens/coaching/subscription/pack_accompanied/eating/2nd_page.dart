@@ -6,6 +6,8 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../../../widgets/appbar.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
 
+import '../../../../../services/stream_services/subscriptions/subscription_details.dart';
+
 class Eating2ndPage extends StatefulWidget {
   @override
   _Eating2ndPageState createState() => _Eating2ndPageState();
@@ -15,15 +17,22 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
   TextEditingController _other = new TextEditingController();
   int _horizontalSelected = 10;
   String? _horizontalChoosen;
-  List<String> _horizontalTitle = ["0-1 an","1-2 an(s)",">2 ans"];
-  List<String> _preferences = ["Méditerranéenne","Paleo","Cétogène","Non aucun"];
-  int? _verticalMenu;
+  List<String> _horizontalTitle = ["Entre 0 et 1 an","Il y'a plus de 2 ans","Il y'a 1 an / 2ans"];
+  List<String> _preferences = ["Hypocalorique","type Dukan","Cétogène","Monodiète","Autre"];
+  String? _verticalChoosen;
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     _other.dispose();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    step2subs.follow_drastic_diet = "Non";
   }
 
   @override
@@ -44,7 +53,7 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step2subs.follow_drastic_diet.contains("Yes") ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step2subs.follow_drastic_diet.contains("Oui") ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -58,10 +67,10 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step2subs.follow_drastic_diet.contains("Yes") ? 1 : 2,
+                          groupValue: step2subs.follow_drastic_diet.contains("Oui") ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step2subs.follow_drastic_diet = "Yes";
+                              step2subs.follow_drastic_diet = "Oui";
                             });
                           }
                         ),
@@ -76,7 +85,7 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step2subs.follow_drastic_diet = "Yes";
+                  step2subs.follow_drastic_diet = "Oui";
                 });
               },
             ),
@@ -88,7 +97,7 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step2subs.follow_drastic_diet.contains("No") ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step2subs.follow_drastic_diet.contains("Non") ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -102,10 +111,10 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 2,
-                          groupValue: step2subs.follow_drastic_diet.contains("No") ? 2 : 1,
+                          groupValue: step2subs.follow_drastic_diet.contains("Non") ? 2 : 1,
                           onChanged: (val) {
                             setState(() {
-                              step2subs.follow_drastic_diet = "No";
+                              step2subs.follow_drastic_diet = "Non";
                             });
                           },
                         ),
@@ -120,7 +129,7 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step2subs.follow_drastic_diet = "No";
+                  step2subs.follow_drastic_diet = "Non";
                 });
               },
             ),
@@ -129,70 +138,70 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
         SizedBox(
           height: 40,
         ),
-      step2subs.follow_drastic_diet == "No" ? Container() :
+      step2subs.follow_drastic_diet == "Non" ? Container() :
        Column(
          mainAxisAlignment: MainAxisAlignment.start,
          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("AS-TU SUIVI UN RÉGIME DRASTIQUE ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+            Text("Il y'a combien de temps".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
             SizedBox(
               height: 20,
             ),
-            Row(
-              children: [
-                for(var x = 0; x < _horizontalTitle.length; x++)...{
-                  Expanded(
-                    child: ZoomTapAnimation(end: 0.99,child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color:  _horizontalSelected == x ? AppColors.appmaincolor : Colors.transparent,)
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            SizedBox(
-                              width: 30,
-                              height: 30,
-                              child: Transform.scale(
-                                scale: 1.4,
-                                child: Radio(
-                                  activeColor: AppColors.appmaincolor,
-                                  value: _horizontalSelected,
-                                  groupValue: x,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      _horizontalSelected = x;
-                                      _horizontalChoosen = _horizontalTitle[x];
-                                    });
-                                  },
-                                ),
-                              ),
-                            ),
-                            Text(_horizontalTitle[x], style: new TextStyle(fontSize: 15,
-                                color: Colors.black, fontFamily: "AppFontStyle"),),
-                          ],
+            for(var x = 0 ;x < _horizontalTitle.length;x ++)...{
+              ZoomTapAnimation(end: 0.99,child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 15,vertical: 20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: _horizontalSelected == x ? AppColors.appmaincolor : Colors.transparent,)
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 23,
+                      height: 23,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.appmaincolor,width: 1.5),
+                          borderRadius: BorderRadius.circular(1000)
+                      ),
+                      child: Center(
+                        child: Container(
+                          width: 17,
+                          height: 17,
+                          decoration: BoxDecoration(
+                            color: _horizontalSelected == x ? AppColors.appmaincolor : Colors.white,
+                            borderRadius: BorderRadius.circular(1000),
+                          ),
                         ),
                       ),
-                      onTap: (){
-                        setState(() {
-                          _horizontalSelected = x;
-                          _horizontalChoosen = _horizontalTitle[x];
-                        });
-                      },
                     ),
-                  ),
-                  SizedBox(
-                    width: x == 2 ? 0 : 15,
-                  )
-                }
-              ],
-            ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: Text(_horizontalTitle[x], style: new TextStyle(fontSize: 15,
+                          color: Colors.black,fontFamily: "AppFontStyle"),),
+                    ),
+                  ],
+                ),
+              ),
+                onTap: (){
+                  setState(() {
+                    _horizontalSelected = x;
+                    _horizontalChoosen = _horizontalTitle[x];
+                  });
+                },
+              ),
+              SizedBox(
+                height: 15,
+              ),
+            },
             SizedBox(
-              height: 40,
+              height: 20,
             ),
-            Text("AS-TU SUIVI UN RÉGIME DRASTIQUE ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+            Text(subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? "Si oui, lequel".toUpperCase() : "Si oui, lequel (possibilité de dire lequel dans autre)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
             SizedBox(
               height: 15,
             ),
@@ -202,7 +211,7 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color:  _verticalMenu == x ? AppColors.appmaincolor : Colors.transparent,)
+                      border: Border.all(color:  _verticalChoosen == _preferences[x] ? AppColors.appmaincolor : Colors.transparent,)
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -220,7 +229,7 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
                             width: 17,
                             height: 17,
                             decoration: BoxDecoration(
-                              color: _verticalMenu == x ? AppColors.appmaincolor : Colors.white,
+                              color: _verticalChoosen == _preferences[x] ? AppColors.appmaincolor : Colors.white,
                               borderRadius: BorderRadius.circular(1000),
                             ),
                           ),
@@ -238,7 +247,7 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
                 ),
                 onTap: (){
                   setState(() {
-                    _verticalMenu = x;
+                    _verticalChoosen = _preferences[x];
                     _other.text = "";
                     step2subs.follow_drastic_diet = "${step2subs.follow_drastic_diet},${_horizontalChoosen},${_preferences[x]}";
                   });
@@ -251,7 +260,7 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
             SizedBox(
               height: 10,
             ),
-            Container(
+            _verticalChoosen == "Autre" ? Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.grey),
@@ -259,7 +268,6 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
               child: TextField(
                 onChanged: (text){
                   setState(() {
-                    _verticalMenu = null;
                     step2subs.follow_drastic_diet = "${step2subs.follow_drastic_diet},${_horizontalChoosen},${text}";
                   });
                 },
@@ -273,11 +281,8 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
                     hintStyle: TextStyle(color: Colors.grey)
                 ),
               ),
-            ),
+            ) : Container(),
           ],
-        ),
-        SizedBox(
-          height: 80,
         ),
       ],
     );

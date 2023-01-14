@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:another_xlider/another_xlider.dart';
 import 'package:flutter/material.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/widgets/appbar.dart';
@@ -31,7 +30,6 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
     // TODO: implement initState
     super.initState();
     homeTracking.trainingChecker = "";
-
   }
 
   @override
@@ -41,18 +39,25 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
-        appBar: _appBars.whiteappbar(context, title: "TRACKING JOURNÉE"),
+        appBar: _appBars.whiteappbar(context, title: "SUIVI DE LA JOURNÉE"),
         body: Container(
           width: double.infinity,
           height: double.infinity,
           child: ListView(
             padding: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
             children: [
-              Text("ENTRAINEMENTS",style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),),
+              Text("Entraînements".toUpperCase(),style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),),
               SizedBox(
-                height: 30,
+                height: 10,
+              ),
+              Text("Entre le sport effectué et sa durée en minutes",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15),),
+              SizedBox(
+                height: 20,
               ),
               for(var x = 0; x < step5subs.sports.length; x++)...{
+                SizedBox(
+                  height: x == 0 ? 0 : 20,
+                ),
                 Container(
                   width: double.infinity,
                   height: 60,
@@ -76,6 +81,56 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                     ],
                   ),
                 ),
+                SizedBox(
+                  height: 15,
+                ),
+                Text("Décris le type de sport que tu as effectué \nDonne l’effort que tu as perçu",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15),),
+                SizedBox(
+                  height: 5,
+                ),
+                Text("0 : léger / 5 : modéré / 8 : Difficile / 10 : Très intense",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15),),
+                SizedBox(
+                  height: 15,
+                ),
+                Text("EFFORT PERÇU",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15,fontWeight: FontWeight.w600),),
+                Container(
+                  height: 70,
+                  child: FlutterSlider(
+                    values: [step5subs.performances[x]],
+                    max: 10,
+                    min: 0,
+                    handlerWidth: 65,
+                    handlerHeight: 45,
+                    tooltip: FlutterSliderTooltip(
+                        alwaysShowTooltip: false,
+                        disabled: true
+                    ),
+                    trackBar: FlutterSliderTrackBar(
+                      inactiveTrackBarHeight: 10,
+                      activeTrackBarHeight: 10,
+                      activeTrackBar: BoxDecoration(
+                          color:  AppColors.appmaincolor,
+                          borderRadius: BorderRadius.circular(1000)
+                      ),
+                      inactiveTrackBar: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(1000)
+                      ),
+                    ),
+                    handler: FlutterSliderHandler(
+                        decoration: BoxDecoration(
+                            color: AppColors.appmaincolor,
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Text(step5subs.performances[x].floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
+                    ),
+                    onDragging: (handlerIndex, lowerValue, upperValue) {
+                      setState(() {
+                        step5subs.performances[x] = lowerValue;
+                      });
+                    },
+                  ),
+                ),
               },
               SizedBox(
                 height: 20,
@@ -96,6 +151,7 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                   setState(() {
                     step5subs.sports.add(TextEditingController());
                     step5subs.duration.add(TextEditingController());
+                    step5subs.performances.add(0);
                   });
                 },
               ),
@@ -115,10 +171,6 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                 child: Container(
                   width: double.infinity,
                   height: 55,
-                  // decoration: BoxDecoration(
-                  //   color: Colors.white,
-                  //   borderRadius: BorderRadius.circular(10)
-                  // ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -160,6 +212,7 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                     if(!homeTracking.sports.contains(step5subs.sports[x].text.toString())){
                       homeTracking.sports.add(step5subs.sports[x].text.toString());
                       homeTracking.durations.add(step5subs.duration[x].text.toString());
+                      homeTracking.performances.add(step5subs.performances[x].floor().toString());
                     }
                   });
                   print(homeTracking.sports.toString());
@@ -178,21 +231,6 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                   _snackbarMessage.snackbarMessage(context, message: "Ajoutez des données pour continuer !",is_error: true);
                 }
               }),
-              SizedBox(
-                height: 15,
-              ),
-              InkWell(
-                child: Container(
-                  width: double.infinity,
-                  height: 55,
-                  child: Center(
-                    child: Text("ANNULER",style: TextStyle(fontFamily: "AppFontStyle",color: AppColors.darpinkColor,fontWeight: FontWeight.w600),),
-                  ),
-                ),
-                onTap: (){
-                  Navigator.of(context).pop(null);
-                },
-              ),
             ],
           ),
         ),

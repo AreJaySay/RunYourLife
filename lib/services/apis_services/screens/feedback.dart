@@ -23,6 +23,32 @@ class FeedbackServices{
           feedbackStreamServices.update(data: data);
           return data;
         }else{
+          feedbackStreamServices.update(data: []);
+          return null;
+        }
+      });
+    } catch (e) {
+    }
+  }
+
+  Future addFeedback({required String message})async{
+    try {
+      return await http.post(Uri.parse("${_networkUtility.url}/user/api/feedback/addFeedback"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
+          "Accept": "application/json"
+        },
+        body: {
+          "feedbackscol": message,
+          "client_id": Auth.loggedUser!["id"].toString(),
+          "type": "client",
+        }
+      ).then((respo) async {
+        var data = json.decode(respo.body);
+        print("ADD FEEDBACK ${data.toString()}");
+        if (respo.statusCode == 200 || respo.statusCode == 201){
+          return data;
+        }else{
           return null;
         }
       });
@@ -41,8 +67,11 @@ class FeedbackServices{
         var data = json.decode(respo.body);
         if (respo.statusCode == 200 || respo.statusCode == 201){
           feedbackStreamServices.updateTime(data: data);
+          print("TIME ${data.toString()}");
           return data;
         }else{
+          feedbackStreamServices.updateTime(data: {});
+          print("ERROR TIME ${data.toString()}");
           return null;
         }
       });

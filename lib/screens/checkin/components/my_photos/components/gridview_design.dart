@@ -10,7 +10,8 @@ import 'package:run_your_life/widgets/no_data.dart';
 
 class GridViewDesign extends StatefulWidget {
   final List photos;
-  GridViewDesign({required this.photos});
+  final int index;
+  GridViewDesign({required this.photos, required this.index});
   @override
   _GridViewDesignState createState() => _GridViewDesignState();
 }
@@ -38,10 +39,10 @@ class _GridViewDesignState extends State<GridViewDesign> {
 
   @override
   Widget build(BuildContext context) {
-    return photos.dates.isEmpty ?
+    return widget.photos.isEmpty ?
     Padding(
       padding: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
-      child: NoDataFound(firstString: "PAS DE PHOTOS ", secondString: "TROUVÉES ICI...", thirdString: "Vous n'avez pas encore ajouté de photos !"),
+      child: NoDataFound(firstString: "PAS DE PHOTOS ", secondString: "TROUVÉES ICI...", thirdString: widget.index == 3 ? "Tu n’as pas encore ajouté de photos." : "Vous n'avez pas encore ajouté de photos !"),
     ) :
     ListView(
       padding: EdgeInsets.symmetric(horizontal: 20,vertical: 25),
@@ -66,7 +67,7 @@ class _GridViewDesignState extends State<GridViewDesign> {
                         borderRadius: BorderRadius.circular(5),
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage("https://api.runyourlife.checkmy.dev/images/clients/${Auth.loggedUser!['id'].toString()}/${widget.photos[x]["file_name"]}")
+                            image: NetworkImage("https://api.runyourlife.fr/images/clients/${Auth.loggedUser!['id'].toString()}/${widget.photos[x]["file_name"]}")
                         )
                     ),
                   ),

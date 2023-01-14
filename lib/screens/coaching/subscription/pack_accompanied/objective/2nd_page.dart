@@ -13,6 +13,7 @@ class Objective2ndPage extends StatefulWidget {
 
 class _Objective2ndPageState extends State<Objective2ndPage> {
   TextEditingController _weight = new TextEditingController()..text=step4subs.desired_weight;
+  TextEditingController _level = new TextEditingController();
 
   @override
   void dispose() {
@@ -29,20 +30,22 @@ class _Objective2ndPageState extends State<Objective2ndPage> {
       children: [
         Text("Quel est ton poids désiré ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
-          height: 15,
-        ),
-        Text("Selon ton niveau sportif\nDébutant : 11 à 16 mois\nntermédiaire : 22 à 33 mois\nAvancé : 44 à 66 mois",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-        SizedBox(
           height: 30,
         ),
-        TextFields(_weight, hintText: "poids (kg)",onChanged: (text){
+        step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") ?
+        TextFields(_weight, hintText: "Poids (kg)",onChanged: (text){
           setState(() {
             step4subs.desired_weight = text;
           });
+        },) :
+        TextFields(_level, hintText: "Niveau de sport",onChanged: (text){
+          setState(() {
+            // step4subs.desired_weight = text;
+          });
         },),
         SizedBox(
-          height: 50,
-        ),
+          height: 40,
+        )
       ],
     );
   }

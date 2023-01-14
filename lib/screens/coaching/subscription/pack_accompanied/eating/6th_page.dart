@@ -14,7 +14,7 @@ class Eating6thPage extends StatefulWidget {
 }
 
 class _Eating6thPageState extends State<Eating6thPage> {
-  TextEditingController _religion = new TextEditingController()..text=step2subs.cultural_adaptations_diet == "None" ? "" : step2subs.cultural_adaptations_diet;
+  TextEditingController _religion = new TextEditingController()..text=step2subs.cultural_adaptations_diet == "Non" || step2subs.cultural_adaptations_diet == "none" || step2subs.cultural_adaptations_diet == "N/A" ? "" : step2subs.cultural_adaptations_diet;
 
   @override
   void dispose() {
@@ -29,7 +29,7 @@ class _Eating6thPageState extends State<Eating6thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Des adaptations liées à une religion,une culture ou une conviction ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Est-ce que tu as des adaptations de ton alimentation lieés à une religion ou culture ou conviction ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
@@ -40,7 +40,7 @@ class _Eating6thPageState extends State<Eating6thPage> {
           decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
               border: InputBorder.none,
-              hintText: "Adaptations alimentaire",
+              hintText: "Adaptation alimentaire",
               hintStyle: TextStyle(color: Colors.grey),
               fillColor: Colors.white,
               filled: true,
@@ -68,7 +68,7 @@ class _Eating6thPageState extends State<Eating6thPage> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: step2subs.cultural_adaptations_diet == "None" ? AppColors.appmaincolor : Colors.transparent,)
+              border: Border.all(color: step2subs.cultural_adaptations_diet == "Non" ? AppColors.appmaincolor : Colors.transparent,)
             ),
             child: Row(
               children: [
@@ -80,11 +80,11 @@ class _Eating6thPageState extends State<Eating6thPage> {
                     child: Radio(
                       activeColor: AppColors.appmaincolor,
                       value: 2,
-                      groupValue: step2subs.cultural_adaptations_diet == "None" ? 2 : 1,
+                      groupValue: step2subs.cultural_adaptations_diet == "Non" ? 2 : 1,
                       onChanged: (val) {
                         setState(() {
                           _religion.text = "";
-                          step2subs.cultural_adaptations_diet = "None";
+                          step2subs.cultural_adaptations_diet = "Non";
                         });
                       },
                     ),
@@ -100,12 +100,12 @@ class _Eating6thPageState extends State<Eating6thPage> {
           onTap: (){
             setState(() {
               _religion.text = "";
-              step2subs.cultural_adaptations_diet = "None";
+              step2subs.cultural_adaptations_diet = "Non";
             });
           },
         ),
         SizedBox(
-          height: 20,
+          height: 70,
         ),
       ],
     );

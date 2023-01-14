@@ -15,11 +15,15 @@ class _Pregnant3rdPageState extends State<Pregnant3rdPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Est-ce que tu récupères assez de tes entrainements ? Continues-tu à progresser ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Est ce que tu récupères assez de tes entraînements ? Continues-tu à progresser".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
-        Text("1 : Mauvaise récupération (j'ai souvent peu d'énergie donc j'ai du mal à m'entrainer plus. Cette fatigue dure souvent plus de 2 jours après une session d'entrainement normale) \n\n5 : Bonne récupération (je sens que j'ai toujours récupéré à 100% et je continue de progresser à l'entrainement)",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1: mauvaise récupération = j'ai souvent peu d'énergie, à cause de celà j'ai du mal à m'entrainer plus. Cette fatigue dure souvent plus de 2 jours après une session d'entrainement normale\n5: bonne récupération = je sens que j'ai toujours récupéré à 100 % et je continue de progresser à l'entrainement",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        // SizedBox(
+        //   height: 10,
+        // ),
+        // Text("echelle de 1 à 5\n1: mauvaise récupération\n3: récupération modérée\n5: super récupération",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 30,
         ),
@@ -64,7 +68,7 @@ class _Pregnant3rdPageState extends State<Pregnant3rdPage> {
           ),
         ),
         SizedBox(
-          height: 50,
+          height: 20,
         )
       ],
     );

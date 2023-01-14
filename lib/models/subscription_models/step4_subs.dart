@@ -93,7 +93,7 @@ class Step4Subs{
 
   Widget richtext({required Map formInfo}){
     return ReadMoreText(
-      subscriptionDetails.currentdata[0]["plan_id"] == 1 ?
+      subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ?
       "Objectif: ${formInfo["goal"] == null ? "N/A" : formInfo["goal"].toString()}\n"
       "Poids désiré: ${formInfo["desired_weight"] == null ? "N/A" : formInfo["desired_weight"].toString()}\n"
       "Date pour l’objectif: ${formInfo["date_to_reach_goal"] == null ? "N/A" : formInfo["date_to_reach_goal"].toString()}\n" :

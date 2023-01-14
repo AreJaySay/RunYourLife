@@ -4,6 +4,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:run_your_life/models/auths_model.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/10th_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/11th_page.dart';
+import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/12th_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/2nd_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/3rd_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/4th_page.dart';
@@ -33,7 +34,7 @@ class EatingMainPage extends StatefulWidget {
 }
 
 class _EatingMainPageState extends State<EatingMainPage> {
-  List<Widget> _screens = [Container(),Eating1stPage(),Eating2ndPage(),Eating3rdPage(),Eating4thPage(),Eating5thPage(),Eating6thPage(),Eating7thPage(),Eating8thPage(),Eating9thPage(),Eating10thPage(),Eating11thPage()];
+  List<Widget> _screens = [Container(),Eating1stPage(),Eating2ndPage(),Eating3rdPage(),Eating4thPage(),Eating5thPage(),Eating6thPage(),Eating7thPage(),Eating8thPage(),Eating9thPage(),Eating10thPage(),Eating11thPage(),Eating12thPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final Step2Service _step2service = new Step2Service();
@@ -56,7 +57,7 @@ class _EatingMainPageState extends State<EatingMainPage> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
               children: [
-                MyStepper(11,range: double.parse(_currentPage.toString()),),
+                MyStepper(12,range: double.parse(_currentPage.toString()),),
                 SizedBox(
                   height: 30,
                 ),
@@ -128,7 +129,7 @@ class _EatingMainPageState extends State<EatingMainPage> {
                       ),
                       _materialbutton.materialButton("SUIVANT", () {
                         setState(() {
-                          if(_currentPage > (step2subs.follow_drastic_diet != "No" ? 1 : 10)){
+                          if(_currentPage > 11){
                             _screenLoaders.functionLoader(context);
                             if(subscriptionDetails.currentdata[0]["food_preference"] != null){
                               setState(() {

@@ -14,7 +14,7 @@ class Eating1stPage extends StatefulWidget {
 
 class _Eating1stPageState extends State<Eating1stPage> {
   TextEditingController _mealday = new TextEditingController()..text=step2subs.meals_per_day;
-  List<String> _preferences = ["Végétarien","Végan (Complétement baseé sur les plantés)","Méditerranéenne","Paleo","Cétogéne","Non aucune"];
+  List<String> _preferences = ["Végétarienne","Complétement baseé sur les plantés/Vegan","Méditerranéenne","Paleo","Cétogène","Non/Aucune"];
 
   @override
   void dispose() {
@@ -29,7 +29,7 @@ class _Eating1stPageState extends State<Eating1stPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("EN GÉNÉRAL, COMBIEN DE REPAS PRENDS-TU PAR JOUR ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Combien de repas manges-tu généralement par jour ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
@@ -41,7 +41,7 @@ class _Eating1stPageState extends State<Eating1stPage> {
         SizedBox(
           height: 40,
         ),
-        Text("UNE PRÉFÉRENCE ALIMENTAIRE ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("AS-TU UNE PRÉFÉRENCE ALIMENTAIRE ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),

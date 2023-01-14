@@ -188,10 +188,10 @@ class _MyPhotosState extends State<MyPhotos> with SingleTickerProviderStateMixin
                         }else...{
                           snapshot.data!.isEmpty ?
                           NoDataFound(firstString: "PAS DE PHOTO ", secondString: "TROUVÉE ICI...", thirdString: "Vous n'avez pas encore ajouté de photo.") :
-                          GridViewDesign(photos: snapshot.data!,),
-                          GridViewDesign(photos: snapshot.data!.where((s) => s["taggable"].toString().contains("body")).toList(),),
-                          GridViewDesign(photos: snapshot.data!.where((s) => s["taggable"].toString().contains("food")).toList(),),
-                          GridViewDesign(photos: snapshot.data!.where((s) => s["taggable"].toString().contains("sport")).toList(),),
+                          GridViewDesign(photos: snapshot.data!,index: 0,),
+                          GridViewDesign(photos: snapshot.data!.where((s) => s["taggable"].toString().toLowerCase().contains("body".toLowerCase())).toList(),index: 1,),
+                          GridViewDesign(photos: snapshot.data!.where((s) => s["taggable"].toString().toLowerCase().contains("food".toLowerCase())).toList(),index: 2,),
+                          GridViewDesign(photos: snapshot.data!.where((s) => s["taggable"].toString().toLowerCase().contains("sport".toLowerCase())).toList(),index: 3,),
                         },
                       ],
                     )

@@ -29,7 +29,7 @@ class AppBars {
             child: Image(
               color: Colors.white,
               width: logowidth,
-              image: AssetImage("assets/important_assets/logo-white.png"),
+              image: AssetImage("assets/important_assets/logo_new_white.png"),
             ),
           ),
         ),
@@ -40,7 +40,7 @@ class AppBars {
   PreferredSizeWidget whiteappbar(context,
       {String title = "", bool isprofile = false}) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(80), // here the desired height
+      preferredSize: Size.fromHeight(70), // here the desired height
       child: Container(
         alignment: Alignment.bottomCenter,
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -100,7 +100,7 @@ class AppBars {
                   title,
                   style: TextStyle(
                       color: AppColors.appmaincolor,
-                      fontSize: 20,
+                      fontSize: title.contains("MES OBJECTIFS DE LA") ? 18 : 20,
                       fontWeight: FontWeight.bold,
                       fontFamily: "AppFontStyle"),
                 ),
@@ -112,11 +112,15 @@ class AppBars {
     );
   }
 
-  PreferredSizeWidget bluegradient(context, Widget widget) {
+  PreferredSizeWidget bluegradient(context, Widget widget,{bool isMeasure = false}) {
     return PreferredSize(
       preferredSize: Size.fromHeight(56), // here the desired height
       child: Container(
-        decoration: BoxDecoration(
+        decoration: isMeasure ?
+        BoxDecoration(
+          color: Colors.white
+        ) :
+        BoxDecoration(
           gradient: AppGradientColors.gradient,
           boxShadow: [
             BoxShadow(

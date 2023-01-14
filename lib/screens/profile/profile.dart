@@ -45,25 +45,12 @@ class _ProfileState extends State<Profile> with SingleTickerProviderStateMixin {
       stream: subStreamServices.subject,
       builder: (context, snapshot) {
         return Scaffold(
-          body: NestedScrollView(
-            physics: NeverScrollableScrollPhysics(),
-            controller: _scrollController,
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  backgroundColor: Colors.white,
-                  pinned: false,
-                  snap: false,
-                  floating: true,
-                  elevation: 0,
-                  expandedHeight: 120,
-                  shadowColor: Colors.grey,
-                  automaticallyImplyLeading: false,
-                  flexibleSpace: SafeArea(child: ProfileAppBar()),
-                ),
-              ];
-            },
-            body: Auth.isNotSubs! ? ProfileNotSubscribed() : !snapshot.hasData ? ShimmerLoader() : ProfileGeneral(formInfo: snapshot.data!,),
+          body: ListView(
+            shrinkWrap: true,
+            children: [
+              ProfileAppBar(),
+              Auth.isNotSubs! ? ProfileNotSubscribed() : !snapshot.hasData ? ShimmerLoader() : ProfileGeneral(formInfo: snapshot.data!,),
+            ],
           ),
         );
       }

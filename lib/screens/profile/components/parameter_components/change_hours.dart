@@ -1,7 +1,12 @@
+import 'package:another_xlider/another_xlider.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:run_your_life/functions/loaders.dart';
 import 'package:run_your_life/models/screens/profile/parameters.dart';
+import 'package:run_your_life/screens/landing.dart';
 import 'package:run_your_life/services/apis_services/screens/parameters.dart';
+import 'package:run_your_life/services/other_services/routes.dart';
+import 'package:run_your_life/services/stream_services/screens/landing.dart';
 import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:run_your_life/widgets/appbar.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
@@ -10,6 +15,8 @@ import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/utils/palettes/app_gradient_colors.dart';
 
 class ParametersChangeHour extends StatefulWidget {
+  final int index;
+  ParametersChangeHour({required this.index});
   @override
   _ParametersChangeHourState createState() => _ParametersChangeHourState();
 }
@@ -19,6 +26,7 @@ class _ParametersChangeHourState extends State<ParametersChangeHour> {
   final ParameterServices _parameterServices = new ParameterServices();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final Materialbutton _materialbutton = new Materialbutton();
+  final Routes _routes = new Routes();
   final AppBars _appBars = new AppBars();
   int _hoursselected = 1;
   int? _minutesselected = 0;
@@ -26,14 +34,13 @@ class _ParametersChangeHourState extends State<ParametersChangeHour> {
   FixedExtentScrollController(initialItem: 1);
   FixedExtentScrollController _minutesController =
   FixedExtentScrollController(initialItem: 0);
+  double _days = 1;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+      body: Padding(
+        padding: EdgeInsets.symmetric(vertical: 30,horizontal: 20),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -71,6 +78,53 @@ class _ParametersChangeHourState extends State<ParametersChangeHour> {
               SizedBox(
                 height: 35,
               ),
+              widget.index == 2 ?
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Nombre de jours avant le rendez-vous",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15),),
+                  Container(
+                    height: 70,
+                    margin: EdgeInsets.only(bottom: 20,top: 10),
+                    child: FlutterSlider(
+                      values: [_days],
+                      max: 3,
+                      min: 1,
+                      handlerWidth: 65,
+                      handlerHeight: 45,
+                      tooltip: FlutterSliderTooltip(
+                          alwaysShowTooltip: false,
+                          disabled: true
+                      ),
+                      trackBar: FlutterSliderTrackBar(
+                        inactiveTrackBarHeight: 10,
+                        activeTrackBarHeight: 10,
+                        activeTrackBar: BoxDecoration(
+                            color:  AppColors.appmaincolor,
+                            borderRadius: BorderRadius.circular(1000)
+                        ),
+                        inactiveTrackBar: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(1000)
+                        ),
+                      ),
+                      handler: FlutterSliderHandler(
+                          decoration: BoxDecoration(
+                              color: AppColors.appmaincolor,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Text(_days.floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
+                      ),
+                      onDragging: (handlerIndex, lowerValue, upperValue) {
+                        setState(() {
+                          _days = lowerValue;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ) : Container(),
               Row(
                 children: [
                   Expanded(
@@ -156,14 +210,18 @@ class _ParametersChangeHourState extends State<ParametersChangeHour> {
                 setState((){
                   String _hour = _hoursselected > 9 ? '$_hoursselected' : "0${_hoursselected.toString()}";
                   String _min = _minutesselected! > 9 ? '$_minutesselected' : "0${_minutesselected.toString()}";
-                  parameters.notifhour = "${_hour}:${_min}";
+                  if(widget.index == 1){
+                    Parameters.hour2nd = "${_hour}:${_min}";
+                  }else{
+                    Parameters.hour3rd = "${_hour}:${_min},${_days.floor().toString()}";
+                  }
                 });
                 _screenLoaders.functionLoader(context);
                 _parameterServices.submit(context).then((value){
                   if(value != null){
                     _parameterServices.getSetting().whenComplete((){
-                      Navigator.of(context).pop(null);
-                      Navigator.of(context).pop(null);
+                      _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.leftToRightWithFade);
+                      landingServices.updateIndex(index: 4);
                     });
                   }else{
                     Navigator.of(context).pop(null);
@@ -173,19 +231,6 @@ class _ParametersChangeHourState extends State<ParametersChangeHour> {
               }),
               SizedBox(
                 height: 30,
-              ),
-              InkWell(
-                onTap: (){
-                  Navigator.of(context).pop(null);
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 55,
-                  child: Text("ANNULER",style: TextStyle(color: AppColors.pinkColor,fontSize: 17.5,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),textAlign: TextAlign.center,),
-                )
-              ),
-              SizedBox(
-                height: 20,
               ),
             ],
           ),

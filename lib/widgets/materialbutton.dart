@@ -19,7 +19,7 @@ class Materialbutton{
             SizedBox(
               width: spacing,
             ),
-            Text(text!,style: TextStyle(fontSize: fontsize,fontFamily: "AppFontStyle",color: textColor),),
+            Text(text!,style: TextStyle(fontSize: fontsize,fontFamily: "AppFontStyle",color: textColor),textAlign: TextAlign.center,),
           ],
         ),
       ),

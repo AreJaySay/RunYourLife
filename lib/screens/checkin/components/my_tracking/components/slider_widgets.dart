@@ -1,6 +1,7 @@
 import 'package:another_xlider/another_xlider.dart';
 import 'package:flutter/material.dart';
 import 'package:run_your_life/models/screens/checkin/tracking.dart';
+import 'package:run_your_life/services/stream_services/screens/home.dart';
 import 'package:run_your_life/services/stream_services/subscriptions/subscription_details.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 
@@ -22,7 +23,12 @@ class _SlideWidgetsState extends State<SlideWidgets> {
           SizedBox(
             height: 20,
           ),
-          Text(_grams[x],style: TextStyle(color: Colors.black,fontSize: 15.5,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),),
+          Row(
+            children: [
+              Text(_grams[x],style: TextStyle(color: Colors.black,fontSize: 15.5,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),),
+              Text(subscriptionDetails.currentdata[0]["coach_macros"].toString() == "[]" ? "" : " (${subscriptionDetails.currentdata[0]["coach_macros"][0][x == 0 ? "protein" : x == 1 ? "lipid" : x == 2 ? "carbohydrate" : "vegetable"].toString()})",style: TextStyle(color: Colors.black,fontSize: 15.5,fontFamily: "AppFontStyle"),),
+            ],
+          ),
           Container(
             height: 70,
             child: FlutterSlider(

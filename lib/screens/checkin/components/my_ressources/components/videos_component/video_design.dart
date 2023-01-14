@@ -8,76 +8,53 @@ import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:video_player/video_player.dart';
 
 class VideosRessourcesDesign extends StatefulWidget {
-  final String base64;
-  VideosRessourcesDesign({required this.base64});
+  final String video;
+  VideosRessourcesDesign({required this.video});
   @override
   State<VideosRessourcesDesign> createState() => _VideosRessourcesDesignState();
 }
 
 class _VideosRessourcesDesignState extends State<VideosRessourcesDesign> {
-  final Base64Converter _base64converter = new Base64Converter();
-  VideoPlayerController? _videocontroller;
-  final CreateVideoPlayer _createVideoPlayer = new CreateVideoPlayer();
+  late VideoPlayerController _controller;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _base64converter.createFileFromString(base64String:  widget.base64.replaceAll("data:video/mp4;base64,", ""),extension: ".mp4").then((value)async{
-     await _createVideoPlayer.createVideoPlayer(fileimage: File(value)).then((value)async{
-        setState((){
-          _videocontroller = value;
-          print("FILE ${_videocontroller.toString()}");
-        });
+    _controller = VideoPlayerController.network(widget.video)
+      ..initialize().then((_) {
+        setState(() {});
       });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return _videocontroller == null ? Container(
-      height: DeviceModel.isMobile ? 120 : 150,
-      width: 180,
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(10),
+    return Scaffold(
+      body: Center(
+        child: _controller.value.isInitialized
+            ? AspectRatio(
+          aspectRatio: _controller.value.aspectRatio,
+          child: VideoPlayer(_controller),
+        )
+            : Container(),
       ),
-    ) : _videocontroller!.value.isInitialized ?
-    Stack(
-      children: [
-        Container(
-          height: DeviceModel.isMobile ? 120 : 150,
-          width: 180,
-          child: AspectRatio(
-            aspectRatio: _videocontroller!.value.aspectRatio,
-            child: VideoPlayer(_videocontroller!),
-          ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _controller.value.isPlaying
+                ? _controller.pause()
+                : _controller.play();
+          });
+        },
+        child: Icon(
+          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
         ),
-        Container(
-          height: DeviceModel.isMobile ? 120 : 150,
-          width: 180,
-          child: Center(
-            child: Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(1000),
-                color: Colors.white.withOpacity(0.4),
-              ),
-              child: Center(
-                child: Icon(Icons.play_arrow,color: AppColors.appmaincolor,),
-              ),
-            ),
-          )
-        ),
-      ],
-    ) : Container(
-      height: DeviceModel.isMobile ? 120 : 150,
-      width: 180,
-      decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(10),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 }

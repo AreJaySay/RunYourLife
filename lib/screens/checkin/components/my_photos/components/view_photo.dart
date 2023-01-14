@@ -46,7 +46,7 @@ class _ViewPhotoState extends State<ViewPhoto> {
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(fit: BoxFit.cover,
-                        image: NetworkImage("https://api.runyourlife.checkmy.dev/images/clients/${Auth.loggedUser!['id'].toString()}/${widget.details["file_name"]}")
+                        image: NetworkImage("https://api.runyourlife.fr/images/clients/${Auth.loggedUser!['id'].toString()}/${widget.details["file_name"]}")
                       )
                     ),
                   ),
@@ -55,7 +55,7 @@ class _ViewPhotoState extends State<ViewPhoto> {
                       context: context,
                       builder: (context) => Center(
                         child: Image(
-                          image: NetworkImage("https://api.runyourlife.checkmy.dev/images/clients/${Auth.loggedUser!['id'].toString()}/${widget.details["file_name"]}")
+                          image: NetworkImage("https://api.runyourlife.fr/images/clients/${Auth.loggedUser!['id'].toString()}/${widget.details["file_name"]}")
                         ),
                       )
                     );

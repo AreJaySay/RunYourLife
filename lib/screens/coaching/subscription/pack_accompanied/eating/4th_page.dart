@@ -14,7 +14,7 @@ class Eating4thPage extends StatefulWidget {
 }
 
 class _Eating4thPageState extends State<Eating4thPage> {
-  TextEditingController _allergies = new TextEditingController()..text=step2subs.allergies == "No allergies" ? "" : step2subs.allergies;
+  TextEditingController _allergies = new TextEditingController()..text=step2subs.allergies == "Non" ? "" : step2subs.allergies;
 
   @override
   void dispose() {
@@ -29,7 +29,7 @@ class _Eating4thPageState extends State<Eating4thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("DES ALLERGIES ALIMENTAIRES ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Est-ce que tu as des allergies alimentaires ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -46,7 +46,7 @@ class _Eating4thPageState extends State<Eating4thPage> {
             decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
                 border: InputBorder.none,
-                hintText: "Allergies alimentaire",
+                hintText: "Allergies alimentaires",
                 hintStyle: TextStyle(color: Colors.grey,fontFamily: "AppFontStyle")
             ),
             onChanged: (text){
@@ -65,7 +65,7 @@ class _Eating4thPageState extends State<Eating4thPage> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: step2subs.allergies == "No allergies" ? AppColors.appmaincolor : Colors.transparent,)
+              border: Border.all(color: step2subs.allergies == "Non" ? AppColors.appmaincolor : Colors.transparent,)
             ),
             child: Row(
               children: [
@@ -77,11 +77,11 @@ class _Eating4thPageState extends State<Eating4thPage> {
                     child: Radio(
                       activeColor: AppColors.appmaincolor,
                       value: 2,
-                      groupValue: step2subs.allergies == "No allergies" ? 2 : 1,
+                      groupValue: step2subs.allergies == "Non" ? 2 : 1,
                       onChanged: (val) {
                         setState(() {
                           _allergies.text = "";
-                          step2subs.allergies = "No allergies";
+                          step2subs.allergies = "Non";
                         });
                       },
                     ),
@@ -90,14 +90,14 @@ class _Eating4thPageState extends State<Eating4thPage> {
                 SizedBox(
                   width: 15,
                 ),
-                Text("Non,pas d'allergie.",style: new TextStyle(fontSize: 15,color: Colors.black,fontFamily: "AppFontStyle"),),
+                Text("Non pas d'allergie",style: new TextStyle(fontSize: 15,color: Colors.black,fontFamily: "AppFontStyle"),),
               ],
             ),
           ),
           onTap: (){
             setState(() {
               _allergies.text = "";
-              step2subs.allergies = "No allergies";
+              step2subs.allergies = "Non";
             });
           },
         ),

@@ -11,6 +11,8 @@ import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/widgets/appbar.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
 
+import '../../../../../widgets/image_picker.dart';
+
 class AddPhotos extends StatefulWidget {
   @override
   _AddPhotosState createState() => _AddPhotosState();
@@ -23,19 +25,6 @@ class _AddPhotosState extends State<AddPhotos> {
   final Routes _routes = new Routes();
   final AppBars _appBars = AppBars();
   List<File> _fileImages = [];
-
-  // Future<void> initPlatformState() async {
-  //   String? platformVersion;
-  //   try {
-  //
-  //     // platformVersion = await FlutterImagesPicker.platformVersion;
-  //   } on PlatformException {
-  //     platformVersion = 'Failed to get platform version.';
-  //   }
-  //
-  //   if (!mounted) return;
-  // }
-
   void takeImage(BuildContext context) async {
     await FilePicker.platform.pickFiles(
           type: FileType.image,
@@ -63,17 +52,6 @@ class _AddPhotosState extends State<AddPhotos> {
             Navigator.of(context).pop();
           }
     });
-    // List<File?> images = await FlutterImagesPicker.pickImages(maxImages: 1,).then((value)async{
-    //   for(int x = 0; x < value.length; x++){
-    //     setState(() {
-    //       _fileImages.add(File(value[x].path));
-    //     });
-    //     Navigator.of(context).pop();
-    //     _routes.navigator_push(context, DescribePhoto(File(value[x].path)), transitionType: PageTransitionType.rightToLeftWithFade);
-    //   }
-    //   return value;
-    // });
-    // Navigator.of(context).pop();
   }
 
   Future _pickImage(BuildContext context) async {
@@ -95,7 +73,24 @@ class _AddPhotosState extends State<AddPhotos> {
   void initState() {
     // TODO: implement initState
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _pickImage(context);
+      await showModalBottomSheet(
+          context: context, builder: (context){
+        return ImagePicker();
+      }).then((value)async{
+        setState((){
+          if(value != null){
+            final File file = File(value.path);
+            setState(() {
+              _fileImages.add(file);
+            });
+            Navigator.of(context).pop();
+            _routes.navigator_push(context, DescribePhoto(file), transitionType: PageTransitionType.rightToLeftWithFade);
+          }else{
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          }
+        });
+      });
     });
     super.initState();
     // initPlatformState();
@@ -116,58 +111,6 @@ class _AddPhotosState extends State<AddPhotos> {
               fit: BoxFit.cover,
               image: AssetImage("assets/important_assets/heart_icon.png"),
             ),
-            // FadeInImage(
-            //   fit: BoxFit.cover,
-            //   placeholder: MemoryImage(kTransparentImage),
-            //   image: ThumbnailProvider(
-            //     mediumId: "photos",
-            //     mediumType: MediumType.image,
-            //     width: 128,
-            //     height: 128,
-            //     highQuality: true,
-            //   ),
-            // ),
-            // GridView.count(
-            //   padding: EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 200),
-            //   primary: false,
-            //   shrinkWrap: true,
-            //   crossAxisSpacing: 10,
-            //   mainAxisSpacing: 10,
-            //   crossAxisCount: DeviceModel.isMobile ? 3 : 4,
-            //   children: <Widget>[
-            //     InkWell(
-            //       onTap: (){
-            //         _pickImage(context);
-            //       },
-            //       child: Container(
-            //         decoration: BoxDecoration(
-            //           color: AppColors.pinkColor,
-            //           borderRadius: BorderRadius.circular(10),
-            //         ),
-            //         child: Center(
-            //           child: Icon(Icons.camera_alt,color: Colors.white,size: 30,),
-            //         ),
-            //       ),
-            //     ),
-            //     for(var x = 0; x < _fileImages.length; x++)...{
-            //       InkWell(
-            //         onTap: (){
-            //           _routes.navigator_push(context, DescribePhoto(_fileImages[x]), transitionType: PageTransitionType.rightToLeftWithFade);
-            //         },
-            //         child: Container(
-            //           decoration: BoxDecoration(
-            //               color: Colors.grey[300],
-            //               borderRadius: BorderRadius.circular(10),
-            //               image: DecorationImage(
-            //                   fit: BoxFit.cover,
-            //                   image: FileImage(_fileImages[x])
-            //               )
-            //           ),
-            //         ),
-            //       )
-            //     }
-            //    ],
-            // ),
             Positioned(
               bottom: 0,
               left: 0,

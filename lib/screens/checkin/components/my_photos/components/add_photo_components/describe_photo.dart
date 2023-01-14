@@ -126,7 +126,7 @@ class _DescribePhotoState extends State<DescribePhoto> {
                                 border: Border.all(color: photos.taggable.contains(snapshot.data![x]["id"].toString()) ? Colors.transparent : Colors.grey),
                                 borderRadius: BorderRadius.circular(1000)
                             ),
-                            child: Center(child: Text("#"+snapshot.data![x]["name"],style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold, color: photos.taggable.contains(snapshot.data![x]["id"].toString()) ? Colors.white : Colors.black,fontFamily: "AppFontStyle"),)),
+                            child: Center(child: Text("#"+snapshot.data![x]["name"],style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold, color: photos.taggable.contains(snapshot.data![x]["id"].toString()) ? Colors.white : Colors.black,fontFamily: "AppFontStyle"),textAlign: TextAlign.center,maxLines: 1,overflow: TextOverflow.ellipsis,)),
                           ),
                           onTap: (){
                             setState(() {

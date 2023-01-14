@@ -16,11 +16,11 @@ class _Pregnant2ndPageState extends State<Pregnant2ndPage> {
   final Routes _routes = new Routes();
   final AppBars _appBars = AppBars();
   List<String> _goals = [
-    " Très léger (presque pas d'activité physique)",
+    "Très léger (presque pas d'activité physique)",
     "Léger (1-3 heures d'exercices légers à modérés)",
     "Modéré (3-4 heures d'exercices modérés)",
     "Intense (4-6 heures d'exercices modérés à intenses)",
-    "Très intense ( 7+ heures d'exercices intenses)"
+    "Très intense (7+ heures d'exercices intenses)"
   ];
 
   @override
@@ -29,7 +29,7 @@ class _Pregnant2ndPageState extends State<Pregnant2ndPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("QUELLE(S) ACTIVITÉ(S) ET COMBIEN DE TEMPS PAR SEMAINE ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Comment décrirais-tu ton niveau d'activité sportive ? (heures par semaine)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

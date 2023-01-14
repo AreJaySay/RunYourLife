@@ -4,21 +4,26 @@ import 'package:run_your_life/models/subscription_models/step4_subs.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
+import '../../../../../services/stream_services/subscriptions/subscription_details.dart';
+
 class Objective1stPage extends StatefulWidget {
+  final bool isNotMacroSolo;
+  Objective1stPage({this.isNotMacroSolo = false});
   @override
   _Objective1stPageState createState() => _Objective1stPageState();
 }
 
 class _Objective1stPageState extends State<Objective1stPage> {
   List<String> _goals = [
-    "Perdre du poids (au moins 5kg)",
-    "Améliorer ta santé (améliorer ta nutrition en maintenant ton poids actuel)",
-    "Recomposition corporelle (perdre moins de 5kg, en construisant du muscle)",
-    // if(subscriptionDetails.currentdata["plan_id"] == 1)...{
-    //   "Composition corporelle (tu veux perdre moins de 5kg en construisant du muscle)"
-    // },
-    "Contruire du muscle (et augmenter ton poids de corps)",
-    "Performance athlétique (pour supporter les entrainements)",
+    if(subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo"))...{
+      "Perdre du poids (Tu veux perdre au moins 5 kg)",
+    }else...{
+      "Perdre du poids (Tu veux perdre au moins 5 kg)\nPour une perte de poids:",
+    },
+    "Améliorer ta santé (améliorer ta nutrition, en maintenant ton poids actuel)",
+    "Composition corporelle (tu veux perdre moins de 5kg, en construisant du muscle)",
+    "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)",
+    "Performance athlétique (pour supporter les entraînements longs et intenses)",
   ];
 
   @override
@@ -27,7 +32,7 @@ class _Objective1stPageState extends State<Objective1stPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Quel est ton objectif ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Quel est objectif ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

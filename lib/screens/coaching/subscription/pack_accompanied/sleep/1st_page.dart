@@ -19,7 +19,7 @@ class _Sleep1stPageState extends State<Sleep1stPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Combien d'heures de sommeil avez-vous par nuit ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Combien d'heures de sommeil dors-tu par nuit".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         GridView.count(
           padding: EdgeInsets.only(left: 5,right: 5,top: 20),
           primary: false,
@@ -74,11 +74,15 @@ class _Sleep1stPageState extends State<Sleep1stPage> {
         SizedBox(
           height: 30,
         ),
-        Text("Vous sentez-vous en forme lorsque vous vous réveillez chaque jour ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Te sens-tu en forme quand tu te réveilles chaque jour ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
-        Text("1 = Je me réveille fatigué, un peu hors de forme. \n5 = Je me réveille bien et semble avoir bien récupéré de ma nuit.",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1= je me réveille fatigué(e), un peu ko\n5 = je me réveille en forme et semble avoir bien récupéré lors de ma nuit",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        // SizedBox(
+        //   height: 10,
+        // ),
+        // Text("1 : pas en forme\n3: modérémment\n5 : Très en forme",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
@@ -125,7 +129,7 @@ class _Sleep1stPageState extends State<Sleep1stPage> {
         SizedBox(
           height: 20,
         ),
-        Text("J'ai déjà pris des compléments alimentaires pour dormir ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("J'ai déjà pris des compléments alimentaires pour dormir".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -137,7 +141,7 @@ class _Sleep1stPageState extends State<Sleep1stPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step7subs.sleeping_supplements == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step7subs.sleeping_supplements == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -149,10 +153,10 @@ class _Sleep1stPageState extends State<Sleep1stPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step7subs.sleeping_supplements == "Yes" ? 1 : 2,
+                          groupValue: step7subs.sleeping_supplements == "Oui" ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step7subs.sleeping_supplements = "Yes";
+                              step7subs.sleeping_supplements = "Oui";
                             });
                           },
                         ),
@@ -167,7 +171,7 @@ class _Sleep1stPageState extends State<Sleep1stPage> {
               ),
               onTap: (){
                 setState(() {
-                  step7subs.sleeping_supplements = "Yes";
+                  step7subs.sleeping_supplements = "Oui";
                 });
               },
             ),
@@ -179,7 +183,7 @@ class _Sleep1stPageState extends State<Sleep1stPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step7subs.sleeping_supplements == "No" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step7subs.sleeping_supplements == "Non" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -191,10 +195,10 @@ class _Sleep1stPageState extends State<Sleep1stPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 2,
-                          groupValue: step7subs.sleeping_supplements == "No" ? 2 : 1,
+                          groupValue: step7subs.sleeping_supplements == "Non" ? 2 : 1,
                           onChanged: (val) {
                             setState(() {
-                              step7subs.sleeping_supplements = "No";
+                              step7subs.sleeping_supplements = "Non";
                             });
                           },
                         ),
@@ -209,7 +213,7 @@ class _Sleep1stPageState extends State<Sleep1stPage> {
               ),
               onTap: (){
                 setState(() {
-                  step7subs.sleeping_supplements = "No";
+                  step7subs.sleeping_supplements = "Non";
                 });
               },
             ),

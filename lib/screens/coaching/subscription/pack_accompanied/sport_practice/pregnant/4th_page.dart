@@ -15,11 +15,15 @@ class _Pregnant4thPageState extends State<Pregnant4thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Si tu ne peux pas faire ton entrainement du jour (pas le temps, pas d'équipements, …), que fais-tu généralement ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Si tu ne peux pas faire ton entrainement du jour (pas le temps, équipement, ...) que fais-tu généralement ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
-        Text("1 : J'adapte rarement =  j'abandonne l'entrainement du jour \n\n5 : J'adapte forcément = je trouverais quelque chose en substitution pour rester actif/active ",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1 :j'adapte rarement =  j'abandonne l'entrainement du jour\n5 : j'adapte forcément = je trouverais quelque chose en substitution pour rester active/actif",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        // SizedBox(
+        //   height: 10,
+        // ),
+        // Text("1 : j'adapte rarement \n3 : modéremment\n5: j'adapte forcément ",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 30,
         ),
@@ -63,9 +67,6 @@ class _Pregnant4thPageState extends State<Pregnant4thPage> {
             },
           ),
         ),
-        SizedBox(
-          height: 50,
-        )
       ],
     );
   }

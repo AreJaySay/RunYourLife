@@ -10,7 +10,7 @@ class CoachingServices{
 
   Future getplans()async{
     try {
-      return await http.get(Uri.parse("${_networkUtility.url}/user/api/plans?relations=prices"),
+      return await http.get(Uri.parse("${_networkUtility.url}/user/api/plans?relations=prices&hint=mobile"),
           headers: {
             HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
             "Accept": "application/json"

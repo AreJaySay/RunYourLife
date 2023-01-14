@@ -10,13 +10,13 @@ class Health8thPage extends StatefulWidget {
 }
 
 class _Health8thPageState extends State<Health8thPage> {
-  final TextEditingController _cycle = new TextEditingController()..text=step3subs.cycle_average;
+  final TextEditingController _cycle = new TextEditingController()..text=step3subs.cycle_average == "Non" || step3subs.cycle_average == "none" || step3subs.cycle_average == "N/A" ? "" : step3subs.cycle_average;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    step3subs.observe_menstrual_cycle = "Yes";
+    step3subs.observe_menstrual_cycle = "Oui";
   }
 
   @override
@@ -32,7 +32,7 @@ class _Health8thPageState extends State<Health8thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("OBSERVES TU TON CYCLE MENSTRUEL ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Observes-tu ton cycle menstruel ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -46,7 +46,7 @@ class _Health8thPageState extends State<Health8thPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step3subs.observe_menstrual_cycle == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step3subs.observe_menstrual_cycle == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -60,10 +60,10 @@ class _Health8thPageState extends State<Health8thPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step3subs.observe_menstrual_cycle == "Yes" ? 1 : 2,
+                          groupValue: step3subs.observe_menstrual_cycle == "Oui" ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step3subs.observe_menstrual_cycle = "Yes";
+                              step3subs.observe_menstrual_cycle = "Oui";
                             });
                           },
                         ),
@@ -78,7 +78,7 @@ class _Health8thPageState extends State<Health8thPage> {
               ),
               onTap: (){
                 setState(() {
-                  step3subs.observe_menstrual_cycle = "Yes";
+                  step3subs.observe_menstrual_cycle = "Oui";
                 });
               },
             ),
@@ -137,7 +137,7 @@ class _Health8thPageState extends State<Health8thPage> {
             SizedBox(
               height: 40,
             ),
-            Text("OBSERVEZ-VOUS VOTRE CYCLE MENSTRUEL RÉGULIER ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+            Text("As-tu des cycles réguliers".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
             SizedBox(
               height: 20,
             ),
@@ -151,7 +151,7 @@ class _Health8thPageState extends State<Health8thPage> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: step3subs.regular_cycle == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                        border: Border.all(color: step3subs.regular_cycle == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
@@ -165,10 +165,10 @@ class _Health8thPageState extends State<Health8thPage> {
                             child: Radio(
                               activeColor: AppColors.appmaincolor,
                               value: 1,
-                              groupValue: step3subs.regular_cycle == "Yes" ? 1 : 2,
+                              groupValue: step3subs.regular_cycle == "Oui" ? 1 : 2,
                               onChanged: (val) {
                                 setState(() {
-                                  step3subs.regular_cycle = "Yes";
+                                  step3subs.regular_cycle = "Oui";
                                 });
                               },
                             ),
@@ -183,7 +183,7 @@ class _Health8thPageState extends State<Health8thPage> {
                   ),
                   onTap: (){
                     setState(() {
-                      step3subs.regular_cycle = "Yes";
+                      step3subs.regular_cycle = "Oui";
                     });
                   },
                 ),
@@ -238,7 +238,7 @@ class _Health8thPageState extends State<Health8thPage> {
             SizedBox(
               height: 40,
             ),
-            Text("COMBIEN DE TEMPS DURENT TES CYCLES EN MOYENNE ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+            Text("Combien de temps dure tes cycles en moyenne".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
             SizedBox(
               height: 20,
             ),

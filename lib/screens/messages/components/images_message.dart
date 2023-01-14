@@ -3,11 +3,15 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:run_your_life/functions/base64_converter.dart';
+import 'package:run_your_life/functions/create_video_player.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'dart:io';
 import 'package:bouncy_widget/bouncy_widget.dart';
 import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
+import 'package:run_your_life/widgets/materialbutton.dart';
 import 'package:video_player/video_player.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../functions/loaders.dart';
 import '../../../services/apis_services/screens/messages.dart';
@@ -27,6 +31,8 @@ class _ImagesMessagesState extends State<ImagesMessages> {
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final Base64Converter _base64converter = new Base64Converter();
+  final Materialbutton _materialbutton = new Materialbutton();
+  final CreateVideoPlayer _createVideoPlayer = new CreateVideoPlayer();
   String _isdownloading = "";
 
   @override
@@ -68,15 +74,6 @@ class _ImagesMessagesState extends State<ImagesMessages> {
                            _snackbarMessage.snackbarMessage(context, message: "Le fichier a été téléchargé et enregistré avec succès dans le dossier de votre appareil..");
                          }
                        });
-                       // _isdownloading = widget.datas[x].toString()+x.toString();
-                       // _base64converter.createFileFromString(base64String:  widget.datas[x]["file"].toString().replaceAll("data:application/pdf;base64,", "")).then((value){
-                       //   setState((){
-                       //     _isdownloading = "";
-                       //   });
-                       //   if(value != null){
-                       //     _snackbarMessage.snackbarMessage(context, message: "Le fichier a été téléchargé et enregistré avec succès dans le dossier de votre appareil..");
-                       //   }
-                       // });
                      });
                    },
                    icon: Icon(Icons.download,color: widget.ismine ? AppColors.appmaincolor : Colors.white,),
@@ -134,15 +131,6 @@ class _ImagesMessagesState extends State<ImagesMessages> {
                             _snackbarMessage.snackbarMessage(context, message: "Le fichier a été téléchargé et enregistré avec succès dans le dossier de votre appareil..");
                           }
                         });
-                        // _isdownloading = widget.datas[x].toString()+x.toString();
-                        // _base64converter.createFileFromString(base64String:  widget.datas[x]["file"].toString().replaceAll("data:application/pdf;base64,", "")).then((value){
-                        //   setState((){
-                        //     _isdownloading = "";
-                        //   });
-                        //   if(value != null){
-                        //     _snackbarMessage.snackbarMessage(context, message: "Le fichier a été téléchargé et enregistré avec succès dans le dossier de votre appareil..");
-                        //   }
-                        // });
                       });
                     },
                     icon: Icon(Icons.download,color: widget.ismine ? AppColors.appmaincolor : Colors.white,),
@@ -161,18 +149,6 @@ class _ImagesMessagesState extends State<ImagesMessages> {
           },
         ],
       ) :
-    // Column(
-    //   children: [
-    //     for(int x = 0; x < widget.datas.length; x++)...{
-    //       InkWell(
-    //         onTap: (){
-    //           print(widget.datas[x].toString());
-    //         },
-    //         child: Text(widget.datas[x].toString()),
-    //       )
-    //     }
-    //   ],
-    // );
     Container(
         child: Directionality(
         textDirection: widget.ismine ? TextDirection.rtl : TextDirection.ltr,
@@ -184,17 +160,53 @@ class _ImagesMessagesState extends State<ImagesMessages> {
           crossAxisCount: 3,
           childAspectRatio: (_size.width / 2 / (_size.height - kToolbarHeight - 5) / 0.3),
           children: <Widget>[
-            for(var x = 0; x < widget.datas.length; x++)...{
+            for(var x = 0; x < jsonDecode(widget.details["message"]).length; x++)...{
               GestureDetector(
                 onTap: (){
-                  showDialog(
-                      context: context,
-                      builder: (context) => Center(
-                        child: Image(
-                            image: NetworkImage(widget.datas[x]["file"])
-                        ),
-                      )
-                  );
+                  print(jsonDecode(widget.details["message"])[x].toString());
+                  if(jsonDecode(widget.details["message"])[x].toString() == "image/jpeg"){
+
+                  }else{
+                    showDialog<void>(
+                        context: context,
+                        barrierDismissible: true,
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: Stack(
+                              children: [
+                                Center(
+                                  child: WebView(
+                                    initialUrl: jsonDecode(widget.details["message"])[x]["file"],
+                                    javascriptMode: JavascriptMode.unrestricted,
+                                  ),
+                                ),
+                                ZoomTapAnimation(
+                                  end: 0.99,
+                                  child: Container(
+                                    margin: EdgeInsets.all(15),
+                                    width: 40,
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.appmaincolor,
+                                      borderRadius: BorderRadius.circular(1000),
+                                    ),
+                                    child: Center(
+                                      child: Platform.isAndroid ?
+                                      Icon(Icons.arrow_back,color: Colors.white,) :
+                                      Icon(Icons.arrow_back_ios,color: Colors.white),
+                                    ),
+                                  ),
+                                  onTap: (){
+                                    Navigator.of(context).pop(null);
+                                  },
+                                )
+                              ],
+                            ),
+                          );
+                        });
+                  }
                 },
                 onLongPress: (){
                   showModalBottomSheet(
@@ -206,11 +218,13 @@ class _ImagesMessagesState extends State<ImagesMessages> {
                   decoration: BoxDecoration(
                     color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(3.5),
-                      image: DecorationImage(
+                      image: jsonDecode(widget.details["message"])[x]["file_type"] == "video/mp4" ? null :
+                      DecorationImage(
                         fit: BoxFit.cover,
-                          image: NetworkImage(widget.datas[x]["file"])
+                          image: NetworkImage(jsonDecode(widget.details["message"])[x]["file"])
                       )
                   ),
+                  child: jsonDecode(widget.details["message"])[x]["file_type"] == "video/mp4" ? VideoPlay(url: jsonDecode(widget.details["message"])[x]["file"].toString(),) : Container(),
                 ),
               )
             }
@@ -330,5 +344,34 @@ class _ImagesMessagesState extends State<ImagesMessages> {
         ],
       ),
     );
+  }
+}
+
+class VideoPlay extends StatefulWidget {
+  final String url;
+  VideoPlay({required this.url});
+  @override
+  State<VideoPlay> createState() => _VideoPlayState();
+}
+
+class _VideoPlayState extends State<VideoPlay> {
+  final CreateVideoPlayer _createVideoPlayer = new CreateVideoPlayer();
+  VideoPlayerController? _videocontroller;
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.url);
+    _videocontroller = VideoPlayerController.network(
+      widget.url,
+      videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    );
+    _videocontroller!.setLooping(true);
+    _videocontroller!.initialize();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _videocontroller == null ? Container() : VideoPlayer(_videocontroller!);
   }
 }

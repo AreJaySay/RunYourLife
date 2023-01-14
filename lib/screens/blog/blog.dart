@@ -10,10 +10,12 @@ import 'package:run_your_life/screens/messages/messages.dart';
 import 'package:run_your_life/services/apis_services/screens/blogs.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/services/stream_services/screens/blogs.dart';
+import 'package:run_your_life/services/stream_services/screens/favorites.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/utils/palettes/app_gradient_colors.dart';
 import 'package:run_your_life/widgets/appbar.dart';
 import '../../models/auths_model.dart';
+import '../../services/stream_services/subscriptions/subscription_details.dart';
 import '../../widgets/message_notifier.dart';
 import '../../widgets/notification_notifier.dart';
 
@@ -28,11 +30,12 @@ class _BlogState extends State<Blog> with SingleTickerProviderStateMixin {
   final Routes _routes = new Routes();
   TextEditingController _search = TextEditingController();
   ScrollController _scrollController = new ScrollController();
-  List<Tab> _tabs = [Tab(text: "Derniers articles",), Tab(text: "Entrainement",), Tab(text: "Lifestyle",), Tab(text: "Nutrition",),Tab(text: "Mes favoris",)];
+  List<Tab> _tabs = [Tab(text: "Derniers articles",), Tab(text: "Recettes",), Tab(text: "Lifestyle",), Tab(text: "Nutrition",),Tab(text: "Mes favoris",)];
   bool _showBackToTopButton = false;
   String _tabartitle = "Article";
   bool _keyboardVisible = false;
   List? _searchData;
+  int _total = 0;
 
   @override
   void initState() {
@@ -51,7 +54,8 @@ class _BlogState extends State<Blog> with SingleTickerProviderStateMixin {
         _keyboardVisible = event;
       });
     });
-    _blogServices.getblogs().whenComplete((){
+    _blogServices.getblogs(page: "1").then((total){
+      _total = total;
       _searchData = blogStreamServices.currentdata;
     });
     super.initState();
@@ -113,7 +117,7 @@ class _BlogState extends State<Blog> with SingleTickerProviderStateMixin {
                                   child: Auth.isNotSubs! ? Image(
                                   color: Colors.white,
                                   width: 85,
-                                  image: AssetImage("assets/important_assets/logo-white.png"),
+                                  image: AssetImage("assets/important_assets/logo_new_white.png"),
                                 ) : Container(
                                   padding: EdgeInsets.symmetric(horizontal: 20),
                                   child: Row(
@@ -228,23 +232,23 @@ class _BlogState extends State<Blog> with SingleTickerProviderStateMixin {
                           children: <Widget>[
                             !snapshot.hasData ?
                             BlogShimmerLoader() :
-                            Articles(article: snapshot.data!,index: 0,),
+                            Articles(article: snapshot.data!,index: 0,total: _total,),
 
                             !snapshot.hasData ?
                             BlogShimmerLoader() :
-                            Articles(article: snapshot.data!.where((s) => s["category"]["id"].toString() == "1").toList(),index: 1),
+                            Articles(article: snapshot.data!.where((s) => s["category"]["id"].toString() == "1").toList(),index: 1,total: _total),
 
                             !snapshot.hasData ?
                             BlogShimmerLoader() :
-                            Articles(article: snapshot.data!.where((s) => s["category"]["id"].toString() == "2").toList(),index: 2),
+                            Articles(article: snapshot.data!.where((s) => s["category"]["id"].toString() == "2").toList(),index: 2,total: _total),
 
                             !snapshot.hasData ?
                             BlogShimmerLoader() :
-                            Articles(article: snapshot.data!.where((s) => s["category"]["id"].toString() == "3").toList(),index: 3),
+                            Articles(article: snapshot.data!.where((s) => s["category"]["id"].toString() == "3").toList(),index: 3,total: _total),
 
-                            blogModel.favorites == null ?
+                            !favoriteStreamServices.subject.hasValue?
                             BlogShimmerLoader() :
-                            Articles(article: blogModel.favorites!,index: 4),
+                            Articles(article: favoriteStreamServices.currentdata,index: 4,total: _total),
 
                           ],
                         ),

@@ -52,7 +52,7 @@ class _ObjectiveMainPageState extends State<ObjectiveMainPage> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
               children: [
-                MyStepper(step4subs.goal == "Améliorer ta santé (améliorer ta nutrition en maintenant ton poids actuel)" || step4subs.goal == "Contruire du muscle (et augmenter ton poids de corps)" ? 4 : 5,range: double.parse(_currentPage.toString()),),
+                MyStepper(step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") || step4subs.goal == "Contruire du muscle (et augmenter ton poids de corps)" ? 4 : 5,range: double.parse(_currentPage.toString()),),
                 SizedBox(
                   height: 30,
                 ),
@@ -118,33 +118,17 @@ class _ObjectiveMainPageState extends State<ObjectiveMainPage> {
                       SizedBox(
                         height: 40,
                       ),
-                      step4subs.goal == "Améliorer ta santé (améliorer ta nutrition en maintenant ton poids actuel)" || step4subs.goal == "Contruire du muscle (et augmenter ton poids de corps)" ?
-                      _secondscreens[_currentPage] :
-                      _screens[_currentPage],
+                      step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)" ?
+                      _screens[_currentPage] :
+                      _secondscreens[_currentPage],
                       SizedBox(
                         height: 50,
                       ),
                       _materialbutton.materialButton("SUIVANT", () {
                         setState(() {
-                          if(step4subs.goal == "Recomposition corporelle (perdre moins de 5kg, en construisant du muscle)"){
-                            if(_currentPage > 1){
-                              _screenLoaders.functionLoader(context);
-                              if(subscriptionDetails.currentdata[0]["goal"] != null){
-                                setState(() {
-                                  step4subs.id = subscriptionDetails.currentdata[0]["goal"]["id"].toString();
-                                });
-                              }
-                              _step4service.submit(context).then((value){
-                                if(value != null){
-                                  Navigator.of(context).pop(null);
-                                  _routes.navigator_push(context, SportMainPage());
-                                }
-                              });
-                            }else{
-                              _currentPage++;
-                            }
-                          }else if(step4subs.goal == "Améliorer ta santé (améliorer ta nutrition en maintenant ton poids actuel)" || step4subs.goal == "Contruire du muscle (et augmenter ton poids de corps)"){
-                            if(_currentPage > 3){
+                           if(step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)"){
+                            print("asd");
+                             if(_currentPage > 4){
                               _screenLoaders.functionLoader(context);
                               if(subscriptionDetails.currentdata[0]["goal"] != null){
                                 setState(() {
@@ -161,7 +145,7 @@ class _ObjectiveMainPageState extends State<ObjectiveMainPage> {
                               _currentPage++;
                             }
                           }else{
-                            if(_currentPage > 4){
+                            if(_currentPage > 3){
                               _screenLoaders.functionLoader(context);
                               if(subscriptionDetails.currentdata[0]["goal"] != null){
                                 setState(() {

@@ -10,8 +10,8 @@ class Sleep2ndPage extends StatefulWidget {
 }
 
 class _Sleep2ndPageState extends State<Sleep2ndPage> {
-  List _isWakeUpNight = ["Oui, je ne peux pas me rendormir","Oui, juste pour aller aux toilettes","Jamais"];
-  List _isTroubleSleep = ["Oui, je ne peux pas me rendormir","Cela peut m'arriver en période de stress","Non, je m'endors facilement"];
+  List _isWakeUpNight = ["Oui, j'ai du mal à me rendormir","Oui, juste pour aller aux toilettes","Jamais"];
+  List _isTroubleSleep = ["Oui, j'ai du mal à m'endormir","Cela peut m'arriver en période de stress","Non, je m'endors facilement "];
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class _Sleep2ndPageState extends State<Sleep2ndPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Je me réveille souvent la nuit ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Je me réveille souvent la nuit".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -83,7 +83,7 @@ class _Sleep2ndPageState extends State<Sleep2ndPage> {
         SizedBox(
           height: 30,
         ),
-        Text("JAvez-vous du mal à vous endormir ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("As-tu des difficultés à t'endormir".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -147,7 +147,7 @@ class _Sleep2ndPageState extends State<Sleep2ndPage> {
         SizedBox(
           height: 30,
         ),
-        Text("Regardez-vous la télévision ou utilisez-vous le téléphone au lit ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Regardes-tu la télé ou téléphone dans le lit ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -159,7 +159,7 @@ class _Sleep2ndPageState extends State<Sleep2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step7subs.bed_gadget == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step7subs.bed_gadget == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -171,10 +171,10 @@ class _Sleep2ndPageState extends State<Sleep2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step7subs.bed_gadget == "Yes" ? 1 : 2,
+                          groupValue: step7subs.bed_gadget == "Oui" ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step7subs.bed_gadget = "Yes";
+                              step7subs.bed_gadget = "Oui";
                             });
                           },
                         ),
@@ -189,7 +189,7 @@ class _Sleep2ndPageState extends State<Sleep2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step7subs.bed_gadget = "Yes";
+                  step7subs.bed_gadget = "Oui";
                 });
               },
             ),
@@ -201,7 +201,7 @@ class _Sleep2ndPageState extends State<Sleep2ndPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step7subs.bed_gadget == "No" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step7subs.bed_gadget == "Non" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -213,10 +213,10 @@ class _Sleep2ndPageState extends State<Sleep2ndPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 2,
-                          groupValue: step7subs.bed_gadget == "No" ? 2 : 1,
+                          groupValue: step7subs.bed_gadget == "Non" ? 2 : 1,
                           onChanged: (val) {
                             setState(() {
-                              step7subs.bed_gadget = "No";
+                              step7subs.bed_gadget = "Non";
                             });
                           },
                         ),
@@ -231,7 +231,7 @@ class _Sleep2ndPageState extends State<Sleep2ndPage> {
               ),
               onTap: (){
                 setState(() {
-                  step7subs.bed_gadget = "No";
+                  step7subs.bed_gadget = "Non";
                 });
               },
             ),

@@ -15,10 +15,9 @@ class _Pregnant6thPageState extends State<Pregnant6thPage> {
   final Routes _routes = new Routes();
   List<String> _activitylevel = [
     "Très léger (assis presque toute la journée - ex : travail de bureau)",
-    "Léger (un mix assis/debout, et légère activité - ex : professeur)",
-    "Modéré (une activité basse à modérée - ex : serveur de restaurant)",
-    "Intense (activité fatigante tout au long de la journée - ex : travail dans le bâtiment)",
-    "Très intense (7+heures d'exercices intenses)"
+    "Léger (un mix assis, debout, et légère activité - ex : professeur)",
+    "Modéré (Une activité basse à modérée - ex : serveur dans un restaurant )",
+    "Intense (Activité fatigante tout au long de la journée - ex : travail dans le bâtiment )",
   ];
 
   @override
@@ -27,7 +26,7 @@ class _Pregnant6thPageState extends State<Pregnant6thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Comment décrirais-tu ton niveau d’activité sportive en heures par semaine ? ".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Comment décrirais-tu ton niveau d'activité en dehors d'une activité sportive ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

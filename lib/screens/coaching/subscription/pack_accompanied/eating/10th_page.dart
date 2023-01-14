@@ -10,7 +10,7 @@ class Eating10thPage extends StatefulWidget {
 }
 
 class _Eating10thPageState extends State<Eating10thPage> {
-  TextEditingController _supplement = new TextEditingController()..text=step2subs.food_supplement == "No dietary supplements" ? "" : step2subs.food_supplement;
+  TextEditingController _supplement = new TextEditingController()..text=step2subs.food_supplement == "Non" || step2subs.food_supplement == "none" || step2subs.food_supplement == "N/A" ? "" : step2subs.food_supplement;
 
   @override
   void dispose() {
@@ -25,13 +25,9 @@ class _Eating10thPageState extends State<Eating10thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Prends-tu Des compléments alimentaires ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Prends-tu des suppléments alimentaires (oméga 3, protéine en poudre, probotiques, enzymes digestives, calcium, créatine, BCAA, pre/post workout, multivitamines ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
-        ),
-        Text("Oméga 3, protéines en poudre, probiotiques, enzymes digestives, calcium, créatine, BCAAA, pré/post workout, multivitamines...",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-        SizedBox(
-          height: 20,
         ),
         TextField(
           controller: _supplement,
@@ -68,7 +64,7 @@ class _Eating10thPageState extends State<Eating10thPage> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: step2subs.food_supplement == "No dietary supplements" ? AppColors.appmaincolor : Colors.transparent,)
+              border: Border.all(color: step2subs.food_supplement == "Non" ? AppColors.appmaincolor : Colors.transparent,)
             ),
             child: Row(
               children: [
@@ -80,11 +76,11 @@ class _Eating10thPageState extends State<Eating10thPage> {
                     child: Radio(
                       activeColor: AppColors.appmaincolor,
                       value: 2,
-                      groupValue: step2subs.food_supplement == "No dietary supplements" ? 2 : 1,
+                      groupValue: step2subs.food_supplement == "Non" ? 2 : 1,
                       onChanged: (val) {
                         setState(() {
                           _supplement.text = "";
-                          step2subs.food_supplement = "No dietary supplements";
+                          step2subs.food_supplement = "Non";
                         });
                       },
                     ),
@@ -93,14 +89,14 @@ class _Eating10thPageState extends State<Eating10thPage> {
                 SizedBox(
                   width: 15,
                 ),
-                Text('Aucun compléments alimentaires',style: new TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+                Text('Aucune complément alimentaire',style: new TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
               ],
             ),
           ),
             onTap: (){
               setState(() {
                 _supplement.text = "";
-                step2subs.food_supplement = "No dietary supplements";
+                step2subs.food_supplement = "Non";
               });
             }
         ),

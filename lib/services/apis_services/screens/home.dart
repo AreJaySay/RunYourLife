@@ -45,12 +45,11 @@ class HomeServices{
           "Accept": "application/json"
         },
         body: {
-          "subscription_id":  subscriptionDetails.currentdata[0]["id"].toString(),
+          "subscription_id": subscriptionDetails.currentdata[0]["id"].toString(),
           "date": date,
         },
       ).then((respo) async {
         var data = json.decode(respo.body);
-        print("TRACKING ${data.toString()}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           homeStreamServices.updateTrack(data: data);
           return data;
@@ -61,6 +60,30 @@ class HomeServices{
       });
     } catch (e) {
       print("ERROR GET TRACKING${e.toString()}");
+    }
+  }
+
+  // LATEST CHECKIN
+  Future getLatestCheckin()async{
+    try {
+      return await http.get(Uri.parse("${_networkUtility.url}/user/api/checkin/latestRecord/${subscriptionDetails.currentdata[0]["id"].toString()}"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
+          "Accept": "application/json"
+        },
+      ).then((respo) async {
+        var data = json.decode(respo.body);
+        if (respo.statusCode == 200 || respo.statusCode == 201){
+          homeStreamServices.updateLatestCheckin(data: data);
+          return data;
+        }else{
+          homeStreamServices.updateLatestCheckin(data: {});
+          return null;
+        }
+      });
+    } catch (e) {
+      print("ERROR GET CHECKL${e.toString()}");
+      homeStreamServices.updateLatestCheckin(data: {});
     }
   }
 
@@ -78,6 +101,7 @@ class HomeServices{
           homeStreamServices.updateMeeting(data: data);
           return data;
         }else{
+          homeStreamServices.updateMeeting(data: {});
           return null;
         }
       });
@@ -95,12 +119,12 @@ class HomeServices{
         },
         body: {
           "subs_id": subscriptionDetails.currentdata[0]["id"].toString(),
-          "week_request[start]": DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: -14))).toString(),
-          "week_request[end]": DateFormat("yyyy-MM-dd").format(DateTime.now()).toString(),
+          "week_request[start]": DateFormat("yyyy-MM-dd").format(DateTime.now().toUtc().add(Duration(hours: 2)).add(Duration(days: -7))).toString(),
+          "week_request[end]": DateFormat("yyyy-MM-dd").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString(),
         },
       ).then((respo) async {
         var data = json.decode(respo.body);
-        print("GET WEIGHT DATA ${data.toString()}");
+        print("WEIGHT DATA ${data.toString()}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           homeStreamServices.updateGraphWeight(data: data);
           return data;
@@ -116,20 +140,18 @@ class HomeServices{
 
   Future getHeights()async{
     try {
-      return await http.post(Uri.parse("${_networkUtility.url}/user/api/measurements/height"),
+      return await http.post(Uri.parse("${_networkUtility.url}/user/api/measurements/getWeekValue"),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
           "Accept": "application/json"
         },
         body: {
           "subs_id": subscriptionDetails.currentdata[0]["id"].toString(),
-          "week_request[start]": DateFormat("yyyy-MM-dd").format(DateTime.now().add(Duration(days: -7))).toString(),
-          "week_request[end]": DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(DateTime.now().toString())),
+          "date": DateFormat("yyyy-MM-dd","fr").format(DateTime.now()),
         },
       ).then((respo) async {
         var data = json.decode(respo.body);
         if (respo.statusCode == 200 || respo.statusCode == 201){
-          print("MESUREMENTS DATA : $data");
           List f = data[1];
           homeStreamServices.updateGraphHeight(data: f.map((e) => Measurement.fromJson(e)).toList());
           return data;

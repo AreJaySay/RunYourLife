@@ -7,7 +7,7 @@ class Eating11thPage extends StatefulWidget {
 }
 
 class _Eating11thPageState extends State<Eating11thPage> {
-  List<String> _hintTexts = ['Petit-déjeuner',"Encas matinal","Déjeuner","Encas après-midi","Diner"];
+  List<String> _hintTexts = ['Petit dej:',"Encas matinale:","Dejeuner:","Encas arpès-midi:","Diner"];
   List<TextEditingController> _controllers = [TextEditingController()..text=step2subs.breakfast,TextEditingController()..text=step2subs.morning_snack,TextEditingController()..text=step2subs.lunch,TextEditingController()..text=step2subs.afternoon_snack,TextEditingController()..text=step2subs.dinner,];
 
   @override
@@ -25,14 +25,14 @@ class _Eating11thPageState extends State<Eating11thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Décris-moi une journée de référence existance (hier ou aujourd’hui par exemple)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Peux-tu me décrire une journée type de ton repas de la veille ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
-        Text("Complète uniquement les champs qui te concernent.",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-        SizedBox(
-          height: 20,
-        ),
+        // Text("Complète uniquement les champs qui te concernent.",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        // SizedBox(
+        //   height: 20,
+        // ),
         for(var x = 0; x < _hintTexts.length;x++)...{
           TextField(
             controller: _controllers[x],

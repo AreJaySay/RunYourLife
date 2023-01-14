@@ -13,6 +13,7 @@ class UniteMeasures extends StatefulWidget {
 }
 
 class _UniteMeasuresState extends State<UniteMeasures> {
+  List<String> _titles = ["Stress","Sommeil","Tabac","Alcool","Complément\nalimentaire","Médicaments","Café","Eau","Entraînements","Suivi de Cycle"];
 
   @override
   void initState() {
@@ -23,12 +24,16 @@ class _UniteMeasuresState extends State<UniteMeasures> {
       parameters.id = widget.details["id"].toString();
       parameters.weight_unit = widget.details["unit"]["weight"].toString();
       parameters.height_unit = widget.details["unit"]["height"].toString();
-      parameters.alcohol = widget.details["tracking"]["alcohol"].toString();
-      parameters.tobacco = widget.details["tracking"]["tobacco"].toString();
-      parameters.food_supplement = widget.details["tracking"]["food_supplement"].toString();
-      parameters.medicine = widget.details["tracking"]["medicine"].toString();
-      parameters.coffee = widget.details["tracking"]["coffee"].toString();
-      parameters.water = widget.details["tracking"]["water"].toString();
+      parameters.trackings[0] = widget.details["tracking"]["stress"].toString();
+      parameters.trackings[1] = widget.details["tracking"]["sleep"].toString();
+      parameters.trackings[3] = widget.details["tracking"]["alcohol"].toString();
+      parameters.trackings[2] = widget.details["tracking"]["tobacco"].toString();
+      parameters.trackings[4] = widget.details["tracking"]["food_supplement"].toString();
+      parameters.trackings[5] = widget.details["tracking"]["medicine"].toString();
+      parameters.trackings[6] = widget.details["tracking"]["coffee"].toString();
+      parameters.trackings[7] = widget.details["tracking"]["water"].toString();
+      parameters.trackings[8] = widget.details["tracking"]["training"].toString();
+      parameters.trackings[9] = widget.details["tracking"]["menstruation"].toString();
     }
   }
 
@@ -38,13 +43,13 @@ class _UniteMeasuresState extends State<UniteMeasures> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Unité de mesures",style: TextStyle(color: AppColors.pinkColor,fontSize: 17,fontFamily: "AppFontStyle"),),
+        Text("Unités de mesure",style: TextStyle(color: AppColors.pinkColor,fontSize: 17,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
         Row(
           children: [
-            Text("Le poids",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+            Text("Poids",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
             Spacer(),
             GestureDetector(
               onTap: (){
@@ -57,7 +62,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
               child: ZoomTapAnimation(end: 0.99,child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: parameters.weight_unit == "kg" ? AppColors.appmaincolor : Colors.transparent),
+                      border: Border.all(color: parameters.weight_unit.toLowerCase() == "kg" ? AppColors.appmaincolor : Colors.transparent),
                       borderRadius: BorderRadius.circular(10)
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
@@ -72,7 +77,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                             child: Checkbox(
                               checkColor: Colors.transparent,
                               activeColor: AppColors.appmaincolor,
-                              value: parameters.weight_unit == "kg",
+                              value: parameters.weight_unit.toLowerCase() == "kg",
                               shape: CircleBorder(),
                               splashRadius: 20,
                               side: BorderSide(
@@ -117,7 +122,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
               child: ZoomTapAnimation(end: 0.99,child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: parameters.weight_unit == "lb" ? AppColors.appmaincolor : Colors.transparent),
+                      border: Border.all(color: parameters.weight_unit.toLowerCase() == "lb" ? AppColors.appmaincolor : Colors.transparent),
                       borderRadius: BorderRadius.circular(10)
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
@@ -132,7 +137,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                             child: Checkbox(
                               checkColor: Colors.transparent,
                               activeColor: AppColors.appmaincolor,
-                              value: parameters.weight_unit == "lb",
+                              value: parameters.weight_unit.toLowerCase() == "lb",
                               shape: CircleBorder(),
                               splashRadius: 20,
                               side: BorderSide(
@@ -170,7 +175,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
         ),
         Row(
           children: [
-            Text("Distance",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+            Text("Mesure",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
             Spacer(),
             GestureDetector(
               onTap: (){
@@ -236,14 +241,14 @@ class _UniteMeasuresState extends State<UniteMeasures> {
               onTap: (){
                 if(!Auth.isNotSubs!){
                   setState(() {
-                    parameters.height_unit = "Km";
+                    parameters.height_unit = "In";
                   });
                 }
               },
               child: ZoomTapAnimation(end: 0.99,child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: parameters.height_unit == "Km" ? AppColors.appmaincolor : Colors.transparent),
+                      border: Border.all(color: parameters.height_unit == "In" ? AppColors.appmaincolor : Colors.transparent),
                       borderRadius: BorderRadius.circular(10)
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
@@ -258,7 +263,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                             child: Checkbox(
                               checkColor: Colors.transparent,
                               activeColor: AppColors.appmaincolor,
-                              value: parameters.height_unit == "Km",
+                              value: parameters.height_unit == "In",
                               shape: CircleBorder(),
                               splashRadius: 20,
                               side: BorderSide(
@@ -268,7 +273,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                               onChanged: (bool? value) {
                                 if(!Auth.isNotSubs!){
                                   setState(() {
-                                    parameters.height_unit = "Km";
+                                    parameters.height_unit = "In";
                                   });
                                 }
                               },
@@ -283,7 +288,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Km",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+                      Text("In",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
                     ],
                   ),
                 ),
@@ -294,28 +299,29 @@ class _UniteMeasuresState extends State<UniteMeasures> {
         SizedBox(
           height: 20,
         ),
-        Text("Choisis les tracking journalier qui \ncorrespondent à ton profil",style: TextStyle(color: AppColors.pinkColor,fontSize: 17,fontFamily: "AppFontStyle"),),
+        Text("Choisis les trackings journaliers qui \ncorrespondent à ton profil.",style: TextStyle(color: AppColors.pinkColor,fontSize: 17,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
-        Row(
-          children: [
-            Text("Tabac",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-            Spacer(),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.tobacco = "Oui";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(
-                end: 0.99,child:
-              Container(
+        for(int x = 0; Auth.loggedUser!["gender"].toString().toLowerCase() == "male" ? x < 9 : x < 10; x++)...{
+          Row(
+            children: [
+              Text(_titles[x],style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+              Spacer(),
+              GestureDetector(
+                onTap: (){
+                  if(!Auth.isNotSubs!){
+                    setState(() {
+                      parameters.trackings[x] = "1";
+                    });
+                  }
+                },
+                child: ZoomTapAnimation(
+                  end: 0.99,child:
+                Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: parameters.tobacco == "Oui" ? AppColors.appmaincolor : Colors.transparent),
+                      border: Border.all(color: parameters.trackings[x] == "1" ? AppColors.appmaincolor : Colors.transparent),
                       borderRadius: BorderRadius.circular(10)
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
@@ -330,7 +336,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                             child: Checkbox(
                               checkColor: Colors.transparent,
                               activeColor: AppColors.appmaincolor,
-                              value: parameters.tobacco == "Oui",
+                              value: parameters.trackings[x] == "1",
                               shape: CircleBorder(),
                               splashRadius: 20,
                               side: BorderSide(
@@ -340,7 +346,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                               onChanged: (bool? value) {
                                 if(!Auth.isNotSubs!){
                                   setState(() {
-                                    parameters.tobacco = "Oui";
+                                    parameters.trackings[x] = "1";
                                   });
                                 }
                               },
@@ -359,23 +365,23 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                     ],
                   ),
                 ),
+                ),
               ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.tobacco = "Non";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
+              SizedBox(
+                width: 20,
+              ),
+              GestureDetector(
+                onTap: (){
+                  if(!Auth.isNotSubs!){
+                    setState(() {
+                      parameters.trackings[x] = "0";
+                    });
+                  }
+                },
+                child: ZoomTapAnimation(end: 0.99,child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      border: Border.all(color: parameters.tobacco == "Non" ? AppColors.appmaincolor : Colors.transparent),
+                      border: Border.all(color: parameters.trackings[x] == "0" ? AppColors.appmaincolor : Colors.transparent),
                       borderRadius: BorderRadius.circular(10)
                   ),
                   padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
@@ -390,7 +396,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                             child: Checkbox(
                               checkColor: Colors.transparent,
                               activeColor: AppColors.appmaincolor,
-                              value: parameters.tobacco == "Non",
+                              value: parameters.trackings[x] == "0",
                               shape: CircleBorder(),
                               splashRadius: 20,
                               side: BorderSide(
@@ -400,7 +406,7 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                               onChanged: (bool? value) {
                                 if(!Auth.isNotSubs!){
                                   setState(() {
-                                    parameters.tobacco = "Non";
+                                    parameters.trackings[x] = "0";
                                   });
                                 }
                               },
@@ -419,639 +425,14 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                     ],
                   ),
                 ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(
-          children: [
-            Text("Alcool",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-            Spacer(),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.alcohol = "Oui";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: parameters.alcohol == "Oui" ? AppColors.appmaincolor : Colors.transparent),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Transform.scale(
-                          scale: 0.9,
-                          child: SizedBox(
-                            width: 25,
-                            height: 25,
-                            child: Checkbox(
-                              checkColor: Colors.transparent,
-                              activeColor: AppColors.appmaincolor,
-                              value: parameters.alcohol == "Oui",
-                              shape: CircleBorder(),
-                              splashRadius: 20,
-                              side: BorderSide(
-                                  width: 0,
-                                  color: Colors.transparent
-                              ),
-                              onChanged: (bool? value) {
-                                if(!Auth.isNotSubs!){
-                                  setState(() {
-                                    parameters.alcohol = "Oui";
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            border:   Border.all(color: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.4) : AppColors.appmaincolor,width: 1.5),
-                            borderRadius: BorderRadius.circular(1000)
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Oui",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-                    ],
-                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.alcohol = "Non";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: parameters.alcohol == "Non" ? AppColors.appmaincolor : Colors.transparent),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Transform.scale(
-                          scale: 0.9,
-                          child: SizedBox(
-                            width: 25,
-                            height: 25,
-                            child: Checkbox(
-                              checkColor: Colors.transparent,
-                              activeColor: AppColors.appmaincolor,
-                              value: parameters.alcohol == "Non",
-                              shape: CircleBorder(),
-                              splashRadius: 20,
-                              side: BorderSide(
-                                  width: 0,
-                                  color: Colors.transparent
-                              ),
-                              onChanged: (bool? value) {
-                                if(!Auth.isNotSubs!){
-                                  setState(() {
-                                    parameters.alcohol = "Non";
-                                  });                                }
-                              },
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            border:   Border.all(color: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.4) : AppColors.appmaincolor,width: 1.5),
-                            borderRadius: BorderRadius.circular(1000)
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Non",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(
-          children: [
-            Text("Complément \nalimentaire",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-            Spacer(),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.food_supplement = "Oui";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: parameters.food_supplement == "Oui" ? AppColors.appmaincolor : Colors.transparent),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Transform.scale(
-                          scale: 0.9,
-                          child: SizedBox(
-                            width: 25,
-                            height: 25,
-                            child: Checkbox(
-                              checkColor: Colors.transparent,
-                              activeColor: AppColors.appmaincolor,
-                              value: parameters.food_supplement == "Oui",
-                              shape: CircleBorder(),
-                              splashRadius: 20,
-                              side: BorderSide(
-                                  width: 0,
-                                  color: Colors.transparent
-                              ),
-                              onChanged: (bool? value) {
-                                if(!Auth.isNotSubs!){
-                                  setState(() {
-                                    parameters.food_supplement = "Oui";
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            border:   Border.all(color: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.4) : AppColors.appmaincolor,width: 1.5),
-                            borderRadius: BorderRadius.circular(1000)
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Oui",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.food_supplement = "Non";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: parameters.food_supplement == "Non" ? AppColors.appmaincolor : Colors.transparent),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Transform.scale(
-                          scale: 0.9,
-                          child: SizedBox(
-                            width: 25,
-                            height: 25,
-                            child: Checkbox(
-                              checkColor: Colors.transparent,
-                              activeColor: AppColors.appmaincolor,
-                              value: parameters.food_supplement == "Non",
-                              shape: CircleBorder(),
-                              splashRadius: 20,
-                              side: BorderSide(
-                                  width: 0,
-                                  color: Colors.transparent
-                              ),
-                              onChanged: (bool? value) {
-                                if(!Auth.isNotSubs!){
-                                  setState(() {
-                                    parameters.food_supplement = "Non";
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            border:   Border.all(color: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.4) : AppColors.appmaincolor,width: 1.5),
-                            borderRadius: BorderRadius.circular(1000)
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Non",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(
-          children: [
-            Text("Médicaments",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-            Spacer(),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.medicine = "Oui";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: parameters.medicine == "Oui" ? AppColors.appmaincolor : Colors.transparent),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Transform.scale(
-                          scale: 0.9,
-                          child: SizedBox(
-                            width: 25,
-                            height: 25,
-                            child: Checkbox(
-                              checkColor: Colors.transparent,
-                              activeColor: AppColors.appmaincolor,
-                              value: parameters.medicine == "Oui",
-                              shape: CircleBorder(),
-                              splashRadius: 20,
-                              side: BorderSide(
-                                  width: 0,
-                                  color: Colors.transparent
-                              ),
-                              onChanged: (bool? value) {
-                                if(!Auth.isNotSubs!){
-                                  setState(() {
-                                    parameters.medicine = "Oui";
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            border:   Border.all(color: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.4) : AppColors.appmaincolor,width: 1.5),
-                            borderRadius: BorderRadius.circular(1000)
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Oui",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.medicine = "Non";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: parameters.medicine == "Non" ? AppColors.appmaincolor : Colors.transparent),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: Transform.scale(
-                          scale: 0.9,
-                          child: SizedBox(
-                            width: 25,
-                            height: 25,
-                            child: Checkbox(
-                              checkColor: Colors.transparent,
-                              activeColor: AppColors.appmaincolor,
-                              value: parameters.medicine == "Non",
-                              shape: CircleBorder(),
-                              splashRadius: 20,
-                              side: BorderSide(
-                                  width: 0,
-                                  color: Colors.transparent
-                              ),
-                              onChanged: (bool? value) {
-                                if(!Auth.isNotSubs!){
-                                  setState(() {
-                                    parameters.medicine = "Non";
-                                  });
-                                }
-                              },
-                            ),
-                          ),
-                        ),
-                        decoration: BoxDecoration(
-                            border:   Border.all(color: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.4) : AppColors.appmaincolor,width: 1.5),
-                            borderRadius: BorderRadius.circular(1000)
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("Non",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(
-          children: [
-            Text("Café",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-            Spacer(),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.coffee = "Oui";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: parameters.coffee == "Oui" ? AppColors.appmaincolor : Colors.transparent),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      child: Transform.scale(
-                        scale: 0.9,
-                        child: SizedBox(
-                          width: 25,
-                          height: 25,
-                          child: Checkbox(
-                            checkColor: Colors.transparent,
-                            activeColor: AppColors.appmaincolor,
-                            value: parameters.coffee == "Oui",
-                            shape: CircleBorder(),
-                            splashRadius: 20,
-                            side: BorderSide(
-                                width: 0,
-                                color: Colors.transparent
-                            ),
-                            onChanged: (bool? value) {
-                              if(!Auth.isNotSubs!){
-                                setState(() {
-                                  parameters.coffee = "Oui";
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          border:   Border.all(color: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.4) : AppColors.appmaincolor,width: 1.5),
-                          borderRadius: BorderRadius.circular(1000)
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text("Oui",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-                  ],
-                ),
-              ),
-              ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.coffee = "Non";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: parameters.coffee == "Non" ? AppColors.appmaincolor : Colors.transparent),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      child: Transform.scale(
-                        scale: 0.9,
-                        child: SizedBox(
-                          width: 25,
-                          height: 25,
-                          child: Checkbox(
-                            checkColor: Colors.transparent,
-                            activeColor: AppColors.appmaincolor,
-                            value: parameters.coffee == "Non",
-                            shape: CircleBorder(),
-                            splashRadius: 20,
-                            side: BorderSide(
-                                width: 0,
-                                color: Colors.transparent
-                            ),
-                            onChanged: (bool? value) {
-                              if(!Auth.isNotSubs!){
-                                setState(() {
-                                  parameters.coffee = "Non";
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          border:   Border.all(color: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.4) : AppColors.appmaincolor,width: 1.5),
-                          borderRadius: BorderRadius.circular(1000)
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text("Non",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-                  ],
-                ),
-              ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(
-          children: [
-            Text("Eau",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-            Spacer(),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.water = "Oui";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: parameters.water == "Oui" ? AppColors.appmaincolor : Colors.transparent),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      child: Transform.scale(
-                        scale: 0.9,
-                        child: SizedBox(
-                          width: 25,
-                          height: 25,
-                          child: Checkbox(
-                            checkColor: Colors.transparent,
-                            activeColor: AppColors.appmaincolor,
-                            value: parameters.water == "Oui",
-                            shape: CircleBorder(),
-                            splashRadius: 20,
-                            side: BorderSide(
-                                width: 0,
-                                color: Colors.transparent
-                            ),
-                            onChanged: (bool? value) {
-                              if(!Auth.isNotSubs!){
-                                setState(() {
-                                  parameters.water = "Oui";
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          border:   Border.all(color: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.4) : AppColors.appmaincolor,width: 1.5),
-                          borderRadius: BorderRadius.circular(1000)
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text("Oui",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-                  ],
-                ),
-              ),
-              ),
-            ),
-            SizedBox(
-              width: 20,
-            ),
-            GestureDetector(
-              onTap: (){
-                if(!Auth.isNotSubs!){
-                  setState(() {
-                    parameters.water = "Non";
-                  });
-                }
-              },
-              child: ZoomTapAnimation(end: 0.99,child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: parameters.water == "Non" ? AppColors.appmaincolor : Colors.transparent),
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                child: Row(
-                  children: [
-                    Container(
-                      child: Transform.scale(
-                        scale: 0.9,
-                        child: SizedBox(
-                          width: 25,
-                          height: 25,
-                          child: Checkbox(
-                            checkColor: Colors.transparent,
-                            activeColor: AppColors.appmaincolor,
-                            value: parameters.water == "Non",
-                            shape: CircleBorder(),
-                            splashRadius: 20,
-                            side: BorderSide(
-                                width: 0,
-                                color: Colors.transparent
-                            ),
-                            onChanged: (bool? value) {
-                              if(!Auth.isNotSubs!){
-                                setState(() {
-                                  parameters.water = "Non";
-                                });
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      decoration: BoxDecoration(
-                          border:   Border.all(color: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.4) : AppColors.appmaincolor,width: 1.5),
-                          borderRadius: BorderRadius.circular(1000)
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text("Non",style: TextStyle(color: Auth.isNotSubs! ? Colors.grey : Colors.black,fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
-                  ],
-                ),
-              ),
-              ),
-            ),
-          ],
-        ),
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          )
+        }
       ],
     );
   }

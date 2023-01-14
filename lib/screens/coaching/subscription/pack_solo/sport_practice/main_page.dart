@@ -5,8 +5,11 @@ import 'package:run_your_life/models/auths_model.dart';
 import 'package:run_your_life/models/subscription_models/step5_subs.dart';
 import 'package:run_your_life/screens/coaching/subscription/form_completed.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/make_choices.dart';
+import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/not_pregnant/1st_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/pregnant/1st_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/pregnant/2nd_page.dart';
+import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/pregnant/3rd_page.dart';
+import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/pregnant/5th_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_solo/eating/main_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/stepper.dart';
 import 'package:run_your_life/screens/landing.dart';
@@ -26,8 +29,8 @@ class PackSoloSportMainPage extends StatefulWidget {
 }
 
 class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
-  List<Widget> _firstscreen = [Container(),SportMakeChoices(),Pregnant1stPage()];
-  List<Widget> _secondscreen = [Container(),SportMakeChoices(),Pregnant2ndPage()];
+  List<Widget> _firstscreen = [Container(),SportMakeChoices(),Pregnant1stPage(),Pregnant2ndPage(),Pregnant3rdPage()];
+  List<Widget> _secondscreen = [Container(),SportMakeChoices(),NotPregnant1stPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final Step5Service _step5service = new Step5Service();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
@@ -122,15 +125,15 @@ class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
                         SizedBox(
                           height: 40,
                         ),
-                        step5subs.practice_sport == "Yes" ?
-                        _firstscreen[_currentPage] :
-                        _secondscreen[_currentPage],
+                        step5subs.practice_sport == "Non" ?
+                        _secondscreen[_currentPage] :
+                        _firstscreen[_currentPage],
                         SizedBox(
                           height: 50,
                         ),
                         _materialbutton.materialButton("SUIVANT", () {
                           setState(() {
-                            if(_currentPage > 1){
+                            if(step5subs.practice_sport == "Non" ? _currentPage > 1 : _currentPage > 3){
                               step5subs.activity_outside_sport_level = "N/A";
                               step5subs.pain = "N/A";
                               step5subs.confident_on_athletic_ability = 0.0;
@@ -144,7 +147,7 @@ class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
                               _step5service.submit(context).then((value){
                                 if(value != null){
                                   Navigator.of(context).pop(null);
-                                  _routes.navigator_push(context, FormCompleted());
+                                  _routes.navigator_push(context, PackSoloEatingMainPage());
                                 }
                               });
                             }else{

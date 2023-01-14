@@ -24,7 +24,7 @@ class _WaterTrackingState extends State<WaterTracking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBars.whiteappbar(context, title: "TRACKING JOURNÉE"),
+      appBar: _appBars.whiteappbar(context, title: "SUIVI DE LA JOURNÉE"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -48,7 +48,7 @@ class _WaterTrackingState extends State<WaterTracking> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text("Combien de verre(s) d’eau avez-vous bu aujourd’hui ?",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
+                  Text("Combien de verre(s) d’eau as-tu bu aujourd’hui ?",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
                   SizedBox(
                     height: 10,
                   ),
@@ -72,7 +72,7 @@ class _WaterTrackingState extends State<WaterTracking> {
                         inactiveTrackBarHeight: 10,
                         activeTrackBarHeight: 10,
                         activeTrackBar: BoxDecoration(
-                            color: homeTracking.water >= 10 ? Colors.redAccent : AppColors.appmaincolor,
+                            color: homeTracking.water >= 5 ? AppColors.appmaincolor : Colors.redAccent,
                             borderRadius: BorderRadius.circular(1000)
                         ),
                         inactiveTrackBar: BoxDecoration(
@@ -82,7 +82,7 @@ class _WaterTrackingState extends State<WaterTracking> {
                       ),
                       handler: FlutterSliderHandler(
                           decoration: BoxDecoration(
-                              color: homeTracking.water >= 10 ? Colors.redAccent  : AppColors.appmaincolor,
+                              color: homeTracking.water >= 5 ? AppColors.appmaincolor : Colors.redAccent,
                               borderRadius: BorderRadius.circular(10)
                           ),
                           child: Text(homeTracking.water.floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
@@ -110,19 +110,7 @@ class _WaterTrackingState extends State<WaterTracking> {
                     });
                   }),
                   SizedBox(
-                    height: 15,
-                  ),
-                  InkWell(
-                    child: Container(
-                      width: double.infinity,
-                      height: 55,
-                      child: Center(
-                        child: Text("ANNULER",style: TextStyle(fontFamily: "AppFontStyle",color: AppColors.darpinkColor,fontWeight: FontWeight.w600),),
-                      ),
-                    ),
-                    onTap: (){
-                      Navigator.of(context).pop(null);
-                    },
+                    height: 40,
                   ),
                 ],
               ),

@@ -29,8 +29,8 @@ class ParameterServices{
         }
       });
     } catch (e) {
-      Navigator.of(context).pop(null);
-      print("ERROR GET TRACKING${e.toString()}");
+      // Navigator.of(context).pop(null);
+      print("ERROR SETTING${e.toString()}");
     }
   }
 

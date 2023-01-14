@@ -19,7 +19,7 @@ class _EmailSentState extends State<EmailSent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBars.preferredSize(height: 70,logowidth: 95),
+      appBar: _appBars.preferredSize(height: 70,logowidth: 90),
       body: Container(
         width: double.infinity,
         height: double.infinity,

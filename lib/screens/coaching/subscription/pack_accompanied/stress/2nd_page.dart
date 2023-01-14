@@ -10,7 +10,8 @@ class Stress2ndPage extends StatefulWidget {
 }
 
 class _Stress2ndPageState extends State<Stress2ndPage> {
-  final TextEditingController _manageStress = new TextEditingController()..text=step6subs.manage_stress == "No, i can't" ? "" : step6subs.manage_stress;
+  List _manage = ["Oui rapidement","Oui mais difficilement","Non, je n'y arrive pas "];
+  final TextEditingController _manageStress = new TextEditingController()..text=step6subs.manage_stress == "Non, je ne peux pas" ? "" : step6subs.manage_stress;
 
   @override
   void dispose() {
@@ -25,13 +26,13 @@ class _Stress2ndPageState extends State<Stress2ndPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Êtes-vous stressé à la maison ".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Es-tu stressé(e) à la maison".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
-        Text("1 : je suis serein chez moi \n3: modérément \n5 : Je suis toujours sous pression à la maison.",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1 : Je suis serein(e) à la maison\n3: Modéremment\n5 : Je suis toujours sous pression à la maison",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
-          height: 30,
+          height: 20,
         ),
         Container(
           height: 60,
@@ -76,79 +77,67 @@ class _Stress2ndPageState extends State<Stress2ndPage> {
         SizedBox(
           height: 20,
         ),
-        Text("Pouvez-vous trouver des moyens de vous calmer ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Quand tu te sens très stressé(e)  (par exemple quand tu es en colère ou anxieux), arrives tu à trouver des moyens qui t'apaisent ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),
-        Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.grey)
-          ),
-          child: TextField(
-            controller: _manageStress,
-            maxLines: 4,
-            decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                border: InputBorder.none,
-                hintText: "Façons de gérer le stress",
-                hintStyle: TextStyle(color: Colors.grey,fontFamily: "AppFontStyle")
+        for(var x = 0 ;x < _manage.length;x ++)...{
+          ZoomTapAnimation(end: 0.99,child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 15,vertical: 20),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: step6subs.manage_stress == _manage[x] ? AppColors.appmaincolor : Colors.transparent,)
             ),
-            onChanged: (text){
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  child: Container(
+                    width: 23,
+                    height: 23,
+                    decoration: BoxDecoration(
+                        border: Border.all(color: AppColors.appmaincolor,width: 1.5),
+                        borderRadius: BorderRadius.circular(1000)
+                    ),
+                    child: Center(
+                      child: Container(
+                        width: 17,
+                        height: 17,
+                        decoration: BoxDecoration(
+                            color: step6subs.manage_stress == _manage[x] ? AppColors.appmaincolor : Colors.white,
+                            borderRadius: BorderRadius.circular(1000)
+                        ),
+                      ),
+                    ),
+                  ),
+                  onTap: (){
+                    setState(() {
+                      step6subs.manage_stress = _manage[x];
+                    });
+                  },
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Expanded(
+                  child: Text(_manage[x], style: new TextStyle(fontSize: 15,
+                      color: Colors.black,fontFamily: "AppFontStyle"),),
+                ),
+              ],
+            ),
+          ),
+            onTap: (){
               setState(() {
-                step6subs.manage_stress = text;
+                step6subs.manage_stress = _manage[x];
               });
             },
           ),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-        ZoomTapAnimation(end: 0.99,child: Container(
-          width: 230,
-          padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: step6subs.manage_stress == "No, i can't" ? AppColors.appmaincolor : Colors.transparent,)
+          SizedBox(
+            height: 15,
           ),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 30,
-                height: 30,
-                child: Transform.scale(
-                  scale: 1.4,
-                  child: Radio(
-                    activeColor: AppColors.appmaincolor,
-                    value: 2,
-                    groupValue: step6subs.manage_stress == "No, i can't" ? 2 : 1,
-                    onChanged: (val) {
-                      setState(() {
-                        _manageStress.text = "";
-                        step6subs.manage_stress = "No, i can't";
-                      });
-                    },
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 15,
-              ),
-              Text("No, je n'y arrive pas",style: new TextStyle(fontSize: 15,color: Colors.black,fontFamily: "AppFontStyle"),),
-            ],
-          ),
-        ),
-          onTap: (){
-            setState(() {
-              _manageStress.text = "";
-              step6subs.manage_stress = "No, i can't";
-            });
-          },
-        ),
-        SizedBox(
-          height: 40,
-        ),
+        },
       ],
     );
   }

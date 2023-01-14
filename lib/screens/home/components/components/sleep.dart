@@ -29,7 +29,7 @@ class _SleepTrackingState extends State<SleepTracking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBars.whiteappbar(context, title: "TRACKING JOURNÉE"),
+      appBar: _appBars.whiteappbar(context, title: "SUIVI DE LA JOURNÉE"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -73,7 +73,7 @@ class _SleepTrackingState extends State<SleepTracking> {
                         inactiveTrackBarHeight: 10,
                         activeTrackBarHeight: 10,
                         activeTrackBar: BoxDecoration(
-                            color:  homeTracking.sleep < 7 || homeTracking.sleep > 10 ? Colors.redAccent : AppColors.appmaincolor,
+                            color: homeTracking.sleep <= 7 || homeTracking.sleep >= 11 ? Colors.redAccent : AppColors.appmaincolor,
                             borderRadius: BorderRadius.circular(1000)
                         ),
                         inactiveTrackBar: BoxDecoration(
@@ -83,10 +83,10 @@ class _SleepTrackingState extends State<SleepTracking> {
                       ),
                       handler: FlutterSliderHandler(
                           decoration: BoxDecoration(
-                              color: homeTracking.sleep < 7 || homeTracking.sleep > 10 ? Colors.redAccent : AppColors.appmaincolor,
+                              color: homeTracking.sleep <= 7 || homeTracking.sleep >= 11 ? Colors.redAccent : AppColors.appmaincolor,
                               borderRadius: BorderRadius.circular(10)
                           ),
-                          child: Text(homeTracking.sleep.floor().toString()+"${homeTracking.sleep == 15 ? "h30" : "h"}",style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
+                          child: Text(homeTracking.sleep.floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
                       ),
                       onDragging: (handlerIndex, lowerValue, upperValue) {
                         setState(() {
@@ -97,6 +97,7 @@ class _SleepTrackingState extends State<SleepTracking> {
                   ),
                   Spacer(),
                   _materialbutton.materialButton("VALIDER", () {
+                    print(homeTracking.trainingChecker.toString());
                     _screenLoaders.functionLoader(context);
                     _homeServices.submit_tracking(context).then((value){
                       if(value != null){
@@ -108,19 +109,7 @@ class _SleepTrackingState extends State<SleepTracking> {
                     });
                   }),
                   SizedBox(
-                    height: 15,
-                  ),
-                  InkWell(
-                    child: Container(
-                      width: double.infinity,
-                      height: 55,
-                      child: Center(
-                        child: Text("ANNULER",style: TextStyle(fontFamily: "AppFontStyle",color: AppColors.darpinkColor,fontWeight: FontWeight.w600),),
-                      ),
-                    ),
-                    onTap: (){
-                      Navigator.of(context).pop(null);
-                    },
+                    height: 40,
                   ),
                 ],
               ),

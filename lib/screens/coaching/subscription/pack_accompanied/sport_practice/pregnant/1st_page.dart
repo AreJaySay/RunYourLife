@@ -26,7 +26,7 @@ class _Pregnant1stPageState extends State<Pregnant1stPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text("Quelle(s) activité(s) et combien de temps par semaine ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Si tu pratiques un ou plusieurs sport(s), lequel pratiques-tu ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

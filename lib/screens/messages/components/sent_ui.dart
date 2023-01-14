@@ -60,7 +60,7 @@ class _SentDesignState extends State<SentDesign> {
         ),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 20),
-          child: DateFormat.yMMMd("fr").format(DateTime.parse(widget.details["created_at"].toString())) == DateFormat.yMMMd("fr").format(DateTime.now()) ?
+          child: DateFormat.yMMMd("fr").format(DateTime.parse(widget.details["created_at"].toString())) == DateFormat.yMMMd("fr").format(DateTime.now().toUtc().add(Duration(hours: 2))) ?
           Text("Aujourd'hui, ${DateFormat("HH:mm").format(DateTime.parse(widget.details["created_at"].toString()))}",style: TextStyle(fontSize: 11,color: Colors.grey),) :
           Text(DateFormat.yMMMd("fr").format(DateTime.parse(widget.details["created_at"].toString())),style: TextStyle(fontSize: 11,color: Colors.grey),),
         ),

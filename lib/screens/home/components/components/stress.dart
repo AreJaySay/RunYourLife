@@ -29,7 +29,7 @@ class _StressTrackingState extends State<StressTracking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBars.whiteappbar(context, title: "TRACKING JOURNÉE"),
+      appBar: _appBars.whiteappbar(context, title: "SUIVI DE LA JOURNÉE"),
       body: Container(
         width: double.infinity,
         height: double.infinity,
@@ -53,7 +53,7 @@ class _StressTrackingState extends State<StressTracking> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text("Sur une échelle de 0 à 10, quel est ton niveau de stress de la journée ? \n0 : pas stressé\n10 : très stressé",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
+                  Text("Sur une échelle de 0 à 10, quel est ton niveau de stress de la journée ? \n0 : pas stressé(e)\n10 : très stressé(e)",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
                   SizedBox(
                     height: 20,
                   ),
@@ -73,7 +73,7 @@ class _StressTrackingState extends State<StressTracking> {
                         inactiveTrackBarHeight: 10,
                         activeTrackBarHeight: 10,
                         activeTrackBar: BoxDecoration(
-                            color:  homeTracking.stress > 6 ? Colors.redAccent :  AppColors.appmaincolor,
+                            color: AppColors.appmaincolor,
                             borderRadius: BorderRadius.circular(1000)
                         ),
                         inactiveTrackBar: BoxDecoration(
@@ -83,7 +83,7 @@ class _StressTrackingState extends State<StressTracking> {
                       ),
                       handler: FlutterSliderHandler(
                           decoration: BoxDecoration(
-                              color: homeTracking.stress > 6 ? Colors.redAccent : AppColors.appmaincolor,
+                              color: AppColors.appmaincolor,
                               borderRadius: BorderRadius.circular(10)
                           ),
                           child: Text(homeTracking.stress.floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
@@ -110,19 +110,7 @@ class _StressTrackingState extends State<StressTracking> {
                     });
                   }),
                   SizedBox(
-                    height: 15,
-                  ),
-                  InkWell(
-                    child: Container(
-                      width: double.infinity,
-                      height: 55,
-                      child: Center(
-                        child: Text("ANNULER",style: TextStyle(fontFamily: "AppFontStyle",color: AppColors.darpinkColor,fontWeight: FontWeight.w600),),
-                      ),
-                    ),
-                    onTap: (){
-                      Navigator.of(context).pop(null);
-                    },
+                    height: 40,
                   ),
                 ],
               ),

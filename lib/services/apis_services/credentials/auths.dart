@@ -8,12 +8,10 @@ import 'package:run_your_life/services/apis_services/screens/profile.dart';
 import 'package:run_your_life/utils/network_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/auths_model.dart';
-import '../../../../utils/snackbars/snackbar_message.dart';
 import '../../other_services/http_requests.dart';
 
 class CredentialsServices{
   final HttpRequest _request =  HttpRequest.instance;
-  final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final NetworkUtility _networkUtility = new NetworkUtility();
   final ProfileServices _profileServices = new ProfileServices();
 
@@ -23,7 +21,6 @@ class CredentialsServices{
           headers: _request.defaultHeader,
           body: {"email": email, "password": password, "fcm_token": DeviceModel.devicefcmToken.toString()}).then((respo) async {
         var data = json.decode(respo.body);
-        print(data.toString());
         if (respo.statusCode == 200 || respo.statusCode == 201){
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('email', email.toString());
@@ -55,7 +52,6 @@ class CredentialsServices{
       }
     ).then((data)async{
       var respo = json.decode(data.body);
-      print(respo.toString());
       if(data.statusCode == 200 || data.statusCode == 201){
         return respo;
       }else{
@@ -77,13 +73,16 @@ class CredentialsServices{
           body: auth.toMap()
       ).then((data)async{
         var respo = json.decode(data.body);
+        print(respo.toString());
         if(data.statusCode == 200 || data.statusCode == 201){
           _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString()).whenComplete((){
             Navigator.of(context).pop(null);
             Navigator.of(context).pop(null);
           });
+          return respo;
         }else{
           Navigator.of(context).pop(null);
+          return null;
         }
       });
     }catch(e){

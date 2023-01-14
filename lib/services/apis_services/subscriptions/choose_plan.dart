@@ -10,23 +10,19 @@ class ChoosePlanService{
   final NetworkUtility _networkUtility = new NetworkUtility();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
 
-  Future choosePlan(context,{required Map planDetails, required String code, required String card_number, required String expiration_date_month, required String expiration_date_year, required String cvc})async{
+  Future choosePlan(context,{required String planid, required String purchaseToken, required String type, required String transacId})async{
     try{
-      return await http.post(Uri.parse("${_networkUtility.url}/user/api/test-payment"),
+      return await http.post(Uri.parse("${_networkUtility.url}/user/api/add-subscription"),
           headers: {
             HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
             "Accept": "application/json"
           },
           body: {
-            "client_id": Auth.loggedUser!['id'].toString(),
-            "plan_id": planDetails["id"].toString(),
-            "price_id": planDetails["prices"][planDetails["prices"].length - 1]["id"].toString(),
-            "price_code": planDetails["prices"][planDetails["prices"].length - 1]["stripe_id"].toString(),
-            "code": code.toString(),
-            "card_number": card_number.toString(),
-            "expiration_date_month": expiration_date_month.toString(),
-            "expiration_date_year": expiration_date_year.toString(),
-            "cvc": cvc.toString()
+            "plan_id": planid,
+            "purchaseToken": purchaseToken,
+            "packageName": "com.runyourlife4.runyourlife",
+            "transactionId": transacId,
+            "payment_method": type,
           }
       ).then((data)async{
         var respo = json.decode(data.body);
@@ -35,7 +31,7 @@ class ChoosePlanService{
           return respo;
         }else{
           Navigator.of(context).pop(null);
-          _snackbarMessage.snackbarMessage(context, message: respo['message']);
+          _snackbarMessage.snackbarMessage(context, message: respo['message'], is_error: true);
         }
       });
     }catch(e){

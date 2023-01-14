@@ -34,7 +34,6 @@ class Auth {
     "birthday": step1subs.birthdate.toString(),
     "phone_1": phone_1,
     "address_1": address_1,
-    "password": Auth.pass,
     "logo": base64Image,
   };
 }

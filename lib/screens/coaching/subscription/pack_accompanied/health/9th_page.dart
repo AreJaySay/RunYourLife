@@ -16,7 +16,7 @@ class _Health9thPageState extends State<Health9thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("ES TU ENCEINTE ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("ES-TU ENCEINTE ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -30,7 +30,7 @@ class _Health9thPageState extends State<Health9thPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step3subs.pregnant == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step3subs.pregnant == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -44,10 +44,10 @@ class _Health9thPageState extends State<Health9thPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step3subs.pregnant == "Yes" ? 1 : 2,
+                          groupValue: step3subs.pregnant == "Oui" ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step3subs.pregnant = "Yes";
+                              step3subs.pregnant = "Oui";
                             });
                           },
                         ),
@@ -62,7 +62,7 @@ class _Health9thPageState extends State<Health9thPage> {
               ),
               onTap: (){
                 setState(() {
-                  step3subs.pregnant = "Yes";
+                  step3subs.pregnant = "Oui";
                 });
               },
             ),
@@ -76,7 +76,7 @@ class _Health9thPageState extends State<Health9thPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step3subs.pregnant == "No" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step3subs.pregnant == "Non" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -90,10 +90,10 @@ class _Health9thPageState extends State<Health9thPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 2,
-                          groupValue: step3subs.pregnant == "No" ? 2 : 1,
+                          groupValue: step3subs.pregnant == "Non" ? 2 : 1,
                           onChanged: (val) {
                             setState(() {
-                              step3subs.pregnant = "No";
+                              step3subs.pregnant = "Non";
                             });
                           },
                         ),
@@ -108,7 +108,7 @@ class _Health9thPageState extends State<Health9thPage> {
               ),
               onTap: (){
                 setState(() {
-                  step3subs.pregnant = "No";
+                  step3subs.pregnant = "Non";
                 });
               },
             ),

@@ -6,10 +6,10 @@ import 'package:flutter/services.dart';
 class TextFields extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
-  final bool is_password, isWeight, isCode;
+  final bool is_password, isWeight, isCode, isEnable;
   final TextInputType inputType;
   final Function(String)? onChanged;
-  TextFields(this.controller,{this.hintText = "", this.is_password = false, this.onChanged, this.inputType = TextInputType.text, this.isWeight = false, this.isCode = false});
+  TextFields(this.controller,{this.hintText = "", this.is_password = false, this.onChanged, this.inputType = TextInputType.text, this.isWeight = false, this.isCode = false, this.isEnable = true});
   @override
   _TextFieldsState createState() => _TextFieldsState();
 }
@@ -22,11 +22,12 @@ class _TextFieldsState extends State<TextFields> {
     return TextField(
       maxLength: widget.isWeight ? 3 : null,
       keyboardType: widget.inputType,
-      textAlignVertical: TextAlignVertical.center,
+      enabled: widget.isEnable,
+      textAlignVertical: widget.isEnable ? TextAlignVertical.center : null,
       controller: widget.controller,
       obscureText: widget.is_password ? _isvisible : false,
       style: TextStyle(fontFamily: "AppFontStyle",fontSize: widget.isCode ? 17 : 15,fontWeight: widget.isCode ? FontWeight.w600 : FontWeight.normal),
-      inputFormatters: !widget.isWeight ? null : [FilteringTextInputFormatter.allow(RegExp('[0-9.,]+')),],
+      inputFormatters: !widget.isWeight ? null : [FilteringTextInputFormatter.allow(RegExp('[0-9]+')),],
       decoration: new InputDecoration(
           fillColor: Colors.white,
           filled: true,

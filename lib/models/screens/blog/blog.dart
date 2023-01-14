@@ -1,5 +1,5 @@
-class BlogModel{
-  List? favorites;
-}
-
-BlogModel blogModel = new BlogModel();
+// class BlogModel{
+//   List? favorites;
+// }
+//
+// BlogModel blogModel = new BlogModel();

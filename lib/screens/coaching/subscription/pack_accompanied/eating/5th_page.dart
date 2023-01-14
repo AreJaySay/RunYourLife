@@ -13,7 +13,7 @@ class Eating5thPage extends StatefulWidget {
 }
 
 class _Eating5thPageState extends State<Eating5thPage> {
-  TextEditingController _intolerance = new TextEditingController()..text=step2subs.intolerances == "No intolerance" ? "" : step2subs.intolerances;
+  TextEditingController _intolerance = new TextEditingController()..text=step2subs.intolerances == "Non" ? "" : step2subs.intolerances;
 
   @override
   void dispose() {
@@ -28,7 +28,7 @@ class _Eating5thPageState extends State<Eating5thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("DES INTOLÉRANCES ALIMENTAIRES ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Est-ce que tu as des intolérances alimentaires ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -41,7 +41,7 @@ class _Eating5thPageState extends State<Eating5thPage> {
             fillColor: Colors.white,
             contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
             border: InputBorder.none,
-            hintText: "Intolérances alimentaire",
+            hintText: "Intolérances alimentaires",
             hintStyle: TextStyle(color: Colors.grey),
             enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.grey.shade400),
@@ -62,12 +62,12 @@ class _Eating5thPageState extends State<Eating5thPage> {
           height: 30,
         ),
         ZoomTapAnimation(end: 0.99,child: Container(
-            width: 220,
+            width: 230,
             padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: step2subs.intolerances == "No intolerance" ? AppColors.appmaincolor : Colors.transparent,)
+              border: Border.all(color: step2subs.intolerances == "Non" ? AppColors.appmaincolor : Colors.transparent,)
             ),
             child: Row(
               children: [
@@ -79,11 +79,11 @@ class _Eating5thPageState extends State<Eating5thPage> {
                     child: Radio(
                       activeColor: AppColors.appmaincolor,
                       value: 2,
-                      groupValue: step2subs.intolerances == "No intolerance" ? 2 : 1,
+                      groupValue: step2subs.intolerances == "Non" ? 2 : 1,
                       onChanged: (val) {
                         setState(() {
                           _intolerance.text = "";
-                          step2subs.intolerances = "No intolerance";
+                          step2subs.intolerances = "Non";
                         });
                       },
                     ),
@@ -99,7 +99,7 @@ class _Eating5thPageState extends State<Eating5thPage> {
           onTap: (){
             setState(() {
               _intolerance.text = "";
-              step2subs.intolerances = "No intolerance";
+              step2subs.intolerances = "Non";
             });
           },
         ),

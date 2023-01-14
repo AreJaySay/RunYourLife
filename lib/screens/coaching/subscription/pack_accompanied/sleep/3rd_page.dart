@@ -10,8 +10,8 @@ class Sleep3rdPage extends StatefulWidget {
 }
 
 class _Sleep3rdPageState extends State<Sleep3rdPage> {
-  List _isgotoBed = ["Oui","Oui sauf le week-end","Non je change mes heures de coucher tout le temps"];
-  List _isWakeUp = ["Oui","Oui sauf le week-end","Non je me réveille à des heures changeantes pendant la semaine"];
+  List _isgotoBed = ["Oui","Oui sauf le week-end","Non je change tout le temps mes heures de coucher"];
+  List _isWakeUp = ["Oui","Oui sauf le week-end","Non je me réveille à des heures changeantes dans la semaine"];
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class _Sleep3rdPageState extends State<Sleep3rdPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Vous couchez-vous à des heures régulières tout au long de la semaine (y compris les week-ends) ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Te couches-tu à des heures régulières toute la semaine (week-end inclu)?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -83,7 +83,7 @@ class _Sleep3rdPageState extends State<Sleep3rdPage> {
         SizedBox(
           height: 30,
         ),
-        Text("Vous réveillez-vous à des heures régulières tout au long de la semaine (y compris les week-ends) ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Te réveilles-tu à des heures régulières toute la semaine (week-end inclu) ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -147,7 +147,7 @@ class _Sleep3rdPageState extends State<Sleep3rdPage> {
         SizedBox(
           height: 30,
         ),
-        Text("Êtes-vous exposé à la lumière du jour (extérieur) avant 10h pendant au moins 10 minutes ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Est-ce que tu t'exposes à la lumière du jour (dehors) avant 10 h du matin au moins 10 min".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -159,7 +159,7 @@ class _Sleep3rdPageState extends State<Sleep3rdPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step7subs.daylight_exposure == "Yes" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step7subs.daylight_exposure == "Oui" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -171,10 +171,10 @@ class _Sleep3rdPageState extends State<Sleep3rdPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 1,
-                          groupValue: step7subs.daylight_exposure == "Yes" ? 1 : 2,
+                          groupValue: step7subs.daylight_exposure == "Oui" ? 1 : 2,
                           onChanged: (val) {
                             setState(() {
-                              step7subs.daylight_exposure = "Yes";
+                              step7subs.daylight_exposure = "Oui";
                             });
                           },
                         ),
@@ -189,7 +189,7 @@ class _Sleep3rdPageState extends State<Sleep3rdPage> {
               ),
               onTap: (){
                 setState(() {
-                  step7subs.daylight_exposure = "Yes";
+                  step7subs.daylight_exposure = "Oui";
                 });
               },
             ),
@@ -201,7 +201,7 @@ class _Sleep3rdPageState extends State<Sleep3rdPage> {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: step7subs.daylight_exposure == "No" ? AppColors.appmaincolor : Colors.transparent,)
+                    border: Border.all(color: step7subs.daylight_exposure == "Non" ? AppColors.appmaincolor : Colors.transparent,)
                 ),
                 child: Row(
                   children: [
@@ -213,10 +213,10 @@ class _Sleep3rdPageState extends State<Sleep3rdPage> {
                         child: Radio(
                           activeColor: AppColors.appmaincolor,
                           value: 2,
-                          groupValue: step7subs.daylight_exposure == "No" ? 2 : 1,
+                          groupValue: step7subs.daylight_exposure == "Non" ? 2 : 1,
                           onChanged: (val) {
                             setState(() {
-                              step7subs.daylight_exposure = "No";
+                              step7subs.daylight_exposure = "Non";
                             });
                           },
                         ),
@@ -231,7 +231,7 @@ class _Sleep3rdPageState extends State<Sleep3rdPage> {
               ),
               onTap: (){
                 setState(() {
-                  step7subs.daylight_exposure = "No";
+                  step7subs.daylight_exposure = "Non";
                 });
               },
             ),

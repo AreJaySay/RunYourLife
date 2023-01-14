@@ -9,6 +9,7 @@ class Step5Subs{
   final Routes _routes = new Routes();
 
   // PREGNANT
+  List<double> performances = [];
   List<TextEditingController> sports = [];
   List<TextEditingController> duration = [];
   String practice_sport;
@@ -88,7 +89,7 @@ class Step5Subs{
 
   Widget richtext({required Map formInfo}){
     return ReadMoreText(
-       subscriptionDetails.currentdata[0]["plan_id"] == 1 ?
+       subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ?
        "Pratique de sport: ${formInfo["practice_sport"] == null ? "N/A" : formInfo["practice_sport"].toString()}\n"
        "Types de sport: ${formInfo["sport_types"] == null ? "N/A" : formInfo["sport_types"].toString()}\n"
        "Niveau de pratique de sport: ${formInfo["sporting_activity_level"] == null ? "N/A" : formInfo["sporting_activity_level"].toString()}\n" :

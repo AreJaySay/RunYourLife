@@ -29,8 +29,6 @@ class _SleepMainPageState extends State<SleepMainPage> {
   final Materialbutton _materialbutton = new Materialbutton();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final Step7Service _step7service = new Step7Service();
-  final SubscriptionServices _subscriptionServices = new SubscriptionServices();
-  final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final Routes _routes = new Routes();
   int _currentPage = 1;
 

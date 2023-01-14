@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:run_your_life/functions/loaders.dart';
 import 'package:run_your_life/models/screens/home/tracking.dart';
 import 'package:run_your_life/services/apis_services/screens/home.dart';
@@ -25,6 +26,20 @@ class _SupplementTrackingState extends State<SupplementTracking> {
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final AppBars _appBars = AppBars();
   TextEditingController _supplements = new TextEditingController()..text=homeTracking.supplements.toString() == "null"? "" : homeTracking.supplements;
+  bool _keyboardVisible = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    KeyboardVisibilityController().onChange.listen((event) {
+      Future.delayed(Duration(milliseconds:  100), () {
+        setState(() {
+          _keyboardVisible = event;
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +48,21 @@ class _SupplementTrackingState extends State<SupplementTracking> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
-        appBar: _appBars.whiteappbar(context, title: "TRACKING JOURNÉE"),
+        appBar: _appBars.whiteappbar(context, title: "SUIVI DE LA JOURNÉE"),
         body: Container(
           width: double.infinity,
           height: double.infinity,
-          child: ListView(
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
+          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("COMPLÉMENT ALIMENTAIRE",style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),),
-              SizedBox(
+              _keyboardVisible ? Container() :Text("COMPLÉMENT ALIMENTAIRE",style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),),
+              _keyboardVisible ? Container() :SizedBox(
                 height: 20,
               ),
-              Text("As-tu pris des compléments alimentaires aujourd’hui ?",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-              SizedBox(
+              _keyboardVisible ? Container() :Text("As-tu pris des compléments alimentaires aujourd’hui ?",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+              _keyboardVisible ? Container() : SizedBox(
                 height: 30,
               ),
               Container(
@@ -61,7 +77,7 @@ class _SupplementTrackingState extends State<SupplementTracking> {
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
                       border: InputBorder.none,
-                      hintText: "Décrivez les compléments alimentaires que vous avez pris aujourd’hui",
+                      hintText: "Décris les compléments alimentaires que tu as pris aujourd’hui",
                       hintStyle: TextStyle(color: Colors.grey[400],fontFamily: "AppFontStyle")
                   ),
                   onChanged: (text){
@@ -115,9 +131,7 @@ class _SupplementTrackingState extends State<SupplementTracking> {
                   });
                 },
               ),
-              SizedBox(
-                height: 140,
-              ),
+              Spacer(),
               _materialbutton.materialButton("VALIDER", () {
                 _screenLoaders.functionLoader(context);
                 _homeServices.submit_tracking(context).then((value){
@@ -130,20 +144,8 @@ class _SupplementTrackingState extends State<SupplementTracking> {
                 });
               }),
               SizedBox(
-                height: 15,
-              ),
-              InkWell(
-                child: Container(
-                  width: double.infinity,
-                  height: 55,
-                  child: Center(
-                    child: Text("ANNULER",style: TextStyle(fontFamily: "AppFontStyle",color: AppColors.darpinkColor,fontWeight: FontWeight.w600),),
-                  ),
-                ),
-                onTap: (){
-                  Navigator.of(context).pop(null);
-                },
-              ),
+                height: _keyboardVisible ? 10 : 30,
+              )
             ],
           ),
         ),
