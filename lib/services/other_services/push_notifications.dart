@@ -60,7 +60,9 @@ class PushNotifications{
       FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
-        if(notification!.title!.contains("New Message")){
+        print(notification!.title.toString());
+        print(notification.body.toString());
+        if(notification.title!.contains("New Message")){
           _messageServices.getMessages();
           notificationNotifyStreamServices.update(data: true);
           if(Parameters.notify1st != ""){

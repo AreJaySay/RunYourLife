@@ -10,7 +10,7 @@ class Eating9thPage extends StatefulWidget {
 }
 
 class _Eating9thPageState extends State<Eating9thPage> {
-  List<String> _alcoholcons = ["Jamais","Rarement (quelque fois par an)","Occasionnellement: quelques fois par mois","Régulièrement: quelques fois par semaine","Quotidiennement: 1 à 2 fois par jour","Quotidiennement: plus de 2 fois par jour"];
+  List<String> _alcoholcons = ["Jamais","Rarement (quelque fois par an)","Occasionnellement : Quelques fois par mois","Régulièrement : Quelques fois par semaine","Quotidiennement : 1 à 2 fois par jour","Quotidiennement : Plus de 2 fois par jour"];
 
   @override
   Widget build(BuildContext context) {

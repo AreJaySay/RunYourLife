@@ -37,7 +37,7 @@ class _Eating7thPageState extends State<Eating7thPage> {
           decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
               border: InputBorder.none,
-              hintText: "Quantité d'eau bu par jour",
+              hintText: "Quantité d’eau bue par jour",
               hintStyle: TextStyle(color: Colors.grey,fontFamily: "AppFontStyle"),
               fillColor: Colors.white,
               filled: true,

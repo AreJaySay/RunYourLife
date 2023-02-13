@@ -116,7 +116,7 @@ class _SendTrackingState extends State<SendTracking> {
             print(purchaseDetails.productID);
             print(purchaseDetails.transactionDate);
             _screenLoaders.functionLoader(context);
-            _choosePlanService.choosePlan(context, planid: "3",
+            _choosePlanService.upgrade(context, planid: "3",
               purchaseToken: purchaseDetails.verificationData
                   .serverVerificationData.toString(),
               transacId: "accompagned_subs",

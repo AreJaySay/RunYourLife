@@ -15,11 +15,11 @@ class Objective1stPage extends StatefulWidget {
 
 class _Objective1stPageState extends State<Objective1stPage> {
   List<String> _goals = [
-    if(subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo"))...{
+    // if(subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo"))...{
       "Perdre du poids (Tu veux perdre au moins 5 kg)",
-    }else...{
-      "Perdre du poids (Tu veux perdre au moins 5 kg)\nPour une perte de poids:",
-    },
+    // }else...{
+    //   "Perdre du poids (Tu veux perdre au moins 5 kg)",
+    // },
     "Améliorer ta santé (améliorer ta nutrition, en maintenant ton poids actuel)",
     "Composition corporelle (tu veux perdre moins de 5kg, en construisant du muscle)",
     "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)",
@@ -32,7 +32,7 @@ class _Objective1stPageState extends State<Objective1stPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Quel est objectif ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("QUEL EST TON OBJECTIF ?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

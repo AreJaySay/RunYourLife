@@ -60,7 +60,7 @@ class _SearchNotificationState extends State<SearchNotification> {
               widget.notifications.isEmpty ?
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
-                child: NoDataFound(firstString: "AUCUNE", secondString: "RECHERCHE TROUVÉE", thirdString: "Veuillez vérifier l'orthographe ou essayer d'autres mots-clés."),
+                child: NoDataFound(firstString: "AUCUN", secondString: "RECHERCHE TROUVÉE", thirdString: "Veuillez vérifier l'orthographe ou essayer d'autres mots-clés."),
               )
                   :
               Expanded(

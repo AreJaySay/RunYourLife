@@ -57,7 +57,7 @@ class _Stress1stPageState extends State<Stress1stPage> {
         SizedBox(
           height: 15,
         ),
-        Text("1: Pas stressant\n3 : Modéremment \n5: Très stressant",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1 : Pas stressant\n3 : Modéremment \n5 : Très stressant",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
@@ -108,7 +108,7 @@ class _Stress1stPageState extends State<Stress1stPage> {
         SizedBox(
           height: 15,
         ),
-        Text("1: Pas épanouissant\n3 : Modéremment\n5: Très épanouissant",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1 : Pas épanouissant\n3 : Modéremment\n5 : Très épanouissant",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

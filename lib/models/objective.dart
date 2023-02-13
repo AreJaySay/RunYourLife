@@ -19,9 +19,9 @@ class Objective {
   });
 
   factory Objective.fromJson(Map<String, dynamic> json) => Objective(
-        objective: json['objective'] == null ? null : SubObjective.fromJson(json['objective']),
+        objective: json['obj_programmation'] == null ? null : SubObjective.fromJson(json['obj_programmation']),
         clientId: json['client_id'].toInt(),
-        idObjective: json['id_objective'].toInt(),
+        idObjective: json['id_obj_programmation'].toInt(),
         createdAt: DateTime.parse(json['created_at']),
         id: json['id'].toInt(),
         position: json['position']?.toInt() ?? 0,
@@ -33,7 +33,7 @@ class Objective {
     "id" : id,
     "objective" : objective != null ? objective!.toJson() : null,
     "client_id" : clientId,
-    "id_objective" : idObjective,
+    "id_obj_programmation" : idObjective,
     "createdAt" : createdAt.toString(),
     "updatedAt" : updatedAt.toString(),
     "view_status" : viewStatus,
@@ -65,7 +65,7 @@ class SubObjective {
         id: json['id'].toInt(),
         title: json['title'] ?? "",
         coachId: json['coach_id'].toInt(),
-        description: json['obj_description'] ?? "",
+        description: json['programmation_description'] ?? "",
         tags: json['tags'].toInt(),
         relatedTags: json['related_tags'] == null
             ? null
@@ -76,7 +76,7 @@ class SubObjective {
         "id": id,
         "coach_id": coachId,
         "title": title,
-        "obj_description": description,
+        "programmation_description": description,
         "tags": tags,
         "related_tags": relatedTags == null ? null : relatedTags!.toJson(),
       };

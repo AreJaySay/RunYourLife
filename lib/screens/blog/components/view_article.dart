@@ -46,7 +46,7 @@ class _ViewArticleState extends State<ViewArticle> {
     await FlutterShare.share(
         title: 'Run Your Life Blog',
         text: _details!["title"],
-        linkUrl: 'https://dev-front.runyourlife.checkmy.dev/blog/${_details!["id"].toString()}/shared_preview',
+        linkUrl: 'https://app.runyourlife.fr/blog/${_details!["id"].toString()}/shared_preview',
     );
   }
 
@@ -65,6 +65,8 @@ class _ViewArticleState extends State<ViewArticle> {
         });
       });
     _blogServices.get_favorites();
+    print(widget.articledetails);
+    _blogServices.blogCategory(category_id: widget.articledetails["category_id"].toString());
     _blogServices.blogDetails(blog_id: widget.articledetails["id"].toString()).then((value){
       setState(() {
         _details = value;
@@ -219,7 +221,9 @@ class _ViewArticleState extends State<ViewArticle> {
                     ],
                   ),
                 ),
-                widget.isRelated ? Column(
+                widget.isRelated ?
+                widget.articledetails["relate_art"].isEmpty ?
+                Container() : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -231,9 +235,9 @@ class _ViewArticleState extends State<ViewArticle> {
                       height: 10,
                     ),
                     Container(
-                      height: 280,
+                      height: 270,
                       width: double.infinity,
-                      child: ArticlesAssociate(related: blogStreamServices.currentdata.where((s) => s["category_id"] == _details!['category_id']).toList(),),
+                      child: ArticlesAssociate(related: widget.articledetails["relate_art"], coach: widget.articledetails["coach"],),
                     ),
                   ],
                 ) : Container(),

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:run_your_life/models/device_model.dart';
+import 'package:run_your_life/screens/checkin/components/my_ressources/components/components/view_ressources.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/widgets/no_data.dart';
 import 'package:intl/intl.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import '../../../../../services/apis_services/screens/objective.dart';
+import '../../../../../services/landing_page_services/objective_service.dart';
 import '../../../../../utils/palettes/app_colors.dart';
 import '../../../../../widgets/materialbutton.dart';
 
@@ -16,8 +19,13 @@ class MyRessourcesUrl extends StatefulWidget {
   State<MyRessourcesUrl> createState() => _MyRessourcesUrlState();
 }
 
-class _MyRessourcesUrlState extends State<MyRessourcesUrl> {
-  final Routes _routes = new Routes();
+class _MyRessourcesUrlState extends State<MyRessourcesUrl> with WidgetsBindingObserver, ObjectiveService {
+  final ObjectiveServices _objectiveServices = new ObjectiveServices();
+
+  void init() async {
+    await fetchObjectiveAndPopulate();
+  }
+
   final Materialbutton _materialButton = new Materialbutton();
 
   @override
@@ -37,37 +45,7 @@ class _MyRessourcesUrlState extends State<MyRessourcesUrl> {
                 context: context,
                 barrierDismissible: true,
                 builder: (BuildContext context) {
-                  return Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: Stack(
-                      children: [
-                        Center(
-                          child: WebView(
-                            initialUrl: widget.url[index]["documents"]["file_path"],
-                            javascriptMode: JavascriptMode.unrestricted,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            width: double.infinity,
-                            height: 110,
-                            alignment: Alignment.topCenter,
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Container(
-                              width: double.infinity,
-                              height: 55,
-                              margin: EdgeInsets.only(top: 20),
-                              child: _materialButton.materialButton("RETOURNER", (){
-                                Navigator.of(context).pop(null);
-                              }),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
+                  return ViewRessources(ressource: widget.url[index],);
                 });
           },
           child: Container(
@@ -75,7 +53,54 @@ class _MyRessourcesUrlState extends State<MyRessourcesUrl> {
             height: 100,
             margin: EdgeInsets.only(top: 20),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                InkWell(
+                  child: Container(
+                    child: Transform.scale(
+                      scale: 1,
+                      child: SizedBox(
+                        width: 23,
+                        height: 23,
+                        child: Checkbox(
+                          checkColor: AppColors.pinkColor,
+                          activeColor: Colors.white,
+                          value: widget.url[index]["status"] == 1,
+                          shape: CircleBorder(
+                              side: BorderSide.none
+                          ),
+                          splashRadius: 20,
+                          side: BorderSide(
+                              width: 0,
+                              color: Colors.transparent,
+                              style: BorderStyle.none
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              widget.url[index]["status"] = widget.url[index]["status"] == 0 ? 1 : 0;
+                            });
+                            _objectiveServices.changeStatus(id: widget.url[index]["id"].toString(), status:widget.url[index]["status"].toString(), isObjective: false).then((value){
+                              init();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: widget.url[index]["status"] == 0 ? Colors.grey : AppColors.pinkColor ,width: 2),
+                      borderRadius: BorderRadius.circular(1000),
+                    ),
+                    padding: EdgeInsets.all(3),
+                  ),
+                  onTap: (){
+
+                  },
+                ),
+                SizedBox(
+                  width: 10,
+                ),
                 Container(
                   width: 150,
                   padding: EdgeInsets.all(25),
@@ -99,11 +124,11 @@ class _MyRessourcesUrlState extends State<MyRessourcesUrl> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(widget.url[index]["documents"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                        Text(widget.url[index]["programmation"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
                         SizedBox(
                           height: 5,
                         ),
-                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.url[index]["documents"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
+                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.url[index]["programmation"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
                         // Text("0 commentaires",style: TextStyle(color: Colors.grey,fontSize: 12,fontFamily: "AppFontStyle"),),
                         Spacer(),
                         Row(
@@ -119,7 +144,7 @@ class _MyRessourcesUrlState extends State<MyRessourcesUrl> {
                             SizedBox(
                               width: 5,
                             ),
-                            widget.url[index]["documents"]["file_type"] == "application/pdf" ? Container(
+                            widget.url[index]["programmation"]["file_type"] == "application/pdf" ? Container(
                               child: Text("Read",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
                               decoration: BoxDecoration(
                                   color: Colors.grey[400],

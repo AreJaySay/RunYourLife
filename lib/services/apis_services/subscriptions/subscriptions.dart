@@ -30,7 +30,7 @@ class SubscriptionServices{
         }
       });
     } catch (e) {
-      print("ERROR GET BLOGS ${e.toString()}");
+      
     }
   }
 

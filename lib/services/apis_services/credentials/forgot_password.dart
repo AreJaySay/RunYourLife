@@ -26,7 +26,7 @@ class ForgotPasswordServices{
         var respo = json.decode(data.body);
         print("EMAIL ${respo.toString()}");
         if(data.statusCode == 200 || data.statusCode == 201){
-          _routes.navigator_pushreplacement(context, EmailSent());
+          _routes.navigator_pushreplacement(context, EmailSent(email: email!,));
         }else{
           Navigator.of(context).pop(null);
           _snackbarMessage.snackbarMessage(context, is_error: true, message: respo["message"] == "The given data was invalid" ? "Donnée incorrecte." :  respo["message"]);

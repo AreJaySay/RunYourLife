@@ -78,11 +78,7 @@ class _Sleep1stPageState extends State<Sleep1stPage> {
         SizedBox(
           height: 20,
         ),
-        Text("1= je me réveille fatigué(e), un peu ko\n5 = je me réveille en forme et semble avoir bien récupéré lors de ma nuit",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-        // SizedBox(
-        //   height: 10,
-        // ),
-        // Text("1 : pas en forme\n3: modérémment\n5 : Très en forme",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1 = Je me réveille fatigué(e), un peu ko\n5 = Je me réveille en forme et semble avoir bien récupéré lors de ma nuit",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),

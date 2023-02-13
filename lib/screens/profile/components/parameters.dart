@@ -571,7 +571,7 @@ class _ParameterPageState extends State<ParameterPage> {
             print(purchaseDetails.productID);
             print(purchaseDetails.transactionDate);
             _screenLoaders.functionLoader(context);
-            _choosePlanService.choosePlan(context,planid: "3", purchaseToken: purchaseDetails.verificationData.serverVerificationData.toString(), transacId: "accompagned_subs", type: Platform.isIOS ? "appstore" : "playstore",).then((value){
+            _choosePlanService.upgrade(context,planid: "3", purchaseToken: purchaseDetails.verificationData.serverVerificationData.toString(), transacId: "accompagned_subs", type: Platform.isIOS ? "appstore" : "playstore",).then((value){
               if(value != null){
                 _routes.navigator_pushreplacement(context, PresentationMainPage());
               }

@@ -19,7 +19,7 @@ class _Pregnant3rdPageState extends State<Pregnant3rdPage> {
         SizedBox(
           height: 15,
         ),
-        Text("1: mauvaise récupération = j'ai souvent peu d'énergie, à cause de celà j'ai du mal à m'entrainer plus. Cette fatigue dure souvent plus de 2 jours après une session d'entrainement normale\n5: bonne récupération = je sens que j'ai toujours récupéré à 100 % et je continue de progresser à l'entrainement",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1 : Mauvaise récupération = J'ai souvent peu d'énergie, à cause de celà j'ai du mal à m'entrainer plus. Cette fatigue dure souvent plus de 2 jours après une session d'entrainement normale\n5 : Bonne récupération = Je sens que j'ai toujours récupéré à 100 % et je continue de progresser à l'entrainement",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         // SizedBox(
         //   height: 10,
         // ),

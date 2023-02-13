@@ -10,6 +10,7 @@ import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/spo
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/pregnant/2nd_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/pregnant/3rd_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/pregnant/5th_page.dart';
+import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/pregnant/6th_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_solo/eating/main_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/stepper.dart';
 import 'package:run_your_life/screens/landing.dart';
@@ -29,7 +30,7 @@ class PackSoloSportMainPage extends StatefulWidget {
 }
 
 class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
-  List<Widget> _firstscreen = [Container(),SportMakeChoices(),Pregnant1stPage(),Pregnant2ndPage(),Pregnant3rdPage()];
+  List<Widget> _firstscreen = [Container(),SportMakeChoices(),Pregnant1stPage(),Pregnant2ndPage(),Pregnant3rdPage(),Pregnant6thPage()];
   List<Widget> _secondscreen = [Container(),SportMakeChoices(),NotPregnant1stPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final Step5Service _step5service = new Step5Service();
@@ -59,7 +60,7 @@ class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
               child: ListView(
                 padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
                 children: [
-                  MyStepper(2,range: double.parse(_currentPage.toString()),),
+                  MyStepper( step5subs.practice_sport == "Non" ? 2 : 5,range: double.parse(_currentPage.toString()),),
                   SizedBox(
                     height: 30,
                   ),
@@ -133,7 +134,7 @@ class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
                         ),
                         _materialbutton.materialButton("SUIVANT", () {
                           setState(() {
-                            if(step5subs.practice_sport == "Non" ? _currentPage > 1 : _currentPage > 3){
+                            if(step5subs.practice_sport == "Non" ? _currentPage > 1 : _currentPage > 4){
                               step5subs.activity_outside_sport_level = "N/A";
                               step5subs.pain = "N/A";
                               step5subs.confident_on_athletic_ability = 0.0;

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,20 +12,86 @@ import 'package:run_your_life/services/apis_services/credentials/auths.dart';
 import 'package:run_your_life/services/apis_services/screens/profile.dart';
 import 'package:run_your_life/services/other_services/push_notifications.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
+import 'package:run_your_life/services/stream_services/screens/landing.dart';
 import 'package:run_your_life/splashscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 import 'models/auths_model.dart';
 import 'screens/landing.dart';
 
+class ReceivedNotification {
+  ReceivedNotification({
+    required this.id,
+    required this.title,
+    required this.body,
+    required this.payload,
+  });
+
+  final int id;
+  final String? title;
+  final String? body;
+  final String? payload;
+}
+
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await _initialize();
   Workmanager().initialize(
     callbackDispatcher,
-    isInDebugMode: true
+    isInDebugMode: false
   );
   runApp(MyApp());
+}
+
+ _initialize()async{
+  const String navigationActionId = 'id_3';
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
+  final StreamController<ReceivedNotification> didReceiveLocalNotificationStream =
+  StreamController<ReceivedNotification>.broadcast();
+  final StreamController<String?> selectNotificationStream =
+  StreamController<String?>.broadcast();
+
+  const AndroidInitializationSettings initializationSettingsAndroid =
+  AndroidInitializationSettings('@mipmap/ic_launcher');
+  final DarwinInitializationSettings initializationSettingsDarwin =
+  DarwinInitializationSettings(
+    onDidReceiveLocalNotification:
+        (int id, String? title, String? body, String? payload) async {
+      didReceiveLocalNotificationStream.add(
+        ReceivedNotification(
+          id: id,
+          title: title,
+          body: body,
+          payload: payload,
+        ),
+      );
+    },
+  );
+  final Routes _routes = Routes();
+  final LinuxInitializationSettings initializationSettingsLinux = LinuxInitializationSettings(defaultActionName: 'Open notification');
+  final InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsDarwin,
+      macOS: initializationSettingsDarwin,
+      linux: initializationSettingsLinux);
+  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) {
+        switch (notificationResponse.notificationResponseType) {
+          case NotificationResponseType.selectedNotification:
+            print("SELECTED NOTIFIC");
+            landingServices.updateIndex(index: 1);
+            selectNotificationStream.add(notificationResponse.payload);
+            break;
+          case NotificationResponseType.selectedNotificationAction:
+            if (notificationResponse.actionId == navigationActionId) {
+              selectNotificationStream.add(notificationResponse.payload);
+            }
+            break;
+        }
+      },
+  );
 }
 
 @pragma('vm:entry-point')

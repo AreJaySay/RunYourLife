@@ -102,7 +102,7 @@ class _SleepMainPageState extends State<SleepMainPage> {
                           SizedBox(
                             height: 5,
                           ),
-                          Text("SLEEP",style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold,color: AppColors.darpinkColor,fontFamily: "AppFontStyle"),),
+                          Text("SOMMEIL",style: TextStyle(fontSize: 23,fontWeight: FontWeight.bold,color: AppColors.darpinkColor,fontFamily: "AppFontStyle"),),
                         ],
                       )
                     ],

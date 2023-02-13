@@ -42,7 +42,7 @@ class CheckinServices{
       });
     } catch (e) {
       Navigator.of(context).pop(null);
-      print("ERROR GET BLOGS ${e.toString()}");
+      
     }
   }
 
@@ -57,7 +57,7 @@ class CheckinServices{
         body: tracking.toMap(),
       ).then((respo) async {
         var data = json.decode(respo.body);
-        print("MACROS ${data.toString()}");
+        print("MACROS ${respo.body.toString()}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           return data;
         }else{
@@ -66,7 +66,7 @@ class CheckinServices{
       });
     } catch (e) {
       Navigator.of(context).pop(null);
-      print("ERROR GET BLOGS ${e.toString()}");
+      print("ERROR MACROS ${e}");
     }
   }
   Future getTracking({required String date})async{
@@ -115,7 +115,7 @@ class CheckinServices{
       });
     } catch (e) {
       Navigator.of(context).pop(null);
-      print("ERROR GET BLOGS ${e.toString()}");
+      
     }
   }
 
@@ -225,14 +225,14 @@ class CheckinServices{
       });
     } catch (e) {
       Navigator.of(context).pop(null);
-      print("ERROR GET BLOGS ${e.toString()}");
+      
     }
   }
 
   // MY RESSOURCES
   Future getResources(context)async{
     try {
-      return await http.get(Uri.parse("${_networkUtility.url}/user/api/clients/get_shared_documents?coach_id=${subscriptionDetails.currentdata[0]["coach_id"].toString()}"),
+      return await http.get(Uri.parse("${_networkUtility.url}/user/api/programmation"),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
           "Accept": "application/json"
@@ -308,7 +308,6 @@ class CheckinServices{
           },
       ).then((respo) async {
         var data = json.decode(respo.body);
-        print("CHECKIN IF EXISTER ${data.toString()}");
         if (data.toString().contains("Existed")){
           CheckinServices.checkinSelected = ['MON POIDS',"MES MESURES","MES MACROS","MES PHOTOS","MES OBJECTIFS DE LA SEMAINE"];
           return data;

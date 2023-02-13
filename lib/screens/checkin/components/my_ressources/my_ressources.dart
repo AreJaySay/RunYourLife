@@ -120,19 +120,19 @@ class _MyRessourcesState extends State<MyRessources> with SingleTickerProviderSt
 
                           !snapshot.hasData ?
                           RessourceShimmerLoader() :
-                          MyRessourcesImages(images: snapshot.data!.where((s) => s["documents"]["file_type"] == "image/jpeg" || s["documents"]["file_type"] == "image/png" || s["documents"]["file_type"] == "image/jpg").toList(),),
+                          MyRessourcesImages(images: snapshot.data!.where((s) => s["programmation"]["file_type"] == "image/jpeg" || s["programmation"]["file_type"] == "image/png" || s["programmation"]["file_type"] == "image/jpg").toList(),),
 
                           !snapshot.hasData ?
                           RessourceShimmerLoader() :
-                          MyRessourcesVideos(videos: snapshot.data!.where((s) => s["documents"]["file_type"] == "video/mp4").toList(),),
+                          MyRessourcesVideos(videos: snapshot.data!.where((s) => s["programmation"]["file_type"] == "video/mp4").toList(),),
 
                           !snapshot.hasData ?
                           RessourceShimmerLoader() :
-                          MyRessourcesUrl(url: snapshot.data!.where((s) => s["documents"]["file_type"] == "link/url").toList(),),
+                          MyRessourcesUrl(url: snapshot.data!.where((s) => s["programmation"]["file_type"] == "link/url").toList(),),
 
                           !snapshot.hasData ?
                           RessourceShimmerLoader() :
-                          MyRessourcesDocs(docs: snapshot.data!.where((s) => s["documents"]["file_type"] == "application/pdf").toList(),),
+                          MyRessourcesDocs(docs: snapshot.data!.where((s) => s["programmation"]["file_type"] == "application/pdf").toList(),),
                         ],
                       )
                   ),

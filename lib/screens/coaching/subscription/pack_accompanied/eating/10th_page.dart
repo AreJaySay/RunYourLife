@@ -89,7 +89,7 @@ class _Eating10thPageState extends State<Eating10thPage> {
                 SizedBox(
                   width: 15,
                 ),
-                Text('Aucune complément alimentaire',style: new TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+                Text('Aucun complément alimentaire',style: new TextStyle(fontSize: 15,color: Colors.black,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
               ],
             ),
           ),

@@ -1,22 +1,30 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:intl/intl.dart';
-import 'package:run_your_life/screens/feedback/pack_solo/weekly_update.dart';
-import 'package:run_your_life/screens/messages/messages.dart';
+import 'package:run_your_life/models/auths_model.dart';
+import 'package:run_your_life/models/device_model.dart';
 import 'package:run_your_life/services/apis_services/screens/feedback.dart';
 import 'package:run_your_life/services/apis_services/screens/home.dart';
 import 'package:run_your_life/utils/palettes/app_gradient_colors.dart';
 import 'package:run_your_life/widgets/notification_notifier.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import '../../../functions/loaders.dart';
 import '../../../models/screens/feedback/feedback.dart';
+import '../../../services/apis_services/subscriptions/choose_plan.dart';
 import '../../../services/other_services/routes.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
+import '../../../services/stream_services/screens/coaching.dart';
 import '../../../services/stream_services/screens/feedback.dart';
-
 import '../../../services/stream_services/subscriptions/subscription_details.dart';
 import '../../../widgets/message_notifier.dart';
+import '../../coaching/subscription/pack_accompanied/presentation/main_page.dart';
 import '../components/coach/listview_widget.dart';
 import '../components/shimmer_loader.dart';
+import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
+import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 
 class PackSoloFeedback extends StatefulWidget {
   @override
@@ -30,9 +38,131 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
   final Routes _routes = new Routes();
   final HomeServices _homeServices = new HomeServices();
   ScrollController _scrollController = new ScrollController();
+  final ScreenLoaders _screenLoaders = new ScreenLoaders();
+  final ChoosePlanService _choosePlanService = new ChoosePlanService();
+  final InAppPurchase _iap = InAppPurchase.instance;
+  bool _isAvailable = false;
+  List<ProductDetails> _products = [];
+  List<PurchaseDetails> _purchases = [];
+  late StreamSubscription _subscription;
+  bool _isLoader = true;
+  int _coins = 0;
+  Map? planDetails;
+  bool _purchasePending = false;
+
+  // INITIALIZE
+  Future<void> _initialize() async {
+    _isAvailable = await _iap.isAvailable();
+    if(_isAvailable){
+      await _getUserProducts();
+      // await _getPastPurchases();
+      _verifyPurchases();
+      _subscription = _iap.purchaseStream.listen((data)=> setState((){
+        _purchases.addAll(data);
+        _verifyPurchases();
+      }));
+
+    }
+  }
+  void showPendingUI() {
+    setState(() {
+      _purchasePending = true;
+    });
+  }
+  void handleError(IAPError error) {
+    setState(() {
+      _purchasePending = false;
+    });
+  }
+  Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
+    return Future<bool>.value(true);
+  }
+  void _handleInvalidPurchase(PurchaseDetails purchaseDetails) {
+    // handle invalid purchase here if  _verifyPurchase` failed.
+  }
+  // GET USER PRODUCTS
+  Future<void> _getUserProducts() async {
+    Set<String> ids = {"accompagned_subs"};
+    ProductDetailsResponse response = await _iap.queryProductDetails(ids).whenComplete((){});
+    print("PRODUCTS ${response.productDetails.toString()}");
+    setState(() {
+      _products = response.productDetails;
+      _isLoader = false;
+    });
+  }
+  // checks if a user has purchased a certain product
+  PurchaseDetails _hasUserPurchased(String productID){
+    return _purchases.firstWhere((purchase) => purchase.productID == productID);
+  }
+  void _verifyPurchases(){
+    PurchaseDetails purchase = _hasUserPurchased("accompagned_subs");
+    if(purchase.status == PurchaseStatus.purchased){
+      _coins = 10;
+    }
+  }
+  // PURCHASE PRODUCT
+  Future _buyProduct(ProductDetails prod)async{
+    final PurchaseParam purchaseParam = PurchaseParam(productDetails: prod);
+    _iap.buyNonConsumable(purchaseParam: purchaseParam);
+  }
+  // COMPLETE PURCHASE
+  Future _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList)async {
+    purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+      if (purchaseDetails.status == PurchaseStatus.pending) {
+        showPendingUI();
+      } else {
+        if (purchaseDetails.status == PurchaseStatus.error) {
+          handleError(purchaseDetails.error!);
+          print(purchaseDetails.verificationData.serverVerificationData);
+          print(purchaseDetails.verificationData.source);
+          print(purchaseDetails.status);
+          print(purchaseDetails.purchaseID);
+          print(purchaseDetails.productID);
+          print(purchaseDetails.transactionDate);
+        } else if (purchaseDetails.status == PurchaseStatus.purchased ||
+            purchaseDetails.status == PurchaseStatus.restored) {
+          bool valid = await _verifyPurchase(purchaseDetails);
+          if (valid) {
+            print(purchaseDetails.verificationData.serverVerificationData);
+            print(purchaseDetails.verificationData.source);
+            print(purchaseDetails.status);
+            print(purchaseDetails.purchaseID);
+            print(purchaseDetails.productID);
+            print(purchaseDetails.transactionDate);
+            _screenLoaders.functionLoader(context);
+            _choosePlanService.upgrade(context, planid: "3",
+              purchaseToken: purchaseDetails.verificationData
+                  .serverVerificationData.toString(),
+              transacId: "accompagned_subs",
+              type: Platform.isIOS ? "appstore" : "playstore",).then((value) {
+              if (value != null) {
+                _routes.navigator_pushreplacement(context, PresentationMainPage());
+              }
+            });
+          } else {
+            _handleInvalidPurchase(purchaseDetails);
+          }
+        }
+        if (purchaseDetails.pendingCompletePurchase) {
+          await InAppPurchase.instance
+              .completePurchase(purchaseDetails);
+        }
+      }
+    });
+  }
 
   @override
   void initState() {
+    final Stream<List<PurchaseDetails>> purchaseUpdated =
+        _iap.purchaseStream;
+    _subscription = purchaseUpdated.listen((List<PurchaseDetails> purchaseDetailsList) {
+      _listenToPurchaseUpdated(purchaseDetailsList);
+    }, onDone: () {
+      _subscription.cancel();
+    }, onError: (Object error) {
+      // handle error here.
+    });
+    _initialize();
     _homeServices.getSchedule();
     _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
     _feedbackServices.getFeedback().then((value){
@@ -59,6 +189,13 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
   @override
   void dispose() {
     _scrollController.dispose();
+    if (Platform.isIOS) {
+      final InAppPurchaseStoreKitPlatformAddition iosPlatformAddition =
+      _iap
+          .getPlatformAddition<InAppPurchaseStoreKitPlatformAddition>();
+      iosPlatformAddition.setDelegate(null);
+    }
+    _subscription.cancel();
     super.dispose();
   }
 
@@ -161,6 +298,78 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
                                 SizedBox(
                                   height: 10,
                                 ),
+                                ZoomTapAnimation(
+                                  end: 0.99,
+                                  onTap: ()async{
+                                    setState(() {
+                                      planDetails = coachingStreamServices.currentdata[1];
+                                    });
+                                    if(Platform.isIOS){
+                                      var paymentWrapper = SKPaymentQueueWrapper();
+                                      var transactions = await paymentWrapper.transactions();
+                                      transactions.forEach((transaction) async {
+                                        await paymentWrapper.finishTransaction(transaction);
+                                      });
+                                    }
+                                    _buyProduct(_products[_products.length - 1]);
+                                  },
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 20),
+                                    width: double.infinity,
+                                    height: 70,
+                                    decoration: Auth.isNotSubs! ?
+                                    BoxDecoration(
+                                        color: AppColors.appmaincolor.withOpacity(0.5),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.6),
+                                            blurRadius: 4,
+                                            spreadRadius: 1,
+                                            offset: Offset(0, 2), // Shadow position
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(10)
+                                    ) :
+                                    BoxDecoration(
+                                        gradient: AppGradientColors.gradient,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.6),
+                                            blurRadius: 4,
+                                            spreadRadius: 1,
+                                            offset: Offset(0, 0), // Shadow position
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(10)
+                                    ),
+                                    child: Stack(
+                                      children: [
+                                        Image(
+                                          color: Colors.white.withOpacity(0.1),
+                                          width: double.infinity,
+                                          image: AssetImage("assets/icons/coaching.png",),
+                                          fit: BoxFit.contain,
+                                          alignment: Alignment.centerRight,
+                                          filterQuality: FilterQuality.high,
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 25),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text("UPGRADER",style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.white,fontFamily: "AppFontStyle"),),
+                                              SizedBox(
+                                                height: 3,
+                                              ),
+                                              Text("Laissez-vous porter !",style: TextStyle(color: Colors.white,fontFamily: "AppFontStyle"),),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ]),
                             ),
                           ),
@@ -175,15 +384,17 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
                           if(!snapshot.hasData)...{
                             FeedbackShimmerLoader()
                           }else if(snapshot.data!.isEmpty)...{
-                            Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10)
+                            Align(
+                              alignment: Alignment.topCenter,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Text("Cet abonnement ne vous permet pas d'obtenir un feedback de votre coach. Cependant, vous pouvez vous rendre sur la page de votre profil en bas de page et mettre à niveau votre abonnement pour que le mois prochain vous puissiez bénéficier d'un suivi 100% personnalisé et d'un contact permanent avec un coach !",style: TextStyle(fontSize: 15.5,color: Colors.black,fontFamily: "AppFontStyle"),textAlign: TextAlign.center,),
                               ),
-                              child: Center(child: Text("Cet abonnement ne vous permet pas d'obtenir un feedback de votre coach. Cependant, vous pouvez vous rendre sur la page de votre profil en bas de page et mettre à niveau votre abonnement pour que le mois prochain vous puissiez bénéficier d'un suivi 100% personnalisé et d'un contact permanent avec un coach !",style: TextStyle(fontSize: 15.5,color: Colors.black,fontFamily: "AppFontStyle"),textAlign: TextAlign.center,)),
-                            ),
+                            )
                           }else...{
                             // CURRENT WEEK
                             if(coachFeedBack.currentWeek.isNotEmpty)...{

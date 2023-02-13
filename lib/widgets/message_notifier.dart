@@ -65,14 +65,15 @@ class _MessageNotifierState extends State<MessageNotifier> {
               notificationNotifyStreamServices.update(data: false);
             }
           },
-          child: subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ?
-          Center(
-            child: Image(
-              color: Colors.white,
-              width: 30,
-              image: AssetImage("assets/icons/chat.png"),
-            ),
-          ) :
+          child:
+          // subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ?
+          // Center(
+          //   child: Image(
+          //     color: Colors.white,
+          //     width: 30,
+          //     image: AssetImage("assets/icons/chat.png"),
+          //   ),
+          // ) :
           Stack(
             children: [
               Image(

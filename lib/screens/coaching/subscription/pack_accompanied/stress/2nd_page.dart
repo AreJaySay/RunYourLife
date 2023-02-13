@@ -30,7 +30,7 @@ class _Stress2ndPageState extends State<Stress2ndPage> {
         SizedBox(
           height: 15,
         ),
-        Text("1 : Je suis serein(e) à la maison\n3: Modéremment\n5 : Je suis toujours sous pression à la maison",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1 : Je suis serein(e) à la maison\n3 : Modéremment\n5 : Je suis toujours sous pression à la maison",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

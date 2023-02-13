@@ -12,8 +12,8 @@ class NotificationNotifyStreamServices{
 
   // NOTIFICATION
   BehaviorSubject<bool> notify = new BehaviorSubject();
-  Stream get notifyStream => subject.stream;
-  bool get currentNotify => subject.value;
+  Stream get notifyStream => notify.stream;
+  bool get currentNotify => notify.value;
 
   updateNotic({required bool data}){
     notify.add(data);

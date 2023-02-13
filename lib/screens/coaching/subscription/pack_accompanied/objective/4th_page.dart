@@ -49,7 +49,7 @@ class _Objective4thPageState extends State<Objective4thPage> {
           height: 10,
         ),
         step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") ?
-        Text("Pour une perte de poids:\n- Confortable : 9 à 18 semaines\n- Raisonnable : 4 à 9 semaines\n- Extrême : 3 à 4 semaines",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),) :
+        Text("Pour une perte de poids :\n- Confortable : 9 à 18 semaines\n- Raisonnable : 4 à 9 semaines\n- Extrême : 3 à 4 semaines",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),) :
         Text("Selon ton niveau sportif\n- Débutant : 11 à 16 mois\n- Intermédiaire : 22 à 33 mois\n- Avancé : 44 à 66 mois",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,

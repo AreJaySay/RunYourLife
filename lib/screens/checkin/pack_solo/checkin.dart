@@ -364,7 +364,7 @@ class _PackSoloCheckInState extends State<PackSoloCheckIn> {
                   )
                 },
                 Spacer(),
-                _materialbutton.materialButton("Actions de la semaine effectuées".toUpperCase(), () {
+                _materialbutton.materialButton("ACTIONS DU JOUR EFFECTUÉS".toUpperCase(), () {
                   if(subscriptionDetails.currentdata[0]["macro_status"] == true){
                     if(CheckinServices.checkinSelected.length > 3){
                       _screenLoaders.functionLoader(context);
@@ -375,10 +375,6 @@ class _PackSoloCheckInState extends State<PackSoloCheckIn> {
                     }
                   }
                 },bckgrndColor: subscriptionDetails.currentdata[0]["macro_status"] == false ? Colors.grey : CheckinServices.checkinSelected.contains("MON POIDS") && CheckinServices.checkinSelected.contains("MES MESURES") && CheckinServices.checkinSelected.contains("MES PHOTOS") && CheckinServices.checkinSelected.contains("MES OBJECTIFS DE LA SEMAINE") ? AppColors.appmaincolor : Colors.grey, textColor: Colors.white),
-                // SizedBox(
-                //   height: 10,
-                // ),
-                // Center(child: Text("Demander l’avis or valider les actions ?",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15),)),
                 SizedBox(
                   height: 20,
                 ),

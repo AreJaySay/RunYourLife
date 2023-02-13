@@ -14,7 +14,7 @@ class Eating3rdPage extends StatefulWidget {
 }
 
 class _Eating3rdPageState extends State<Eating3rdPage> {
-  TextEditingController _calories = new TextEditingController()..text=step2subs.calories_today == "No I don't stalk" ? "" : step2subs.calories_today;
+  TextEditingController _calories = new TextEditingController()..text=step2subs.calories_today == "No I don't stalk" || step2subs.calories_today == "Non" ? "" : step2subs.calories_today;
 
   @override
   void dispose() {

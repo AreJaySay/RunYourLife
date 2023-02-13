@@ -20,7 +20,7 @@ class _Stress3rdPageState extends State<Stress3rdPage> {
         SizedBox(
           height: 15,
         ),
-        Text("1: Jamais = Je n'arrive pas à prévoir mes journées, je suis sans cesse en train d'éteindre les feux de tout le monde, je réponds aux demandes des gens qui m'envoient dans toutes les directions\n3 :Modéremment\n5 : Toujours = mes journées sont bien ordonnées, j'ai le contrôle de ma place et mon attention et j'ai un plan pour executer cela chaque jour",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1 : Jamais = Je n'arrive pas à prévoir mes journées, je suis sans cesse en train d'éteindre les feux de tout le monde, je réponds aux demandes des gens qui m'envoient dans toutes les directions\n3 : Modéremment\n5 : Toujours = mes journées sont bien ordonnées, j'ai le contrôle de ma place et mon attention et j'ai un plan pour executer cela chaque jour",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 30,
         ),

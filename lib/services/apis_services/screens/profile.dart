@@ -41,7 +41,7 @@ class ProfileServices{
         }
       });
     } catch (e) {
-      print("ERROR GET BLOGS ${e.toString()}");
+      
     }
   }
 

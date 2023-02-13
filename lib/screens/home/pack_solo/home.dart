@@ -242,7 +242,7 @@ class _PackSoloHomeState extends State<PackSoloHome> {
                                 SizedBox(
                                   height: 7,
                                 ),
-                                Text("--.",style: TextStyle(color: Colors.white,fontSize: 13,fontFamily: "AppFontStyle"),textAlign: TextAlign.center),
+                                Text("--",style: TextStyle(color: Colors.white,fontSize: 13,fontFamily: "AppFontStyle"),textAlign: TextAlign.center),
                               ],
                             ),
                           ),
@@ -351,8 +351,10 @@ class _PackSoloHomeState extends State<PackSoloHome> {
                                 series: <LineSeries<SalesData, String>>[
                                   LineSeries<SalesData, String>(
                                       dataSource:  <SalesData>[
-                                        for(int x = 0; x < snapshot.data!["dates"].length; x++)...{
-                                          SalesData('Semaine ${(x + 1).toString()}', double.parse(snapshot.data!["data"][x].toString())),
+                                        if(snapshot.data!["dates"].toString() != "null")...{
+                                          for(int x = 0; x < snapshot.data!["dates"].length; x++)...{
+                                            SalesData('Semaine ${(x + 1).toString()}', double.parse(snapshot.data!["data"][x].toString())),
+                                          }
                                         }
                                       ],
                                       xValueMapper: (SalesData sales, _) => sales.year,

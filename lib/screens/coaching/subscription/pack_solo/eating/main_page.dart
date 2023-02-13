@@ -23,7 +23,7 @@ class PackSoloEatingMainPage extends StatefulWidget {
 }
 
 class _PackSoloEatingMainPageState extends State<PackSoloEatingMainPage> {
-  List<Widget> _screens = [Container(),Eating1stPage(),Eating2ndPage(),Eating12thPage()];
+  List<Widget> _screens = [Container(),Eating1stPage(),Eating2ndPage(),Eating3rdPage(),Eating12thPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final Step2Service _step2service = new Step2Service();
@@ -46,7 +46,7 @@ class _PackSoloEatingMainPageState extends State<PackSoloEatingMainPage> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
               children: [
-                MyStepper(3,range: double.parse(_currentPage.toString()),),
+                MyStepper(4,range: double.parse(_currentPage.toString()),),
                 SizedBox(
                   height: 30,
                 ),
@@ -118,7 +118,7 @@ class _PackSoloEatingMainPageState extends State<PackSoloEatingMainPage> {
                       ),
                       _materialbutton.materialButton("SUIVANT", () {
                         setState(() {
-                          if(_currentPage > 2){
+                          if(_currentPage > 3){
                             _screenLoaders.functionLoader(context);
                             _step2service.submit(context).then((value){
                               if(value != null){

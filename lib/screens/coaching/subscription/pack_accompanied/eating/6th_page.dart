@@ -93,7 +93,7 @@ class _Eating6thPageState extends State<Eating6thPage> {
                 SizedBox(
                   width: 15,
                 ),
-                Text('Aucune',style: new TextStyle(fontSize: 15,color: Colors.black,fontFamily: "AppFontStyle"),),
+                Text('Aucun',style: new TextStyle(fontSize: 15,color: Colors.black,fontFamily: "AppFontStyle"),),
               ],
             ),
           ),

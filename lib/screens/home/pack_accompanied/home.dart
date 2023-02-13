@@ -482,8 +482,10 @@ class _PackAccompaniedHomeState extends State<PackAccompaniedHome> {
                                   series: <LineSeries<SalesData, String>>[
                                     LineSeries<SalesData, String>(
                                       dataSource:  <SalesData>[
-                                        for(int x = 0; x < snapshot.data!["dates"].length; x++)...{
-                                          SalesData('Semaine ${(x + 1).toString()}', double.parse(snapshot.data!["data"][x].toString())),
+                                        if(snapshot.data!["dates"].toString() != "null")...{
+                                          for(int x = 0; x < snapshot.data!["dates"].length; x++)...{
+                                            SalesData('Semaine ${(x + 1).toString()}', double.parse(snapshot.data!["data"][x].toString())),
+                                          }
                                         }
                                       ],
                                       xValueMapper: (SalesData sales, _) => sales.year,

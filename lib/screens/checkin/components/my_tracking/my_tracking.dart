@@ -74,10 +74,10 @@ class _MyTrackingState extends State<MyTracking> with TickerProviderStateMixin {
                                   print("ASDASDAD"+value.toString());
                                   if(value["clientTracking"].toString() != "null"){
                                     setState(() {
-                                      Tracking.gramslider[0] = double.parse(value["clientTracking"]["protein"]);
-                                      Tracking.gramslider[1] = double.parse(value["clientTracking"]["lipid"]);
-                                      Tracking.gramslider[2] = double.parse(value["clientTracking"]["carbohydrate"]);
-                                      Tracking.gramslider[3] = double.parse(value["clientTracking"]["vegetable"]);
+                                      Tracking.gramslider[0] = double.parse(value["clientTracking"]["protein"].toString());
+                                      Tracking.gramslider[1] = double.parse(value["clientTracking"]["lipid"].toString());
+                                      Tracking.gramslider[2] = double.parse(value["clientTracking"]["carbohydrate"].toString());
+                                      Tracking.gramslider[3] = double.parse(value["clientTracking"]["vegetable"].toString());
                                     });
                                   }else{
                                     setState(() {

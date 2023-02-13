@@ -28,14 +28,10 @@ class _NotPregnant1stPageState extends State<NotPregnant1stPage> {
         SizedBox(
           height: 10,
         ),
-        Text("1: ça n'a jamais été un obstacle\n5 : c'est très frequemment un obstacle",style: TextStyle(fontFamily: "AppFontStyle"),),
+        Text("1 : Ça n'a jamais été un obstacle\n5 : C'est très frequemment un obstacle",style: TextStyle(fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),
-        // Text("1 : ça n'a jamais été un obstacle \n5 : c'est très fréquemment un obstacle",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-        // SizedBox(
-        //   height: 25,
-        // ),
         for(var x = 0; x < _reasons.length; x++)...{
           Text(_reasons[x].toUpperCase(), style: TextStyle(color: AppColors.appmaincolor, fontSize: 14,fontFamily: "AppFontStyle"),),
           Container(

@@ -208,7 +208,7 @@ class _Presentation2ndPageState extends State<Presentation2ndPage> {
         SizedBox(
           height: 10,
         ),
-        Text("0 : je vis seul(e)\n1: peu de soutien\n2: peu/modéremment soutenu(e)\n3: modéremment/hautement soutenu(e)\n4:très soutenu(e)",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("0 : Je vis seul(e)\n1 : Peu de soutien\n2 : Peu/modéremment soutenu(e)\n3 : Modéremment/hautement soutenu(e)\n4 : Très soutenu(e)",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),

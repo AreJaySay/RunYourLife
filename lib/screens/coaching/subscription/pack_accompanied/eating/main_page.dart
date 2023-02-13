@@ -144,7 +144,11 @@ class _EatingMainPageState extends State<EatingMainPage> {
                               }
                             });
                           }else{
-                            _currentPage++;
+                            if(step2subs.meals_per_day == ""){
+                              _snackbarMessage.snackbarMessage(context, message: "Le nombre de repas par jour est requis!", is_error: true);
+                            }else{
+                              _currentPage++;
+                            }
                           }
                         });
                       }),

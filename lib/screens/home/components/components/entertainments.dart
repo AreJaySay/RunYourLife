@@ -75,8 +75,8 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                         width: 10,
                       ),
                       Container(
-                        width: 100,
-                        child: TextFields(step5subs.duration[x],hintText: "Durée",),
+                        width: 120,
+                        child: TextFields(step5subs.duration[x],hintText: "min/sem",),
                       )
                     ],
                   ),
@@ -207,26 +207,30 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                 homeTracking.sports.remove("");
                 homeTracking.durations.remove("null");
                 homeTracking.durations.remove("");
-                for(int x = 0;x < step5subs.sports.length; x++){
-                  setState((){
-                    if(!homeTracking.sports.contains(step5subs.sports[x].text.toString())){
-                      homeTracking.sports.add(step5subs.sports[x].text.toString());
-                      homeTracking.durations.add(step5subs.duration[x].text.toString());
-                      homeTracking.performances.add(step5subs.performances[x].floor().toString());
-                    }
-                  });
-                  print(homeTracking.sports.toString());
-                }
                 if(homeTracking.trainingChecker != ""){
-                  _screenLoaders.functionLoader(context);
-                  _homeServices.submit_tracking(context).then((value){
-                    if(value != null){
-                      _homeServices.getTracking(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(homeTracking.date))).then((value){
-                        Navigator.of(context).pop(null);
-                        Navigator.of(context).pop(null);
+                  if(!homeTracking.sports.toString().toLowerCase().contains(step5subs.sports[step5subs.sports.length - 1].text.toString().toLowerCase())){
+                    for(int x = 0;x < step5subs.sports.length; x++){
+                      setState((){
+                        if(!homeTracking.sports.toString().toLowerCase().contains(step5subs.sports[x].text.toString().toLowerCase())){
+                          homeTracking.sports.add(step5subs.sports[x].text.toString());
+                          homeTracking.durations.add(step5subs.duration[x].text.toString());
+                          homeTracking.performances.add(step5subs.performances[x].floor().toString());
+                        }
                       });
+                      print(homeTracking.sports.toString());
                     }
-                  });
+                    _screenLoaders.functionLoader(context);
+                    _homeServices.submit_tracking(context).then((value){
+                      if(value != null){
+                        _homeServices.getTracking(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(homeTracking.date))).then((value){
+                          Navigator.of(context).pop(null);
+                          Navigator.of(context).pop(null);
+                        });
+                      }
+                    });
+                  }else{
+                    _snackbarMessage.snackbarMessage(context, message: "Ce sport est déjà sur la liste!", is_error: true);
+                  }
                 }else{
                   _snackbarMessage.snackbarMessage(context, message: "Ajoutez des données pour continuer !",is_error: true);
                 }

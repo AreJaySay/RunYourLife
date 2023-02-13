@@ -7,7 +7,7 @@ class Eating11thPage extends StatefulWidget {
 }
 
 class _Eating11thPageState extends State<Eating11thPage> {
-  List<String> _hintTexts = ['Petit dej:',"Encas matinale:","Dejeuner:","Encas arpès-midi:","Diner"];
+  List<String> _hintTexts = ['Petit dej :',"Encas matinale :","Dejeuner :","Encas arpès-midi :","Diner :"];
   List<TextEditingController> _controllers = [TextEditingController()..text=step2subs.breakfast,TextEditingController()..text=step2subs.morning_snack,TextEditingController()..text=step2subs.lunch,TextEditingController()..text=step2subs.afternoon_snack,TextEditingController()..text=step2subs.dinner,];
 
   @override
@@ -29,10 +29,6 @@ class _Eating11thPageState extends State<Eating11thPage> {
         SizedBox(
           height: 15,
         ),
-        // Text("Complète uniquement les champs qui te concernent.",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-        // SizedBox(
-        //   height: 20,
-        // ),
         for(var x = 0; x < _hintTexts.length;x++)...{
           TextField(
             controller: _controllers[x],

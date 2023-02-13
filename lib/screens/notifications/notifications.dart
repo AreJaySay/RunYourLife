@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:run_your_life/models/auths_model.dart';
 import 'package:run_your_life/screens/notifications/search_notification.dart';
@@ -106,7 +107,7 @@ class _NotificationsState extends State<Notifications> {
           ) : snapshot.data!.isEmpty ?
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 20,horizontal: 20),
-                child: NoDataFound(firstString: "AUCUNE", secondString: "NOTIFICATION TROUVÉE", thirdString: "Toutes les notifications que vous avez reçues, vous les trouverez ici."),
+                child: NoDataFound(firstString: "AUCUN", secondString: "NOTIFICATION TROUVÉE", thirdString: "Toutes les notifications que vous avez reçues, vous les trouverez ici."),
               )
               :
           GroupedListView<dynamic, String>(
@@ -165,7 +166,9 @@ class _NotificationsState extends State<Notifications> {
                       SizedBox(
                         height: 10,
                       ),
-                      Text(element['message'],style: TextStyle(fontFamily: "AppFontStyle",color: Colors.grey[700]),),
+                      HtmlWidget(element['message'].toString(), onTapUrl: (url)async{
+                        return true;
+                      },),
                       SizedBox(
                         height: 5,
                       ),

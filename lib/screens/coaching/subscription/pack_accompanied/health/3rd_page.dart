@@ -29,10 +29,6 @@ class _Health3rdPageState extends State<Health3rdPage> {
         SizedBox(
           height: 15,
         ),
-        // Text("Trouble de la thyroïde, maladie auto-immune (diabète, lupus, Hashimoto…), obésité, diabètes de type 2, AVC...",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
-        // SizedBox(
-        //   height: 20,
-        // ),
         TextField(
           controller: _familyBack,
           maxLines: 4,

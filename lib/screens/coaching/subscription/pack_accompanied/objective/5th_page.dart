@@ -23,7 +23,7 @@ class _Objective5thPageState extends State<Objective5thPage> {
         SizedBox(
           height: 15,
         ),
-        Text("1 : pas du tout important\n3 : modéremment\n5: très important",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1 : Pas du tout important\n3 : Modéremment\n5 : Très important",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 30,
         ),

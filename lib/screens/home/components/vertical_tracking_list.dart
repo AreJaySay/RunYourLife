@@ -117,7 +117,7 @@ class _VerticalTrackingListState extends State<VerticalTrackingList> {
           if(json.decode(snapshot.data!["training"])[x]["duration"].toString() == "null" || json.decode(snapshot.data!["training"])[x]["duration"].toString() == '"null"'){
             _trainings.add(json.decode(snapshot.data!["training"])[x]["sport"]);
           }else{
-            _trainings.add("${json.decode(snapshot.data!["training"])[x]["sport"]} ${json.decode(snapshot.data!["training"])[x]["duration"]} (Performance: ${json.decode(snapshot.data!["training"])[x]["performance"].toString() == "null" ? "0" : json.decode(snapshot.data!["training"])[x]["performance"]})");
+            _trainings.add("${json.decode(snapshot.data!["training"])[x]["sport"]} ${json.decode(snapshot.data!["training"])[x]["duration"]+"min"} (Performance: ${json.decode(snapshot.data!["training"])[x]["performance"].toString() == "null" ? "0" : json.decode(snapshot.data!["training"])[x]["performance"]})");
           }
         }
       }
@@ -217,31 +217,33 @@ class _VerticalTrackingListState extends State<VerticalTrackingList> {
         return FinishQuestionerPopup();
         });
         }else{
-          if(index == 2){
-            step5subs.sports.clear();
-            step5subs.duration.clear();
-            if(snapshot.data!["training"].toString().contains("null") || snapshot.data!["training"].toString().contains('"null"') || snapshot.data!["training"].toString().contains("no")){
-              print(snapshot.data!["training"].toString());
-              setState(() {
-                step5subs.performances.add(0);
-                step5subs.sports.add(TextEditingController());
-                step5subs.duration.add(TextEditingController());
-              });
-            }else{
-              setState((){
-                for(int x = 0; x < json.decode(snapshot.data!["training"]).length; x++){
-                  print(snapshot.data!["training"].toString());
-                  step5subs.performances.add(double.parse(json.decode(snapshot.data!["training"])[x]["performance"].toString()));
-                  step5subs.sports.add(TextEditingController()..text=json.decode(snapshot.data!["training"])[x]["sport"]);
-                  step5subs.duration.add(TextEditingController()..text=json.decode(snapshot.data!["training"])[x]["duration"]);
-                }
-              });
+          if(isActive){
+            if(index == 2){
+              step5subs.sports.clear();
+              step5subs.duration.clear();
+              if(snapshot.data!["training"].toString().contains("null") || snapshot.data!["training"].toString().contains('"null"') || snapshot.data!["training"].toString().contains("no")){
+                print(snapshot.data!["training"].toString());
+                setState(() {
+                  step5subs.performances.add(0);
+                  step5subs.sports.add(TextEditingController());
+                  step5subs.duration.add(TextEditingController());
+                });
+              }else{
+                setState((){
+                  for(int x = 0; x < json.decode(snapshot.data!["training"]).length; x++){
+                    print(snapshot.data!["training"].toString());
+                    step5subs.performances.add(double.parse(json.decode(snapshot.data!["training"])[x]["performance"].toString()));
+                    step5subs.sports.add(TextEditingController()..text=json.decode(snapshot.data!["training"])[x]["sport"]);
+                    step5subs.duration.add(TextEditingController()..text=json.decode(snapshot.data!["training"])[x]["duration"]);
+                  }
+                });
+              }
             }
+            homeTracking.medication = snapshot.data!["medication"].toString() == "null" ? "" : snapshot.data!["medication"].toString();
+            homeTracking.supplements = snapshot.data!["supplements"].toString() == "null" ? "" : snapshot.data!["supplements"].toString();
+            homeTracking.menstruation = snapshot.data!["menstruation"].toString() == "null" ? "" : snapshot.data!["menstruation"].toString();
+            _routes.navigator_push(context, _pages[index]);
           }
-          homeTracking.medication = snapshot.data!["medication"].toString() == "null" ? "" : snapshot.data!["medication"].toString();
-          homeTracking.supplements = snapshot.data!["supplements"].toString() == "null" ? "" : snapshot.data!["supplements"].toString();
-          homeTracking.menstruation = snapshot.data!["menstruation"].toString() == "null" ? "" : snapshot.data!["menstruation"].toString();
-          _routes.navigator_push(context, _pages[index]);
         }
       },
     );

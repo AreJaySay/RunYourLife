@@ -95,12 +95,12 @@ class _SettingsState extends State<Settings> {
                 SizedBox(
                   width: 10,
                 ),
-                Text("Politique de confidentialité",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15,color: Colors.white),),
+                Text("Condition générales d’utilisation",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15,color: Colors.white),),
               ],
             ),
           ),
           onTap: (){
-            _launchUrl(link: "https://app.runyourlife.fr/privacy_policy");
+            _launchUrl(link: "https://app.runyourlife.fr/terms_condition_use");
           },
         ),
         SizedBox(

@@ -26,7 +26,7 @@ class _Pregnant6thPageState extends State<Pregnant6thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Comment décrirais-tu ton niveau d'activité en dehors d'une activité sportive ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("Comment décrirais tu ton activité en dehors d’une  activité sportive ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

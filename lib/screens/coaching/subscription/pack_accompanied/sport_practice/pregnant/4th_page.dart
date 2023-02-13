@@ -19,7 +19,7 @@ class _Pregnant4thPageState extends State<Pregnant4thPage> {
         SizedBox(
           height: 15,
         ),
-        Text("1 :j'adapte rarement =  j'abandonne l'entrainement du jour\n5 : j'adapte forcément = je trouverais quelque chose en substitution pour rester active/actif",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        Text("1 : J'adapte rarement =  J'abandonne l'entrainement du jour\n5 : J'adapte forcément = Je trouverais quelque chose en substitution pour rester active/actif",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
         // SizedBox(
         //   height: 10,
         // ),

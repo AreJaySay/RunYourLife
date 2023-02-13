@@ -377,43 +377,45 @@ class _ScheduleCallState extends State<ScheduleCall> {
                         height: 55,
                         margin: EdgeInsets.only(top: 20),
                         child: _materialbutton.materialButton("VALIDER", ()async{
-                          print(snapshot.data);
-                          print(_dateChecker);
                           if(_selected == 1){
-                            if(snapshot.data!["unfinishsched"].toString() == "null" || snapshot.data!["unfinishsched"].toString() == "[]"){
-                              if(_selectedhour == ""){
-                                _snackbarMessage.snackbarMessage(context, message: "Le temps de planification est requis !", is_error: true);
-                              }else{
-                                _screenLoaders.functionLoader(context);
-                                _feedbackServices.submit(date_id: snapshot.data!["id_date"].toString(), time: _selectedhour).then((value){
-                                  if(value != null){
-                                    _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
-                                    _homeServices.getSchedule().whenComplete((){
-                                      Navigator.of(context).pop(null);
-                                      Navigator.of(context).pop(null);
-                                      _snackbarMessage.snackbarMessage(context, message: "L'horaire a été soumis avec succès !");
-                                    });
-                                  }else{
-                                    Navigator.of(context).pop(null);
-                                  }
-                                });
-                              }
+                            if(_dateChecker == DateFormat("yyyy-MM-dd").format(DateTime.parse(DateTime.now().toString()))){
+                              _snackbarMessage.snackbarMessage(context, message: "Vous ne pouvez modifier votre rendez-vous que jusqu'au jour précédent.", is_error: true);
                             }else{
-                              if(_selectedhour == ""){
-                                _snackbarMessage.snackbarMessage(context, message: "Le temps de planification est requis !", is_error: true);
-                              }else{
-                                await showModalBottomSheet(
-                                    backgroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
-                                    isScrollControlled: true,
-                                    context: context, builder: (context){
-                                  return UpdateAppointmentPopUp(details: snapshot.data!, hour: _selectedhour,);
-                                }).whenComplete((){
-                                  setState(() {
-                                    _selectedhour = "";
+                              if(snapshot.data!["unfinishsched"].toString() == "null" || snapshot.data!["unfinishsched"].toString() == "[]"){
+                                if(_selectedhour == ""){
+                                  _snackbarMessage.snackbarMessage(context, message: "Le temps de planification est requis !", is_error: true);
+                                }else{
+                                  _screenLoaders.functionLoader(context);
+                                  _feedbackServices.submit(date_id: snapshot.data!["id_date"].toString(), time: _selectedhour).then((value){
+                                    if(value != null){
+                                      _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
+                                      _homeServices.getSchedule().whenComplete((){
+                                        Navigator.of(context).pop(null);
+                                        Navigator.of(context).pop(null);
+                                        _snackbarMessage.snackbarMessage(context, message: "L'horaire a été soumis avec succès !");
+                                      });
+                                    }else{
+                                      Navigator.of(context).pop(null);
+                                    }
                                   });
-                                });
+                                }
+                              }else{
+                                if(_selectedhour == ""){
+                                  _snackbarMessage.snackbarMessage(context, message: "Le temps de planification est requis !", is_error: true);
+                                }else{
+                                  await showModalBottomSheet(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
+                                      isScrollControlled: true,
+                                      context: context, builder: (context){
+                                    return UpdateAppointmentPopUp(details: snapshot.data!, hour: _selectedhour,);
+                                  }).whenComplete((){
+                                    setState(() {
+                                      _selectedhour = "";
+                                    });
+                                  });
+                                }
                               }
                             }
                           }else{

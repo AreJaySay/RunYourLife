@@ -7,7 +7,8 @@ import '../../../../../../utils/palettes/app_colors.dart';
 
 class ViewRessources extends StatefulWidget {
   final Map ressource;
-  ViewRessources({required this.ressource});
+  final bool isPdf;
+  ViewRessources({required this.ressource, this.isPdf = false});
   @override
   State<ViewRessources> createState() => _ViewRessourcesState();
 }
@@ -23,7 +24,7 @@ class _ViewRessourcesState extends State<ViewRessources> {
         backgroundColor: Colors.white,
         elevation: 0,
         foregroundColor: AppColors.appmaincolor,
-        title: Text(widget.ressource["documents"]["file_name"].toString(),style: TextStyle(fontFamily: "AppFontStyle",fontSize: 18,),maxLines: 1,overflow: TextOverflow.ellipsis,),
+        title: Text(widget.ressource["programmation"]["file_name"].toString(),style: TextStyle(fontFamily: "AppFontStyle",fontSize: 18,),maxLines: 1,overflow: TextOverflow.ellipsis,),
       ),
       body: Stack(
         children: [
@@ -34,7 +35,7 @@ class _ViewRessourcesState extends State<ViewRessources> {
           ),
           Center(
             child: WebView(
-              initialUrl: widget.ressource["documents"]["file_path"],
+              initialUrl: widget.isPdf ? 'https://docs.google.com/gview?embedded=true&url=${widget.ressource["programmation"]["file_path"]}' : widget.ressource["programmation"]["file_path"],
               javascriptMode: JavascriptMode.unrestricted,
             ),
           ),

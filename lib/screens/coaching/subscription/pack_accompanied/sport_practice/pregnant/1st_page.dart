@@ -44,7 +44,7 @@ class _Pregnant1stPageState extends State<Pregnant1stPage> {
                 ),
                 Container(
                   width: 100,
-                  child: TextFields(step5subs.duration[x],hintText: "Durée",),
+                  child: TextFields(step5subs.duration[x],hintText: "min/sem",),
                 )
               ],
             ),

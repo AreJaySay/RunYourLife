@@ -7,6 +7,8 @@ import 'package:run_your_life/widgets/materialbutton.dart';
 import '../verify_code.dart';
 
 class EmailSent extends StatefulWidget {
+  final String email;
+  EmailSent({required this.email});
   @override
   _EmailSentState createState() => _EmailSentState();
 }
@@ -49,7 +51,7 @@ class _EmailSentState extends State<EmailSent> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text("l'adresse",style: TextStyle(fontFamily: "AppFontStyle"),),
-                        Text(" john.doe@gmail.com",style: TextStyle(color: AppColors.appmaincolor,fontFamily: "AppFontStyle"),),
+                        Text(" ${widget.email}",style: TextStyle(color: AppColors.appmaincolor,fontFamily: "AppFontStyle"),),
                       ],
                     ),
                     Text("pour changer de mot de passe !",style: TextStyle(fontFamily: "AppFontStyle"),)

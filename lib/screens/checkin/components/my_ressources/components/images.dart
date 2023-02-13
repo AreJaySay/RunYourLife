@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:run_your_life/models/device_model.dart';
+import 'package:run_your_life/screens/checkin/components/my_ressources/components/components/view_ressources.dart';
+import 'package:run_your_life/services/landing_page_services/objective_service.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/widgets/no_data.dart';
 import 'package:intl/intl.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import '../../../../../services/apis_services/screens/objective.dart';
 import '../../../../../utils/palettes/app_colors.dart';
 import '../../../../../widgets/materialbutton.dart';
 
@@ -15,9 +18,13 @@ class MyRessourcesImages extends StatefulWidget {
   _MyRessourcesImagesState createState() => _MyRessourcesImagesState();
 }
 
-class _MyRessourcesImagesState extends State<MyRessourcesImages> {
-  final Routes _routes = new Routes();
+class _MyRessourcesImagesState extends State<MyRessourcesImages> with WidgetsBindingObserver, ObjectiveService {
+  final ObjectiveServices _objectiveServices = new ObjectiveServices();
   final Materialbutton _materialButton = new Materialbutton();
+
+  void init() async {
+    await fetchObjectiveAndPopulate();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,37 +43,7 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> {
                 context: context,
                 barrierDismissible: true,
                 builder: (BuildContext context) {
-                  return Container(
-                    width: double.infinity,
-                    height: double.infinity,
-                    child: Stack(
-                      children: [
-                        Center(
-                          child: WebView(
-                            initialUrl: widget.images[index]["documents"]["file_path"],
-                            javascriptMode: JavascriptMode.unrestricted,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            width: double.infinity,
-                            height: 110,
-                            alignment: Alignment.topCenter,
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Container(
-                              width: double.infinity,
-                              height: 55,
-                              margin: EdgeInsets.only(top: 20),
-                              child: _materialButton.materialButton("RETOURNER", (){
-                                Navigator.of(context).pop(null);
-                              }),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
+                  return ViewRessources(ressource: widget.images[index],);
                 });
           },
           child: Container(
@@ -74,7 +51,54 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> {
             height: 100,
             margin: EdgeInsets.only(top: 20),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                InkWell(
+                  child: Container(
+                    child: Transform.scale(
+                      scale: 1,
+                      child: SizedBox(
+                        width: 23,
+                        height: 23,
+                        child: Checkbox(
+                          checkColor: AppColors.pinkColor,
+                          activeColor: Colors.white,
+                          value: widget.images[index]["status"] == 1,
+                          shape: CircleBorder(
+                              side: BorderSide.none
+                          ),
+                          splashRadius: 20,
+                          side: BorderSide(
+                              width: 0,
+                              color: Colors.transparent,
+                              style: BorderStyle.none
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              widget.images[index]["status"] = widget.images[index]["status"] == 0 ? 1 : 0;
+                            });
+                            _objectiveServices.changeStatus(id: widget.images[index]["id"].toString(), status:widget.images[index]["status"].toString(), isObjective: false).then((value){
+                              init();
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: widget.images[index]["status"] == 0 ? Colors.grey : AppColors.pinkColor ,width: 2),
+                      borderRadius: BorderRadius.circular(1000),
+                    ),
+                    padding: EdgeInsets.all(3),
+                  ),
+                  onTap: (){
+
+                  },
+                ),
+                SizedBox(
+                  width: 10,
+                ),
                 Container(
                   height: DeviceModel.isMobile ? 120 : 150,
                   width: 150,
@@ -83,7 +107,7 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> {
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image:  NetworkImage("https://api.runyourlife.fr/documents/coach/${widget.images[index]["documents"]["coach_id"].toString()}/${widget.images[index]["documents"]["file_path"]}")
+                          image:  NetworkImage(widget.images[index]["programmation"]["file_path"])
                       )
                   ),
                 ),
@@ -97,11 +121,11 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(widget.images[index]["documents"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                        Text(widget.images[index]["programmation"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
                         SizedBox(
                           height: 5,
                         ),
-                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.images[index]["documents"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
+                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.images[index]["programmation"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
                         // Text("0 commentaires",style: TextStyle(color: Colors.grey,fontSize: 12,fontFamily: "AppFontStyle"),),
                         Spacer(),
                         Row(
@@ -117,7 +141,7 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> {
                             SizedBox(
                               width: 5,
                             ),
-                            widget.images[index]["documents"]["file_type"] == "application/pdf" ? Container(
+                            widget.images[index]["programmation"]["file_type"] == "application/pdf" ? Container(
                               child: Text("Read",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
                               decoration: BoxDecoration(
                                   color: Colors.grey[400],

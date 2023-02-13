@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:readmore/readmore.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:intl/intl.dart';
@@ -41,17 +42,20 @@ class _CoachListViewWidgetState extends State<CoachListViewWidget> {
                 SizedBox(
                   height: 8,
                 ),
-                ReadMoreText(
-                  widget.details["feedbackscol"].toString(),
-                  trimLines: 4,
-                  colorClickableText: Colors.pink,
-                    trimMode: TrimMode.Line,
-                  trimCollapsedText: 'Voir plus',
-                  trimExpandedText: 'Voir moins',
-                  lessStyle: TextStyle(fontWeight: FontWeight.w600,color: widget.isMacroSolo ? AppColors.appmaincolor.withOpacity(0.3) : AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
-                  moreStyle: TextStyle(fontWeight: FontWeight.w600,color: widget.isMacroSolo ? AppColors.appmaincolor.withOpacity(0.3) : AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
-                  style: TextStyle(color: widget.isMacroSolo ? Colors.grey[400] : Colors.black,fontWeight: FontWeight.w500,fontSize: 15,fontFamily: "AppFontStyle"),
-                ),
+                HtmlWidget(widget.details["feedbackscol"].toString(), onTapUrl: (url)async{
+                  return true;
+                },textStyle: TextStyle(color: widget.isMacroSolo ? Colors.grey[400] : Colors.black,fontWeight: FontWeight.w500,fontSize: 15,fontFamily: "AppFontStyle"),),
+                // ReadMoreText(
+                //   widget.details["feedbackscol"].toString(),
+                //   trimLines: 4,
+                //   colorClickableText: Colors.pink,
+                //     trimMode: TrimMode.Line,
+                //   trimCollapsedText: 'Voir plus',
+                //   trimExpandedText: 'Voir moins',
+                //   lessStyle: TextStyle(fontWeight: FontWeight.w600,color: widget.isMacroSolo ? AppColors.appmaincolor.withOpacity(0.3) : AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
+                //   moreStyle: TextStyle(fontWeight: FontWeight.w600,color: widget.isMacroSolo ? AppColors.appmaincolor.withOpacity(0.3) : AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
+                //   style: TextStyle(color: widget.isMacroSolo ? Colors.grey[400] : Colors.black,fontWeight: FontWeight.w500,fontSize: 15,fontFamily: "AppFontStyle"),
+                // ),
               ],
             ),
           ),

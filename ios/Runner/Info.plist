@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -49,18 +53,19 @@
 	<key>NSAllowsArbitraryLoads</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>This application needs to access your music</string>
+	<string>Cette application doit accéder à votre musique</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Enable app to access your camera roll to upload your photos and use it as profile image or product images in the app</string>
+	<string>Activez l'application pour accéder à votre pellicule pour télécharger vos photos et l'utiliser comme image de profil ou images de produits dans l'application</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>This application needs to access your microphone.</string>
+	<string>Cette application doit accéder à votre microphone.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Enable app to access your photo library to upload your photos and use it as profile image or product images in the app.</string>
+	<string>Activez l'application pour accéder à votre photothèque afin de télécharger vos photos et de les utiliser comme image de profil ou images de produits dans l'application.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Enable app to access your photo library to upload your photos and use it as profile image or product images in the app.</string>
+	<string>Activez l'application pour accéder à votre photothèque afin de télécharger vos photos et de les utiliser comme image de profil ou images de produits dans l'application.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
+		<string>processing</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

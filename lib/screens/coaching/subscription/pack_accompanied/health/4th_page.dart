@@ -40,7 +40,7 @@ class _Health4thPageState extends State<Health4thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("TCA : as-tu souffert de troubles de comportements alimentaires (anorexie, boulimie, phobie ...)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("TCA : As-tu souffert de troubles de comportements alimentaires (anorexie, boulimie, phobie ...)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 15,
         ),

@@ -13,7 +13,7 @@ class ObjectiveServices {
   Future<List<Objective>?> get() async {
     try {
       return await http.get(
-        "${_netUtil.api}/objective".toUri,
+        "${_netUtil.api}/obj_programmation".toUri,
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
           "Accept": "application/json"
@@ -36,9 +36,9 @@ class ObjectiveServices {
     }
   }
   // OBJECTIVES STATUS
-  Future changeStatus({required String id, required String status})async{
+  Future changeStatus({required String id, required String status, bool isObjective = true})async{
     try {
-      return await http.post(Uri.parse("${_netUtil.url}/user/api/objective/ChangeStatus"),
+      return await http.post(Uri.parse(isObjective ? "${_netUtil.url}/user/api/obj_programmation/ChangeStatus" : "${_netUtil.url}/user/api/programmation/ChangeStatus"),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
           "Accept": "application/json"
@@ -49,7 +49,7 @@ class ObjectiveServices {
         }
       ).then((respo) async {
         var data = json.decode(respo.body);
-        print(data.toString());
+        print("RETURN"+data.toString());
         if (respo.statusCode == 200 || respo.statusCode == 201){
           return data;
         }else{
@@ -57,7 +57,7 @@ class ObjectiveServices {
         }
       });
     } catch (e) {
-      print("ERROR GET BLOGS ${e.toString()}");
+      
     }
   }
   // DOCUMENTS STATUS
@@ -82,7 +82,7 @@ class ObjectiveServices {
   //       }
   //     });
   //   } catch (e) {
-  //     print("ERROR GET BLOGS ${e.toString()}");
+  //     
   //   }
   // }
 }

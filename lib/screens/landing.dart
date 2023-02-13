@@ -12,6 +12,7 @@ import 'package:run_your_life/screens/feedback/pack_accompanied/feedback.dart';
 import 'package:run_your_life/screens/feedback/pack_solo/feedback.dart';
 import 'package:run_your_life/screens/home/pack_accompanied/home.dart';
 import 'package:run_your_life/screens/home/pack_solo/home.dart';
+import 'package:run_your_life/services/apis_services/screens/checkin.dart';
 import 'package:run_your_life/services/apis_services/screens/objective.dart';
 import 'package:run_your_life/services/apis_services/screens/parameters.dart';
 import 'package:run_your_life/services/stream_services/screens/landing.dart';
@@ -36,6 +37,7 @@ class Landing extends StatefulWidget {
 class _LandingState extends State<Landing> with WidgetsBindingObserver{
   final ObjectiveServices _objectiveApi = ObjectiveServices();
   PageController _controller = new PageController();
+  final CheckinServices _checkinServices = new CheckinServices();
   final ParameterServices _parameterServices = new ParameterServices();
   final PushNotifications _pushNotifications = new PushNotifications();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
@@ -79,6 +81,7 @@ class _LandingState extends State<Landing> with WidgetsBindingObserver{
         'your channel name',
         channelDescription: 'your channel description',
         importance: Importance.max,
+        playSound: true,
         priority: Priority.high
     );
     var iOSPlatformChannelSpecifics = new DarwinNotificationDetails();
@@ -108,17 +111,22 @@ class _LandingState extends State<Landing> with WidgetsBindingObserver{
           Parameters.hour2nd = value["notifications"][1]["hour"].toString();
           Parameters.hour3rd = value["notifications"][2]["hour"].toString();
         }
-        timer = Timer.periodic(Duration(seconds: 15), (Timer t) => _reminders());
-        Workmanager().registerPeriodicTask(
-          "daily",
-          "dailyReminder",
-          frequency: Duration(hours: int.parse(Parameters.hour2nd.split(":")[0].toString()), minutes: int.parse(Parameters.hour2nd.split(":")[1].toString())),
-        );
-        Workmanager().registerPeriodicTask(
-          "weekly",
-          "weeklyReminder",
-          frequency: Duration(days: int.parse(Parameters.hour3rd.toString().split(",")[1].toString()) ,hours: int.parse(Parameters.hour3rd.split(":")[0].toString()), minutes: int.parse(Parameters.hour3rd.split(":")[1].toString())),
-        );
+        _checkinServices.subsCheckInStatus().then((value){
+          print("CHECKIN IF EXISTER ${value.toString()}");
+          if(value == null){
+            timer = Timer.periodic(Duration(seconds: 15), (Timer t) => _reminders());
+            Workmanager().registerPeriodicTask(
+              "daily",
+              "dailyReminder",
+              frequency: Duration(hours: int.parse(Parameters.hour2nd.split(":")[0].toString()), minutes: int.parse(Parameters.hour2nd.split(":")[1].toString())),
+            );
+            Workmanager().registerPeriodicTask(
+              "weekly",
+              "weeklyReminder",
+              frequency: Duration(days: int.parse(Parameters.hour3rd.toString().split(",")[1].toString()) ,hours: int.parse(Parameters.hour3rd.split(":")[0].toString()), minutes: int.parse(Parameters.hour3rd.split(":")[1].toString())),
+            );
+          }
+        });
       }
     });
     try{

@@ -184,14 +184,17 @@ class _PackAccompaniedFeedBackState extends State<PackAccompaniedFeedBack> with 
                         ];
                       },
                       body: subscriptionDetails.currentdata[0]["macro_status"] == false ?
-                      Container(
-                        width: double.infinity,
-                        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10)
+                          ),
+                          child: Text("Cet abonnement ne vous permet pas d'obtenir un feedback de votre coach. Cependant, vous pouvez vous rendre sur la page de votre profil en bas de page et mettre à niveau votre abonnement pour que le mois prochain vous puissiez bénéficier d'un suivi 100% personnalisé et d'un contact permanent avec un coach !",style: TextStyle(fontSize: 15.5,color: Colors.black,fontFamily: "AppFontStyle"),textAlign: TextAlign.center,),
                         ),
-                        child: Center(child: Text("Cet abonnement ne vous permet pas d'obtenir un feedback de votre coach. Cependant, vous pouvez vous rendre sur la page de votre profil en bas de page et mettre à niveau votre abonnement pour que le mois prochain vous puissiez bénéficier d'un suivi 100% personnalisé et d'un contact permanent avec un coach !",style: TextStyle(fontSize: 15.5,color: Colors.black,fontFamily: "AppFontStyle"),textAlign: TextAlign.center,)),
                       ) :
                       ListView(
                         padding: EdgeInsets.symmetric(horizontal: 20),
