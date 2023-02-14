@@ -40,10 +40,10 @@ class AppBars {
   PreferredSizeWidget whiteappbar(context,
       {String title = "", bool isprofile = false}) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(70), // here the desired height
+      preferredSize: const Size.fromHeight(70), // here the desired height
       child: Container(
         alignment: Alignment.bottomCenter,
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         decoration: isprofile
             ? null
             : BoxDecoration(
@@ -53,7 +53,7 @@ class AppBars {
                     color: Colors.grey.shade300,
                     blurRadius: 3.0, // has the effect of softening the shadow
                     spreadRadius: 1.0, // has the effect of extending the shadow
-                    offset: Offset(
+                    offset: const Offset(
                       5.0, // horizontal, move right 10
                       3.5, // vertical, move down 10
                     ),
@@ -70,28 +70,28 @@ class AppBars {
                   width: 35,
                   height: 35,
                   alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      gradient: AppGradientColors.gradient,
+                      borderRadius: BorderRadius.circular(1000)),
                   child: Center(
                     child: Platform.isAndroid
-                        ? Icon(
+                        ? const Icon(
                             Icons.arrow_back,
                             color: Colors.white,
                             size: 22,
                           )
-                        : Icon(
+                        : const Icon(
                             Icons.arrow_back_ios_sharp,
                             color: Colors.white,
                             size: 22,
                           ),
                   ),
-                  decoration: BoxDecoration(
-                      gradient: AppGradientColors.gradient,
-                      borderRadius: BorderRadius.circular(1000)),
                 ),
                 onTap: () {
                   Navigator.of(context).pop(null);
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
               Hero(
@@ -112,28 +112,27 @@ class AppBars {
     );
   }
 
-  PreferredSizeWidget bluegradient(context, Widget widget,{bool isMeasure = false}) {
+  PreferredSizeWidget bluegradient(context, Widget widget,
+      {bool isMeasure = false}) {
     return PreferredSize(
       preferredSize: Size.fromHeight(56), // here the desired height
       child: Container(
-        decoration: isMeasure ?
-        BoxDecoration(
-          color: Colors.white
-        ) :
-        BoxDecoration(
-          gradient: AppGradientColors.gradient,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 3.0, // has the effect of softening the shadow
-              spreadRadius: 1.0, // has the effect of extending the shadow
-              offset: Offset(
-                5.0, // horizontal, move right 10
-                3.5, // vertical, move down 10
+        decoration: isMeasure
+            ? BoxDecoration(color: Colors.white)
+            : BoxDecoration(
+                gradient: AppGradientColors.gradient,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade300,
+                    blurRadius: 3.0, // has the effect of softening the shadow
+                    spreadRadius: 1.0, // has the effect of extending the shadow
+                    offset: Offset(
+                      5.0, // horizontal, move right 10
+                      3.5, // vertical, move down 10
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
         child: SafeArea(
           child: Center(
             child: widget,
