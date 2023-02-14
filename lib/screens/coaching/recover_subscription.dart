@@ -64,6 +64,28 @@ class _RecoverSubscriptionState extends State<RecoverSubscription> {
     super.dispose();
   }
 
+  /// an sa pag himo design lands bisan ig listtile mo nala
+  /// tas an ig butang la kay [TRANSACTIONDATE]
+  /// naka epoch iton an transaction date [ADD_THE_CODE_BELOW]
+  /// DateFormat(
+  //     "d, MMMM yyyy HH:mm",
+  //     'fr_FR')
+  // .format(
+  //   DateTime.fromMillisecondsSinceEpoch(
+  //       (_pastPurchases[index]
+  //                       .transactionDate !=
+  //                   null
+  //               ? int.parse(
+  //                   _pastPurchases[
+  //                           index]
+  //                       .transactionDate!)
+  //               : 0) *
+  //           1),
+  // )
+  // .toUpperCase(),
+  /// para ini sa transaction date
+  ///
+  /// tas ig convert nala an subscription name asya iton an productID
   @override
   Widget build(BuildContext context) {
     return Scaffold(
