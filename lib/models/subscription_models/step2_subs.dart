@@ -19,6 +19,10 @@ class Step2Subs{
     String coffee_per_day;
     String alcohol_per_week;
     String food_supplement;
+    String weigh_food;
+    String constraint;
+    String want_weigh_food;
+    String macros_track;
     String subscription_id;
     String id;
     //TYPICAL FOODS
@@ -41,6 +45,10 @@ class Step2Subs{
       this.coffee_per_day = "",
       this.alcohol_per_week = "",
       this.food_supplement = "",
+      this.weigh_food = "",
+      this.constraint = "",
+      this.want_weigh_food = "",
+      this.macros_track = "",
       this.subscription_id = "",
       this.id = "",
       //TYPICAL FOODS
@@ -64,6 +72,10 @@ class Step2Subs{
       "coffee_per_day": coffee_per_day,
       "alcohol_per_week": alcohol_per_week,
       "food_supplement": food_supplement,
+      "weigh_food": weigh_food,
+      "constraint": constraint,
+      "want_weigh_food": want_weigh_food,
+      "macros_track": macros_track,
       "subscription_id": subscriptionDetails.currentdata[0]["id"].toString(),
       "id": id,
       "typical_foods[breakfast]": breakfast,
@@ -73,57 +85,57 @@ class Step2Subs{
       "typical_foods[dinner]": dinner,
     };
 
-    Future editStep2(context,{required Map details,})async{
-      if(details.toString() != "{}"){
-        food_preference = details["food_preference"] == null? "" : details["food_preference"].toString();
-        meals_per_day = details["meals_per_day"] == null? "" : details["meals_per_day"].toString();
-        follow_drastic_diet = details["follow_drastic_diet"] == null? "" : details["follow_drastic_diet"].toString();
-        calories_today = details["calories_today"] == null? "" : details["calories_today"].toString();
-        allergies = details["allergies"] == null? "" : details["allergies"].toString();
-        intolerances = details["intolerances"] == null? "" : details["intolerances"].toString();
-        cultural_adaptations_diet = details["cultural_adaptations_diet"] == null? "" : details["cultural_adaptations_diet"].toString();
-        water_per_day = details["water_per_day"] == null? "" : details["water_per_day"].toString();
-        drink_other_than_water = details["drink_other_than_water"] == null? "" : details["drink_other_than_water"].toString();
-        coffee_per_day = details["coffee_per_day"] == null? "" : details["coffee_per_day"].toString();
-        alcohol_per_week = details["alcohol_per_week"] == null? "" : details["alcohol_per_week"].toString();
-        food_supplement = details["food_supplement"] == null? "" : details["food_supplement"].toString();
-        subscription_id = details["subscription_id"].toString();
-        id = details["id"].toString();
-        breakfast = details["typical_day_food"]["breakfast"] == null? "" : details["typical_day_food"]["breakfast"].toString();
-        morning_snack = details["typical_day_food"]["morning_snack"] == null? "" : details["typical_day_food"]["morning_snack"].toString();
-        lunch = details["typical_day_food"]["lunch"] == null? "" : details["typical_day_food"]["lunch"].toString();
-        afternoon_snack = details["typical_day_food"]["afternoon_snack"] == null? "" : details["typical_day_food"]["afternoon_snack"].toString();
-        dinner = details["typical_day_food"]["dinner"] == null? "" : details["typical_day_food"]["dinner"].toString();
-      }
-    }
-
-    Widget richtext({required Map formInfo}){
-      return ReadMoreText(
-        subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ?
-        "Préférence alimentaire: ${formInfo["food_preference"] == null ? "N/A" : formInfo["food_preference"].toString()}\n"
-        "Repas par jour: ${formInfo["meals_per_day"] == null ? "N/A" : formInfo["meals_per_day"].toString()}\n"
-        "Calories par jour: ${formInfo["calories_today"] == null ? "N/A" : formInfo["calories_today"].toString()}\n" :
-        "Préférence alimentaire: ${formInfo["food_preference"] == null ? "N/A" : formInfo["food_preference"].toString()}\n"
-        "Repas par jour: ${formInfo["meals_per_day"] == null ? "N/A" : formInfo["meals_per_day"].toString()}\n"
-        "Calories par jour: ${formInfo["calories_today"] == null ? "N/A" : formInfo["calories_today"].toString()}\n"
-        "Allergies: ${formInfo["allergies"] == null ? "N/A" : formInfo["allergies"].toString()}\n"
-        "Intolérances: ${formInfo["intolerances"] == null ? "N/A" : formInfo["intolerances"].toString()}\n"
-        "Régime particulier lié à la culture/religion: ${formInfo["cultural_adaptations_diet"] == null ? "N/A" : formInfo["cultural_adaptations_diet"].toString()}\n"
-        "Eau par jour: ${formInfo["water_per_day"] == null ? "N/A" : formInfo["water_per_day"].toString()}\n"
-        "Autres boissons que l’eau: ${formInfo["drink_other_than_water"] == null ? "N/A" : formInfo["drink_other_than_water"].toString()}\n"
-        "Café par jour: ${formInfo["coffee_per_day"] == null ? "N/A" : formInfo["coffee_per_day"].toString()}\n"
-        "Alcool par semaine: ${formInfo["alcohol_per_week"] == null ? "N/A" : formInfo["alcohol_per_week"].toString()}\n"
-        "Suppléments alimentaires: ${formInfo["food_supplement"] == null ? "N/A" : formInfo["food_supplement"].toString()}",
-        trimLines: 4,
-        colorClickableText: Colors.pink,
-        trimMode: TrimMode.Line,
-        trimCollapsedText: ' Voir plus',
-        trimExpandedText: ' Voir moins',
-        lessStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
-        moreStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
-        style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: "AppFontStyle"),
-      );
-    }
+    // Future editStep2(context,{required Map details,})async{
+    //   if(details.toString() != "{}"){
+    //     food_preference = details["food_preference"] == null? "" : details["food_preference"].toString();
+    //     meals_per_day = details["meals_per_day"] == null? "" : details["meals_per_day"].toString();
+    //     follow_drastic_diet = details["follow_drastic_diet"] == null? "" : details["follow_drastic_diet"].toString();
+    //     calories_today = details["calories_today"] == null? "" : details["calories_today"].toString();
+    //     allergies = details["allergies"] == null? "" : details["allergies"].toString();
+    //     intolerances = details["intolerances"] == null? "" : details["intolerances"].toString();
+    //     cultural_adaptations_diet = details["cultural_adaptations_diet"] == null? "" : details["cultural_adaptations_diet"].toString();
+    //     water_per_day = details["water_per_day"] == null? "" : details["water_per_day"].toString();
+    //     drink_other_than_water = details["drink_other_than_water"] == null? "" : details["drink_other_than_water"].toString();
+    //     coffee_per_day = details["coffee_per_day"] == null? "" : details["coffee_per_day"].toString();
+    //     alcohol_per_week = details["alcohol_per_week"] == null? "" : details["alcohol_per_week"].toString();
+    //     food_supplement = details["food_supplement"] == null? "" : details["food_supplement"].toString();
+    //     subscription_id = details["subscription_id"].toString();
+    //     id = details["id"].toString();
+    //     breakfast = details["typical_day_food"]["breakfast"] == null? "" : details["typical_day_food"]["breakfast"].toString();
+    //     morning_snack = details["typical_day_food"]["morning_snack"] == null? "" : details["typical_day_food"]["morning_snack"].toString();
+    //     lunch = details["typical_day_food"]["lunch"] == null? "" : details["typical_day_food"]["lunch"].toString();
+    //     afternoon_snack = details["typical_day_food"]["afternoon_snack"] == null? "" : details["typical_day_food"]["afternoon_snack"].toString();
+    //     dinner = details["typical_day_food"]["dinner"] == null? "" : details["typical_day_food"]["dinner"].toString();
+    //   }
+    // }
+    //
+    // Widget richtext({required Map formInfo}){
+    //   return ReadMoreText(
+    //     subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ?
+    //     "Préférence alimentaire: ${formInfo["food_preference"] == null ? "N/A" : formInfo["food_preference"].toString()}\n"
+    //     "Repas par jour: ${formInfo["meals_per_day"] == null ? "N/A" : formInfo["meals_per_day"].toString()}\n"
+    //     "Calories par jour: ${formInfo["calories_today"] == null ? "N/A" : formInfo["calories_today"].toString()}\n" :
+    //     "Préférence alimentaire: ${formInfo["food_preference"] == null ? "N/A" : formInfo["food_preference"].toString()}\n"
+    //     "Repas par jour: ${formInfo["meals_per_day"] == null ? "N/A" : formInfo["meals_per_day"].toString()}\n"
+    //     "Calories par jour: ${formInfo["calories_today"] == null ? "N/A" : formInfo["calories_today"].toString()}\n"
+    //     "Allergies: ${formInfo["allergies"] == null ? "N/A" : formInfo["allergies"].toString()}\n"
+    //     "Intolérances: ${formInfo["intolerances"] == null ? "N/A" : formInfo["intolerances"].toString()}\n"
+    //     "Régime particulier lié à la culture/religion: ${formInfo["cultural_adaptations_diet"] == null ? "N/A" : formInfo["cultural_adaptations_diet"].toString()}\n"
+    //     "Eau par jour: ${formInfo["water_per_day"] == null ? "N/A" : formInfo["water_per_day"].toString()}\n"
+    //     "Autres boissons que l’eau: ${formInfo["drink_other_than_water"] == null ? "N/A" : formInfo["drink_other_than_water"].toString()}\n"
+    //     "Café par jour: ${formInfo["coffee_per_day"] == null ? "N/A" : formInfo["coffee_per_day"].toString()}\n"
+    //     "Alcool par semaine: ${formInfo["alcohol_per_week"] == null ? "N/A" : formInfo["alcohol_per_week"].toString()}\n"
+    //     "Suppléments alimentaires: ${formInfo["food_supplement"] == null ? "N/A" : formInfo["food_supplement"].toString()}",
+    //     trimLines: 4,
+    //     colorClickableText: Colors.pink,
+    //     trimMode: TrimMode.Line,
+    //     trimCollapsedText: ' Voir plus',
+    //     trimExpandedText: ' Voir moins',
+    //     lessStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
+    //     moreStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
+    //     style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: "AppFontStyle"),
+    //   );
+    // }
 }
 
 Step2Subs step2subs = new Step2Subs();

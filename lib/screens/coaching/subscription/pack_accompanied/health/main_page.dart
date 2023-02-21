@@ -17,6 +17,7 @@ import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/obj
 import 'package:run_your_life/screens/coaching/subscription/stepper.dart';
 import 'package:run_your_life/screens/landing.dart';
 import 'package:run_your_life/services/apis_services/credentials/auths.dart';
+import 'package:run_your_life/services/apis_services/screens/profile.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/step3subs.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/subscriptions.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
@@ -35,6 +36,7 @@ class HealthMainPage extends StatefulWidget {
 class _HealthMainPageState extends State<HealthMainPage> {
   List<Widget> screens = [Container(),Health1stPage(),Health2ndPage(),Health3rdPage(),Health4thPage(),Health5thPage(),Health6thPage(),Health7thPage(),Health8thPage(),Health9thPage()];
   final Materialbutton _materialbutton = new Materialbutton();
+  final ProfileServices _profileServices = new ProfileServices();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final Step3Service _step3service = new Step3Service();
@@ -148,8 +150,10 @@ class _HealthMainPageState extends State<HealthMainPage> {
                             }
                             _step3service.submit(context).then((value){
                               if(value != null){
-                                Navigator.of(context).pop(null);
-                                _routes.navigator_push(context, ObjectiveMainPage());
+                                _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString(), relation: "activeSubscription").whenComplete((){
+                                  Navigator.of(context).pop(null);
+                                  _routes.navigator_push(context, ObjectiveMainPage());
+                                });
                               }
                             });
                           }else{

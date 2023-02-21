@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:run_your_life/models/subscription_models/step2_subs.dart';
+import 'package:run_your_life/services/apis_services/subscriptions/step2subs.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -12,6 +14,16 @@ class _Eating12thPageState extends State<Eating12thPage> {
   bool _contraints = false;
   bool _desires = false;
   bool _trouble = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    step2subs.weigh_food = "Non";
+    step2subs.constraint = "Non";
+    step2subs.want_weigh_food = "Non";
+    step2subs.macros_track = "Non";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +41,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
               onTap: (){
                 setState(() {
                   _weighFood = !_weighFood;
+                  step2subs.weigh_food = "Oui";
                 });
               },
               child: ZoomTapAnimation(end: 0.99,child: Container(
@@ -59,6 +72,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
                             onChanged: (bool? value) {
                               setState(() {
                                 _weighFood = !_weighFood;
+                                step2subs.weigh_food = "Oui";
                               });
                             },
                           ),
@@ -85,6 +99,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
               onTap: (){
                 setState(() {
                   _weighFood = !_weighFood;
+                  step2subs.weigh_food = "Non";
                 });
               },
               child: ZoomTapAnimation(end: 0.99,child: Container(
@@ -115,6 +130,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
                             onChanged: (bool? value) {
                               setState(() {
                                 _weighFood = !_weighFood;
+                                step2subs.weigh_food = "Non";
                               });
                             },
                           ),
@@ -151,6 +167,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
                   onTap: (){
                     setState(() {
                       _contraints = !_contraints;
+                      step2subs.constraint = "Oui";
                     });
                   },
                   child: ZoomTapAnimation(end: 0.99,child: Container(
@@ -181,6 +198,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
                                 onChanged: (bool? value) {
                                   setState(() {
                                     _contraints = !_contraints;
+                                    step2subs.constraint = "Oui";
                                   });
                                 },
                               ),
@@ -207,6 +225,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
                   onTap: (){
                     setState(() {
                       _contraints = !_contraints;
+                      step2subs.constraint = "Non";
                     });
                   },
                   child: ZoomTapAnimation(end: 0.99,child: Container(
@@ -237,6 +256,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
                                 onChanged: (bool? value) {
                                   setState(() {
                                     _contraints = !_contraints;
+                                    step2subs.constraint = "Non";
                                   });
                                 },
                               ),
@@ -273,6 +293,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
               onTap: (){
                 setState(() {
                   _desires = !_desires;
+                  step2subs.want_weigh_food = "Oui";
                 });
               },
               child: ZoomTapAnimation(end: 0.99,child: Container(
@@ -303,6 +324,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
                             onChanged: (bool? value) {
                               setState(() {
                                 _desires = !_desires;
+                                step2subs.want_weigh_food = "Oui";
                               });
                             },
                           ),
@@ -329,6 +351,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
               onTap: (){
                 setState(() {
                   _desires = !_desires;
+                  step2subs.want_weigh_food = "Non";
                 });
               },
               child: ZoomTapAnimation(end: 0.99,child: Container(
@@ -359,6 +382,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
                             onChanged: (bool? value) {
                               setState(() {
                                 _desires = !_desires;
+                                step2subs.want_weigh_food = "Non";
                               });
                             },
                           ),
@@ -393,6 +417,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
               onTap: (){
                 setState(() {
                   _trouble = !_trouble;
+                  step2subs.macros_track = "Oui";
                 });
               },
               child: ZoomTapAnimation(end: 0.99,child: Container(
@@ -423,6 +448,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
                             onChanged: (bool? value) {
                               setState(() {
                                 _trouble = !_trouble;
+                                step2subs.macros_track = "Oui";
                               });
                             },
                           ),
@@ -449,6 +475,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
               onTap: (){
                 setState(() {
                   _trouble = !_trouble;
+                  step2subs.macros_track = "Non";
                 });
               },
               child: ZoomTapAnimation(end: 0.99,child: Container(
@@ -479,6 +506,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
                             onChanged: (bool? value) {
                               setState(() {
                                 _trouble = !_trouble;
+                                step2subs.macros_track = "Non";
                               });
                             },
                           ),

@@ -32,17 +32,18 @@ class _Objective2ndPageState extends State<Objective2ndPage> {
         SizedBox(
           height: 30,
         ),
-        step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") ?
+        // step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)"  ?
         TextFields(_weight, hintText: "Poids (kg)",onChanged: (text){
           setState(() {
             step4subs.desired_weight = text;
           });
-        },) :
-        TextFields(_level, hintText: "Niveau de sport",onChanged: (text){
-          setState(() {
-            // step4subs.desired_weight = text;
-          });
         },),
+        //     :
+        // TextFields(_level, hintText: "Niveau de sport",onChanged: (text){
+        //   setState(() {
+        //     // step4subs.desired_weight = text;
+        //   });
+        // },),
         SizedBox(
           height: 40,
         )

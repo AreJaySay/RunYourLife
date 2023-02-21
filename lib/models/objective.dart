@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Objective {
   final int id;
   final int idObjective;
@@ -19,9 +21,9 @@ class Objective {
   });
 
   factory Objective.fromJson(Map<String, dynamic> json) => Objective(
-        objective: json['obj_programmation'] == null ? null : SubObjective.fromJson(json['obj_programmation']),
+        objective: json.toString().contains("obj_programmation") ? json['obj_programmation'] : json['objective'] == null ? null : SubObjective.fromJson(json.toString().contains("obj_programmation") ? json['obj_programmation'] : json['objective']),
         clientId: json['client_id'].toInt(),
-        idObjective: json['id_obj_programmation'].toInt(),
+        idObjective: json.toString().contains("obj_programmation") ? json['id_obj_programmation'].toInt() : json['id_objective'].toInt(),
         createdAt: DateTime.parse(json['created_at']),
         id: json['id'].toInt(),
         position: json['position']?.toInt() ?? 0,
@@ -33,7 +35,11 @@ class Objective {
     "id" : id,
     "objective" : objective != null ? objective!.toJson() : null,
     "client_id" : clientId,
-    "id_obj_programmation" : idObjective,
+    if(json.toString().contains("obj_programmation"))...{
+      "id_obj_programmation" : idObjective,
+    }else...{
+      "id_objective" : idObjective,
+    },
     "createdAt" : createdAt.toString(),
     "updatedAt" : updatedAt.toString(),
     "view_status" : viewStatus,

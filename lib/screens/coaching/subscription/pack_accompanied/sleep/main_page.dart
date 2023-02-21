@@ -9,6 +9,7 @@ import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sle
 import 'package:run_your_life/screens/coaching/subscription/stepper.dart';
 import 'package:run_your_life/screens/landing.dart';
 import 'package:run_your_life/services/apis_services/credentials/auths.dart';
+import 'package:run_your_life/services/apis_services/screens/profile.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/step7subs.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/subscriptions.dart';
 import 'package:run_your_life/services/stream_services/subscriptions/subscription_details.dart';
@@ -29,6 +30,7 @@ class _SleepMainPageState extends State<SleepMainPage> {
   final Materialbutton _materialbutton = new Materialbutton();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final Step7Service _step7service = new Step7Service();
+  final ProfileServices _profileServices = new ProfileServices();
   final Routes _routes = new Routes();
   int _currentPage = 1;
 
@@ -133,8 +135,10 @@ class _SleepMainPageState extends State<SleepMainPage> {
                             }
                             _step7service.submit(context).then((value){
                               if(value != null){
-                                Navigator.of(context).pop(null);
-                                _routes.navigator_push(context, FormCompleted());
+                                _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString(), relation: "activeSubscription").whenComplete((){
+                                  Navigator.of(context).pop(null);
+                                  _routes.navigator_push(context, FormCompleted());
+                                });
                               }
                             });
                           }else{

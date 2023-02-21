@@ -379,7 +379,7 @@ class _ScheduleCallState extends State<ScheduleCall> {
                         child: _materialbutton.materialButton("VALIDER", ()async{
                           if(_selected == 1){
                             if(_dateChecker == DateFormat("yyyy-MM-dd").format(DateTime.parse(DateTime.now().toString()))){
-                              _snackbarMessage.snackbarMessage(context, message: "Vous ne pouvez modifier votre rendez-vous que jusqu'au jour précédent.", is_error: true);
+                              _snackbarMessage.snackbarMessage(context, message: "Cette heure n'est pas disponible.", is_error: true);
                             }else{
                               if(snapshot.data!["unfinishsched"].toString() == "null" || snapshot.data!["unfinishsched"].toString() == "[]"){
                                 if(_selectedhour == ""){

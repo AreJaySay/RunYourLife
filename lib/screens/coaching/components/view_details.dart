@@ -54,16 +54,14 @@ class _ViewCoachingDetailsState extends State<ViewCoachingDetails> {
     purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
       if (purchaseDetails.status == PurchaseStatus.canceled) {
         Navigator.of(context).pop(null);
+        print("CANCEL");
       } else if(purchaseDetails.status == PurchaseStatus.error) {
         Navigator.of(context).pop(null);
+        print("ERROR");
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
-          print(purchaseDetails.verificationData.serverVerificationData);
-          print(purchaseDetails.verificationData.source);
-          print(purchaseDetails.status);
-          print(purchaseDetails.purchaseID);
-          print(purchaseDetails.productID);
-          print(purchaseDetails.transactionDate);
+          Navigator.of(context).pop(null);
+          print("ERROR");
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
           bool valid = await _verifyPurchase(purchaseDetails);
@@ -77,7 +75,7 @@ class _ViewCoachingDetailsState extends State<ViewCoachingDetails> {
             Navigator.of(context).pop(null);
             _screenLoaders.functionLoader(context);
             if(purchaseDetails.productID == "accompagned_subs"){
-              _choosePlanService.choosePlan(context,planid: "3", purchaseToken: purchaseDetails.verificationData.serverVerificationData.toString(), transacId: "accompagned_subs", type: "appstore",).then((value){
+              _choosePlanService.choosePlan(context,planid: "3", purchaseToken: purchaseDetails.verificationData.serverVerificationData.toString(), transacId: purchaseDetails.productID, type: Platform.isIOS ? "appstore" : "playstore" ,).then((value){
                 if(value != null){
                   _parameterServices.submit(context).whenComplete((){
                     if(widget.planDetails["id"] == 3){
@@ -101,7 +99,7 @@ class _ViewCoachingDetailsState extends State<ViewCoachingDetails> {
                 }
               });
             }else{
-              _choosePlanService.choosePlan(context,planid: "4", purchaseToken: purchaseDetails.verificationData.serverVerificationData.toString(), transacId: "macro_solo_subs", type: "appstore",).then((value){
+              _choosePlanService.choosePlan(context,planid: "4", purchaseToken: purchaseDetails.verificationData.serverVerificationData.toString(), transacId: purchaseDetails.productID, type: Platform.isIOS ? "appstore" : "playstore",).then((value){
                 if(value != null){
                   _parameterServices.submit(context).whenComplete((){
                     if(widget.planDetails["id"] == 3){

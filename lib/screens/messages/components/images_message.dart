@@ -16,6 +16,7 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../functions/loaders.dart';
 import '../../../services/apis_services/screens/messages.dart';
 import '../../../services/stream_services/screens/messages.dart';
+import '../../checkin/components/my_ressources/components/components/view_ressources.dart';
 
 class ImagesMessages extends StatefulWidget {
   final bool ismine;
@@ -49,100 +50,121 @@ class _ImagesMessagesState extends State<ImagesMessages> {
         children: [
           for(int x = 0; x < widget.datas.length; x++)...{
            widget.ismine ?
-           Container(
-             height: 60,
-             child: Row(
-               children: [
-                 _isdownloading ==  widget.datas[x].toString()+x.toString() ? Container(
-                   margin: EdgeInsets.only(left: 12),
-                   child: Bouncy(
-                       duration: Duration(milliseconds: 1000),
-                       lift: 15,
-                       ratio: 0.3,
-                       pause: 0.2,
-                       child: Icon(Icons.download,color: widget.ismine ? AppColors.appmaincolor : Colors.white,)),
-                 ) :
-                 IconButton(
-                   onPressed: (){
-                     setState((){
-                       _isdownloading = widget.datas[x].toString()+x.toString();
-                       _base64converter.networkImageToBase64(widget.datas[x]["file"]).then((value){
-                         setState((){
-                           _isdownloading = "";
+           GestureDetector(
+             onTap: (){
+               showDialog<void>(
+                   context: context,
+                   barrierDismissible: true,
+                   builder: (BuildContext context) {
+                     return ViewRessources(ressource: widget.datas[x],isPdf: true, isMessage: true,);
+                   });
+             },
+             child: Container(
+               height: 60,
+               child: Row(
+                 children: [
+                   _isdownloading ==  widget.datas[x].toString()+x.toString() ? Container(
+                     margin: EdgeInsets.only(left: 12),
+                     child: Bouncy(
+                         duration: Duration(milliseconds: 1000),
+                         lift: 15,
+                         ratio: 0.3,
+                         pause: 0.2,
+                         child: Icon(Icons.download,color: widget.ismine ? AppColors.appmaincolor : Colors.white,)),
+                   ) :
+                   IconButton(
+                     onPressed: (){
+                       setState((){
+                         _isdownloading = widget.datas[x].toString()+x.toString();
+                         _base64converter.networkImageToBase64(widget.datas[x]["file"]).then((value){
+                           setState((){
+                             _isdownloading = "";
+                           });
+                           if(value != null){
+                             _snackbarMessage.snackbarMessage(context, message: "Le fichier a été téléchargé et enregistré avec succès dans le dossier de votre appareil..");
+                           }
                          });
-                         if(value != null){
-                           _snackbarMessage.snackbarMessage(context, message: "Le fichier a été téléchargé et enregistré avec succès dans le dossier de votre appareil..");
-                         }
                        });
-                     });
-                   },
-                   icon: Icon(Icons.download,color: widget.ismine ? AppColors.appmaincolor : Colors.white,),
-                 ),
-                 Expanded(
-                   child: Text(widget.datas[x]["file_name"].toString(),style: TextStyle(fontSize: 12,color: widget.ismine ? Colors.black54 : Colors.white),maxLines: 3,overflow: TextOverflow.ellipsis,textAlign: TextAlign.end,),
-                 ),
-                 Image(
-                   color: widget.ismine ? AppColors.appmaincolor : Colors.white,
-                   image: AssetImage("assets/icons/pdf.png"),
-                 ),
-                 SizedBox(
-                   width: 5,
-                 )
-               ],
-             ),
-             padding: EdgeInsets.symmetric(vertical: 10),
-             decoration: BoxDecoration(
-                 color: widget.ismine ? Colors.white : AppColors.appmaincolor,
-                 borderRadius: BorderRadius.circular(5)
+                     },
+                     icon: Icon(Icons.download,color: widget.ismine ? AppColors.appmaincolor : Colors.white,),
+                   ),
+                   Expanded(
+                     child: Text(widget.datas[x]["file_name"].toString(),style: TextStyle(fontSize: 12,color: widget.ismine ? Colors.black54 : Colors.white),maxLines: 3,overflow: TextOverflow.ellipsis,textAlign: TextAlign.end,),
+                   ),
+                   Image(
+                     color: widget.ismine ? AppColors.appmaincolor : Colors.white,
+                     image: AssetImage("assets/icons/pdf.png"),
+                   ),
+                   SizedBox(
+                     width: 5,
+                   )
+                 ],
+               ),
+               padding: EdgeInsets.symmetric(vertical: 10),
+               decoration: BoxDecoration(
+                   color: widget.ismine ? Colors.white : AppColors.appmaincolor,
+                   borderRadius: BorderRadius.circular(5)
+               ),
              ),
            ) :
-           Container(
-              height: 60,
-              child: Row(
-                children: [
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Image(
-                    color: widget.ismine ? AppColors.appmaincolor : Colors.white,
-                    image: AssetImage("assets/icons/pdf.png"),
-                  ),
-                  Expanded(
-                    child: Text(widget.datas[x]["file_name"].toString(),style: TextStyle(fontSize: 12,color: widget.ismine ? Colors.black54 : Colors.white),maxLines: 3,overflow: TextOverflow.ellipsis,textAlign: TextAlign.left,),
-                  ),
-                  _isdownloading ==  widget.datas[x].toString()+x.toString() ? Container(
-                    margin: EdgeInsets.only(left: 12),
-                    child: Bouncy(
-                        duration: Duration(milliseconds: 1000),
-                        lift: 15,
-                        ratio: 0.3,
-                        pause: 0.2,
-                        child: Icon(Icons.download,color: widget.ismine ? AppColors.appmaincolor : Colors.white,)),
-                  ) :
-                  IconButton(
-                    onPressed: (){
-                      setState((){
-                        _isdownloading = widget.datas[x].toString()+x.toString();
-                        _base64converter.networkImageToBase64(widget.datas[x]["file"]).then((value){
-                          setState((){
-                            _isdownloading = "";
+           GestureDetector(
+             onTap: (){
+               print(widget.datas[x]);
+               showDialog<void>(
+                   context: context,
+                   barrierDismissible: true,
+                   builder: (BuildContext context) {
+                     return ViewRessources(ressource: widget.datas[x],isPdf: true, isMessage: true,);
+                   });
+             },
+             child: Container(
+                height: 60,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Image(
+                      color: widget.ismine ? AppColors.appmaincolor : Colors.white,
+                      image: AssetImage("assets/icons/pdf.png"),
+                    ),
+                    Expanded(
+                      child: Text(widget.datas[x]["file_name"].toString(),style: TextStyle(fontSize: 12,color: widget.ismine ? Colors.black54 : Colors.white),maxLines: 3,overflow: TextOverflow.ellipsis,textAlign: TextAlign.left,),
+                    ),
+                    _isdownloading ==  widget.datas[x].toString()+x.toString() ? Container(
+                      margin: EdgeInsets.only(left: 12),
+                      child: Bouncy(
+                          duration: Duration(milliseconds: 1000),
+                          lift: 15,
+                          ratio: 0.3,
+                          pause: 0.2,
+                          child: Icon(Icons.download,color: widget.ismine ? AppColors.appmaincolor : Colors.white,)),
+                    ) :
+                    IconButton(
+                      onPressed: (){
+                        setState((){
+                          _isdownloading = widget.datas[x].toString()+x.toString();
+                          _base64converter.networkImageToBase64(widget.datas[x]["file"]).then((value){
+                            setState((){
+                              _isdownloading = "";
+                            });
+                            if(value != null){
+                              _snackbarMessage.snackbarMessage(context, message: "Le fichier a été téléchargé et enregistré avec succès dans le dossier de votre appareil..");
+                            }
                           });
-                          if(value != null){
-                            _snackbarMessage.snackbarMessage(context, message: "Le fichier a été téléchargé et enregistré avec succès dans le dossier de votre appareil..");
-                          }
                         });
-                      });
-                    },
-                    icon: Icon(Icons.download,color: widget.ismine ? AppColors.appmaincolor : Colors.white,),
-                  ),
-                ],
+                      },
+                      icon: Icon(Icons.download,color: widget.ismine ? AppColors.appmaincolor : Colors.white,),
+                    ),
+                  ],
+                ),
+                padding: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                    color: widget.ismine ? Colors.white : AppColors.appmaincolor,
+                    borderRadius: BorderRadius.circular(5)
+                ),
               ),
-              padding: EdgeInsets.symmetric(vertical: 10),
-              decoration: BoxDecoration(
-                  color: widget.ismine ? Colors.white : AppColors.appmaincolor,
-                  borderRadius: BorderRadius.circular(5)
-              ),
-            ),
+           ),
             SizedBox(
               height: 8,
             )
@@ -163,50 +185,23 @@ class _ImagesMessagesState extends State<ImagesMessages> {
             for(var x = 0; x < jsonDecode(widget.details["message"]).length; x++)...{
               GestureDetector(
                 onTap: (){
-                  print(jsonDecode(widget.details["message"])[x].toString());
-                  if(jsonDecode(widget.details["message"])[x].toString() == "image/jpeg"){
-
-                  }else{
-                    showDialog<void>(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (BuildContext context) {
-                          return Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            child: Stack(
-                              children: [
-                                Center(
-                                  child: WebView(
-                                    initialUrl: jsonDecode(widget.details["message"])[x]["file"],
-                                    javascriptMode: JavascriptMode.unrestricted,
-                                  ),
-                                ),
-                                ZoomTapAnimation(
-                                  end: 0.99,
-                                  child: Container(
-                                    margin: EdgeInsets.all(15),
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                      color: AppColors.appmaincolor,
-                                      borderRadius: BorderRadius.circular(1000),
-                                    ),
-                                    child: Center(
-                                      child: Platform.isAndroid ?
-                                      Icon(Icons.arrow_back,color: Colors.white,) :
-                                      Icon(Icons.arrow_back_ios,color: Colors.white),
-                                    ),
-                                  ),
-                                  onTap: (){
-                                    Navigator.of(context).pop(null);
-                                  },
-                                )
-                              ],
-                            ),
-                          );
-                        });
-                  }
+                  showDialog<void>(
+                      context: context,
+                      barrierDismissible: true,
+                      builder: (BuildContext context) {
+                        return ViewRessources(ressource: widget.datas[x],isMessage: true,);
+                      });
+                  // print(jsonDecode(widget.details["message"])[x].toString());
+                  // if(jsonDecode(widget.details["message"])[x].toString() == "image/jpeg"){
+                  //
+                  // }else{
+                  //   // showDialog<void>(
+                  //   //     context: context,
+                  //   //     barrierDismissible: true,
+                  //   //     builder: (BuildContext context) {
+                  //   //       return ViewRessources(ressource: widget.details["message"][x]["file"],isPdf: true,);
+                  //   //     });
+                  // }
                 },
                 onLongPress: (){
                   showModalBottomSheet(

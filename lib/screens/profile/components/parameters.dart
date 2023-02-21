@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:page_transition/page_transition.dart';
@@ -58,6 +59,7 @@ class _ParameterPageState extends State<ParameterPage> {
   int _coins = 0;
   Map? planDetails;
   bool _purchasePending = false;
+  bool _isShown = true;
 
   @override
   void initState() {
@@ -462,13 +464,7 @@ class _ParameterPageState extends State<ParameterPage> {
             subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? _upgrader(details: coachingStreamServices.currentdata[0]) : Container(),
             InkWell(
               onTap: (){
-                _screenLoaders.functionLoader(context);
-                _notifications.firebasemessaging.deleteToken().whenComplete((){
-                  _logoutUser.logout().whenComplete((){
-                    Navigator.of(context).pop(null);
-                    _routes.navigator_pushreplacement(context, Welcome(), transitionType: PageTransitionType.leftToRightWithFade);
-                  });
-                });
+                _logout(context);
               },
               child: Container(
                 height: 55,
@@ -665,5 +661,43 @@ class _ParameterPageState extends State<ParameterPage> {
         ),
      ],
    );
+  }
+  void _logout(BuildContext context) {
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return CupertinoAlertDialog(
+          title: const Text('Veuillez confirmer',style: TextStyle(fontFamily: "AppFontStyle"),),
+          content: const Text('Êtes-vous sûr de vouloir vous déconnecter?',style: TextStyle(fontFamily: "AppFontStyle"),),
+          actions: [
+            CupertinoDialogAction(
+              onPressed: () {
+                setState(() {
+                  _screenLoaders.functionLoader(context);
+                  _notifications.firebasemessaging.deleteToken().whenComplete((){
+                    _logoutUser.logout().whenComplete((){
+                      _isShown = false;
+                      Navigator.of(context).pop(null);
+                      _routes.navigator_pushreplacement(context, Welcome(), transitionType: PageTransitionType.leftToRightWithFade);
+                    });
+                  });
+                });
+              },
+              child: const Text('Oui',style: TextStyle(fontFamily: "AppFontStyle"),),
+              isDefaultAction: true,
+              isDestructiveAction: true,
+            ),
+            // The "No" button
+            CupertinoDialogAction(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Non',style: TextStyle(fontFamily: "AppFontStyle"),),
+              isDefaultAction: false,
+              isDestructiveAction: false,
+            )
+          ],
+        );
+      });
   }
 }

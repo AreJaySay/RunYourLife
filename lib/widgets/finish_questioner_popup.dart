@@ -38,10 +38,10 @@ class _FinishQuestionerPopupState extends State<FinishQuestionerPopup> {
           Spacer(),
           _materialButton.materialButton(widget.isComplete ? "VALIDER" : "CONTINUER", () {
             if(widget.isComplete){
-              step1subs.editStep1(context, details: subStreamServices.currentdata["client_info"] == null  ? {} : subStreamServices.currentdata["client_info"]);
-              step2subs.editStep2(context, details: subStreamServices.currentdata["food_preference"] == null ? {} : subStreamServices.currentdata["food_preference"]);
-              step4subs.editStep4(context, details: subStreamServices.currentdata["goal"] == null ? {} : subStreamServices.currentdata["goal"]);
-              step5subs.editStep5(context, details: subStreamServices.currentdata["sport"] == null ? {} : subStreamServices.currentdata["sport"]);
+              // step1subs.editStep1(context, details: subStreamServices.currentdata["client_info"] == null  ? {} : subStreamServices.currentdata["client_info"]);
+              // step2subs.editStep2(context, details: subStreamServices.currentdata["food_preference"] == null ? {} : subStreamServices.currentdata["food_preference"]);
+              // step4subs.editStep4(context, details: subStreamServices.currentdata["goal"] == null ? {} : subStreamServices.currentdata["goal"]);
+              // step5subs.editStep5(context, details: subStreamServices.currentdata["sport"] == null ? {} : subStreamServices.currentdata["sport"]);
 
               // PRESENTATION
               if(subStreamServices.currentdata["client_info"] == null){

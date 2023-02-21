@@ -11,6 +11,7 @@ import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/spo
 import 'package:run_your_life/screens/coaching/subscription/stepper.dart';
 import 'package:run_your_life/screens/landing.dart';
 import 'package:run_your_life/services/apis_services/credentials/auths.dart';
+import 'package:run_your_life/services/apis_services/screens/profile.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/step4subs.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/subscriptions.dart';
 import 'package:run_your_life/services/stream_services/subscriptions/subscription_details.dart';
@@ -31,6 +32,7 @@ class _ObjectiveMainPageState extends State<ObjectiveMainPage> {
   List<Widget> _screens = [Container(),Objective1stPage(),Objective2ndPage(),Objective4thPage(),Objective5thPage(),Objective6thPage()];
   List<Widget> _secondscreens = [Container(),Objective1stPage(),Objective4thPage(),Objective5thPage(),Objective6thPage()];
   final Materialbutton _materialbutton = new Materialbutton();
+  final ProfileServices _profileServices = new ProfileServices();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
@@ -52,7 +54,7 @@ class _ObjectiveMainPageState extends State<ObjectiveMainPage> {
             child: ListView(
               padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
               children: [
-                MyStepper(step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") || step4subs.goal == "Contruire du muscle (et augmenter ton poids de corps)" ? 4 : 5,range: double.parse(_currentPage.toString()),),
+                MyStepper(step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)" ? 5 : 4,range: double.parse(_currentPage.toString()),),
                 SizedBox(
                   height: 30,
                 ),
@@ -118,7 +120,7 @@ class _ObjectiveMainPageState extends State<ObjectiveMainPage> {
                       SizedBox(
                         height: 40,
                       ),
-                      step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)" ?
+                      step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)" ?
                       _screens[_currentPage] :
                       _secondscreens[_currentPage],
                       SizedBox(
@@ -126,7 +128,7 @@ class _ObjectiveMainPageState extends State<ObjectiveMainPage> {
                       ),
                       _materialbutton.materialButton("SUIVANT", () {
                         setState(() {
-                           if(step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)"){
+                           if(step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)"){
                             print("asd");
                              if(_currentPage > 4){
                               _screenLoaders.functionLoader(context);
@@ -154,8 +156,10 @@ class _ObjectiveMainPageState extends State<ObjectiveMainPage> {
                               }
                               _step4service.submit(context).then((value){
                                 if(value != null){
-                                  Navigator.of(context).pop(null);
-                                  _routes.navigator_push(context, SportMainPage());
+                                  _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString(), relation: "activeSubscription").whenComplete((){
+                                    Navigator.of(context).pop(null);
+                                    _routes.navigator_push(context, SportMainPage());
+                                  });
                                 }
                               });
                             }else{

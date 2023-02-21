@@ -11,6 +11,7 @@ import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/pre
 import 'package:run_your_life/screens/coaching/subscription/stepper.dart';
 import 'package:run_your_life/screens/landing.dart';
 import 'package:run_your_life/services/apis_services/credentials/auths.dart';
+import 'package:run_your_life/services/apis_services/screens/profile.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/step1subs.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/step7subs.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/subscriptions.dart';
@@ -29,6 +30,7 @@ class PresentationMainPage extends StatefulWidget {
 
 class _PresentationMainPageState extends State<PresentationMainPage> {
   List<Widget> _screens = [Container(),Presentation1stPage(),Presentation2ndPage()];
+  final ProfileServices _profileServices = new ProfileServices();
   final Materialbutton _materialbutton = new Materialbutton();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
@@ -134,7 +136,7 @@ class _PresentationMainPageState extends State<PresentationMainPage> {
                       setState(() {
                         step1subs.target_weight = "N/A";
                         if(_currentPage > 1){
-                          _screenLoaders.functionLoader(context);
+                          // _screenLoaders.functionLoader(context);
                           if(subscriptionDetails.currentdata[0]["client_info"] != null){
                             setState(() {
                               step1subs.id = subscriptionDetails.currentdata[0]["client_info"]["id"].toString();
@@ -142,8 +144,10 @@ class _PresentationMainPageState extends State<PresentationMainPage> {
                           }
                           _step1service.submit(context).then((value){
                             if(value != null){
-                              Navigator.of(context).pop(null);
-                              _routes.navigator_push(context, EatingMainPage());
+                              _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString(), relation: "activeSubscription").whenComplete((){
+                                Navigator.of(context).pop(null);
+                                _routes.navigator_push(context, EatingMainPage());
+                              });
                             }
                           });
                         }else{

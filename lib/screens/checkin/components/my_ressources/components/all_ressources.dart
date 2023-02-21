@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:run_your_life/models/device_model.dart';
 import 'package:run_your_life/screens/checkin/components/my_ressources/components/components/view_ressources.dart';
 import 'package:run_your_life/screens/checkin/components/my_ressources/components/videos_component/video_design.dart';
+import 'package:run_your_life/services/apis_services/screens/checkin.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
 import 'package:run_your_life/widgets/no_data.dart';
@@ -22,6 +23,7 @@ class AllRessources extends StatefulWidget {
 
 class _AllRessourcesState extends State<AllRessources> with WidgetsBindingObserver, ObjectiveService {
   final ObjectiveServices _objectiveServices = new ObjectiveServices();
+  final CheckinServices _checkinServices = new CheckinServices();
 
   void init() async {
     await fetchObjectiveAndPopulate();
@@ -71,7 +73,7 @@ class _AllRessourcesState extends State<AllRessources> with WidgetsBindingObserv
                             setState(() {
                               widget.ressources[index]["status"] = widget.ressources[index]["status"] == 0 ? 1 : 0;
                             });
-                            _objectiveServices.changeStatus(id: widget.ressources[index]["id"].toString(), status:widget.ressources[index]["status"].toString(), isObjective: false).then((value){
+                            _checkinServices.docStatus(id: widget.ressources[index]["id"].toString(), status:widget.ressources[index]["status"].toString(), isProgrammation: widget.ressources[index].toString().contains("programmation") ? true : false).then((value){
                               init();
                             });
                           },
@@ -92,7 +94,7 @@ class _AllRessourcesState extends State<AllRessources> with WidgetsBindingObserv
                 SizedBox(
                   width: 10,
                 ),
-                widget.ressources[index]["programmation"]["file_type"] == "image/jpeg" || widget.ressources[index]["programmation"]["file_type"] == "image/png" || widget.ressources[index]["programmation"]["file_type"] == "image/jpg"?
+                widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "image/jpeg" || widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "image/png" || widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "image/jpg"?
                 Container(
                   height: DeviceModel.isMobile ? 120 : 150,
                   width: 150,
@@ -101,10 +103,10 @@ class _AllRessourcesState extends State<AllRessources> with WidgetsBindingObserv
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image:  NetworkImage(widget.ressources[index]["programmation"]["file_path"])
+                          image:  NetworkImage(widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_path"])
                       )
                   ),
-                ) : widget.ressources[index]["programmation"]["file_type"] == "video/mp4" ?
+                ) : widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "video/mp4" ?
                 Container(
                   width: 150,
                   padding: EdgeInsets.all(25),
@@ -118,7 +120,7 @@ class _AllRessourcesState extends State<AllRessources> with WidgetsBindingObserv
                     image: AssetImage("assets/icons/video_file.png"),
                   ),
                 ) :
-                widget.ressources[index]["programmation"]["file_type"] == "link/url"?
+                widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "link/url"?
                 Container(
                   width: 150,
                   padding: EdgeInsets.all(25),
@@ -156,17 +158,17 @@ class _AllRessourcesState extends State<AllRessources> with WidgetsBindingObserv
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(widget.ressources[index]["programmation"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                        Text(widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
                         SizedBox(
                           height: 5,
                         ),
-                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.ressources[index]["programmation"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
+                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
                         // Text("0 commentaires",style: TextStyle(color: Colors.grey,fontSize: 12,fontFamily: "AppFontStyle"),),
                         Spacer(),
                         Row(
                           children: [
                             Container(
-                              child: Text(widget.ressources[index]["programmation"]["file_type"] == "image/jpeg" || widget.ressources[index]["programmation"]["file_type"] == "image/png" || widget.ressources[index]["programmation"]["file_type"] == "image/jpg" ? "Image" : widget.ressources[index]["programmation"]["file_type"] == "video/mp4" ? "Vidéo" : widget.ressources[index]["programmation"]["file_type"] == "link/url" ? "Lien" : "Docs",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
+                              child: Text(widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "image/jpeg" || widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "image/png" || widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "image/jpg" ? "Image" : widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "video/mp4" ? "Vidéo" : widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "link/url" ? "Lien" : "Docs",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
                               decoration: BoxDecoration(
                                 color: AppColors.pinkColor,
                                 borderRadius: BorderRadius.circular(3)
@@ -176,7 +178,7 @@ class _AllRessourcesState extends State<AllRessources> with WidgetsBindingObserv
                             SizedBox(
                               width: 5,
                             ),
-                            widget.ressources[index]["programmation"]["file_type"] == "application/pdf" ?
+                            widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "application/pdf" ?
                             Container(
                               child: Text("Lire",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
                               decoration: BoxDecoration(

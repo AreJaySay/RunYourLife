@@ -7,6 +7,7 @@ import 'package:run_your_life/widgets/no_data.dart';
 import 'package:intl/intl.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import '../../../../../services/apis_services/screens/checkin.dart';
 import '../../../../../services/apis_services/screens/objective.dart';
 import '../../../../../services/landing_page_services/objective_service.dart';
 import '../../../../../utils/palettes/app_colors.dart';
@@ -20,6 +21,7 @@ class MyRessourcesDocs extends StatefulWidget {
 
 class _MyRessourcesDocsState extends State<MyRessourcesDocs> with WidgetsBindingObserver, ObjectiveService {
   final ObjectiveServices _objectiveServices = new ObjectiveServices();
+  final CheckinServices _checkinServices = new CheckinServices();
 
   void init() async {
     await fetchObjectiveAndPopulate();
@@ -79,7 +81,7 @@ class _MyRessourcesDocsState extends State<MyRessourcesDocs> with WidgetsBinding
                             setState(() {
                               widget.docs[index]["status"] = widget.docs[index]["status"] == 0 ? 1 : 0;
                             });
-                            _objectiveServices.changeStatus(id: widget.docs[index]["id"].toString(), status:widget.docs[index]["status"].toString(), isObjective: false).then((value){
+                            _checkinServices.docStatus(id: widget.docs[index]["id"].toString(), status:widget.docs[index]["status"].toString(), isProgrammation: widget.docs[index].toString().contains("programmation") ? true : false).then((value){
                               init();
                             });
                           },
@@ -124,11 +126,11 @@ class _MyRessourcesDocsState extends State<MyRessourcesDocs> with WidgetsBinding
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(widget.docs[index]["programmation"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                        Text(widget.docs[index][widget.docs[index].toString().contains("programmation") ? "programmation" : "documents"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
                         SizedBox(
                           height: 5,
                         ),
-                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.docs[index]["programmation"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
+                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.docs[index][widget.docs[index].toString().contains("programmation") ? "programmation" : "documents"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
                         Spacer(),
                         Row(
                           children: [
@@ -143,7 +145,7 @@ class _MyRessourcesDocsState extends State<MyRessourcesDocs> with WidgetsBinding
                             SizedBox(
                               width: 5,
                             ),
-                            widget.docs[index]["programmation"]["file_type"] == "application/pdf" ?
+                            widget.docs[index][widget.docs[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "application/pdf" ?
                             Container(
                               child: Text("Lire",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
                               decoration: BoxDecoration(

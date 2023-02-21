@@ -19,7 +19,7 @@ class _SportMakeChoicesState extends State<SportMakeChoices> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    step5subs.practice_sport = "Oui";
+    step5subs.practice_sport = "yes";
   }
 
   @override
@@ -56,7 +56,7 @@ class _SportMakeChoicesState extends State<SportMakeChoices> {
                           onChanged: (val) {
                             setState(() {
                               step5streamService.update(data: true);
-                              step5subs.practice_sport = "Oui";
+                              step5subs.practice_sport = "yes";
                             });
                           },
                         ),
@@ -72,7 +72,7 @@ class _SportMakeChoicesState extends State<SportMakeChoices> {
               onTap: (){
                 setState(() {
                   step5streamService.update(data: true);
-                  step5subs.practice_sport = "Oui";
+                  step5subs.practice_sport = "yes";
                 });
               },
             ),
@@ -100,7 +100,7 @@ class _SportMakeChoicesState extends State<SportMakeChoices> {
                           onChanged: (val) {
                             setState(() {
                               step5streamService.update(data: false);
-                              step5subs.practice_sport = "Non";
+                              step5subs.practice_sport = "no";
                             });
                           },
                         ),
@@ -116,7 +116,7 @@ class _SportMakeChoicesState extends State<SportMakeChoices> {
               onTap: (){
                 setState(() {
                   step5streamService.update(data: false);
-                  step5subs.practice_sport = "Non";
+                  step5subs.practice_sport = "no";
                 });
               },
             ),

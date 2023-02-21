@@ -225,14 +225,14 @@ class CheckinServices{
       });
     } catch (e) {
       Navigator.of(context).pop(null);
-      
+
     }
   }
 
   // MY RESSOURCES
-  Future getResources(context)async{
+  Future getDocuments()async{
     try {
-      return await http.get(Uri.parse("${_networkUtility.url}/user/api/programmation"),
+      return await http.get(Uri.parse("${_networkUtility.url}/user/api/clients/get_shared_documents?coach_id=${subscriptionDetails.currentdata[0]["coach_id"].toString()}"),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
           "Accept": "application/json"
@@ -242,6 +242,54 @@ class CheckinServices{
         print("RESSOURCES ${data.toString()}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           checkInStreamServices.updateRessources(data: data["data"]);
+        }else{
+          return null;
+        }
+      });
+    } catch (e) {
+      print("ERROR GET PHOTOS${e.toString()}");
+    }
+  }
+  // DOCUMENTS STATUS
+  Future docStatus({required String id,required bool isProgrammation, required String status})async{
+    try {
+      return await http.post(Uri.parse(isProgrammation ? "${_networkUtility.url}/user/api/programmation/ChangeStatus" : "${_networkUtility.url}/user/api/document/ChangeStatus"),
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
+            "Accept": "application/json"
+          },
+          body: {
+            "id": id,
+            "to": status,
+          }
+      ).then((respo) async {
+        var data = json.decode(respo.body);
+        print(data.toString());
+        if (respo.statusCode == 200 || respo.statusCode == 201){
+          return data;
+        }else{
+          return null;
+        }
+      });
+    } catch (e) {
+
+    }
+  }
+  // PROGRAMMATION
+  Future getProgrammation()async{
+    try {
+      return await http.get(Uri.parse("${_networkUtility.url}/user/api/programmation"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
+          "Accept": "application/json"
+        },
+      ).then((respo) async {
+        var data = json.decode(respo.body);
+        print("PROGRAMMATION ${data.toString()}");
+        if (respo.statusCode == 200 || respo.statusCode == 201){
+          for(int x = 0; x < data["data"].length; x++){
+            checkInStreamServices.addRessources(data: data["data"][x]);
+          }
         }else{
           return null;
         }

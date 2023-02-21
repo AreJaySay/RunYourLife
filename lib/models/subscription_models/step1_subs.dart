@@ -47,20 +47,20 @@ class Step1Subs{
     "subscription_id": subscriptionDetails.currentdata[0]["id"].toString(),
   };
 
-  Future editStep1(context,{required Map details})async{
-    if(details.toString() != "{}"){
-      gender = details["gender"] == null ? "" : details["gender"].toString();
-      weight = details["weight"] == null ? "" : details["weight"].toString();
-      height = details["height"] == null ? "" : details["height"].toString();
-      birthdate = details["birth_date"] == null ? "" : details["birth_date"].toString();
-      isMarried = details["have_children"] == null ? "" : details["have_children"].toString();
-      haveChildren = details["have_children"] == null ? "" : details["have_children"].toString();
-      peopeSupport = details["people_support"] == null ? 0 : double.parse(details["people_support"].toString());
-      shopforHousehold = details["shop_for_household"] == null ? "" : details["shop_for_household"].toString();
-      cookforHousehold = details["cook_for_household"] == null ? "" : details["cook_for_household"].toString();
-      id = details["id"].toString();
-      subscription_id = details["subscription_id"].toString();
-    }
-  }
+  // Future editStep1(context,{required Map details})async{
+  //   if(details.toString() != "{}"){
+  //     gender = details["gender"] == null ? "" : details["gender"].toString();
+  //     weight = details["weight"] == null ? "" : details["weight"].toString();
+  //     height = details["height"] == null ? "" : details["height"].toString();
+  //     birthdate = details["birth_date"] == null ? "" : details["birth_date"].toString();
+  //     isMarried = details["have_children"] == null ? "" : details["have_children"].toString();
+  //     haveChildren = details["have_children"] == null ? "" : details["have_children"].toString();
+  //     peopeSupport = details["people_support"] == null ? 0 : double.parse(details["people_support"].toString());
+  //     shopforHousehold = details["shop_for_household"] == null ? "" : details["shop_for_household"].toString();
+  //     cookforHousehold = details["cook_for_household"] == null ? "" : details["cook_for_household"].toString();
+  //     id = details["id"].toString();
+  //     subscription_id = details["subscription_id"].toString();
+  //   }
+  // }
 }
 Step1Subs step1subs = new Step1Subs();

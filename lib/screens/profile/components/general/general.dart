@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:run_your_life/functions/loaders.dart';
 import 'package:run_your_life/models/auths_model.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/eating/main_page.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/objective/main_page.dart';
@@ -7,6 +8,7 @@ import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/pre
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/sport_practice/main_page.dart';
 import 'package:run_your_life/screens/profile/components/general/components/form_design.dart';
 import 'package:run_your_life/screens/profile/components/parameters.dart';
+import 'package:run_your_life/services/apis_services/screens/profile.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/services/stream_services/subscriptions/update_data.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
@@ -32,6 +34,8 @@ class ProfileGeneral extends StatefulWidget {
 }
 
 class _ProfileGeneralState extends State<ProfileGeneral> {
+  final ScreenLoaders _screenLoaders = new ScreenLoaders();
+  final ProfileServices _profileServices = new ProfileServices();
   final Materialbutton _materialbutton = new Materialbutton();
   final Routes _routes = new Routes();
 
@@ -182,40 +186,38 @@ class _ProfileGeneralState extends State<ProfileGeneral> {
           subscriptionDetails.currentdata[0]["macro_status"] == true ?
           Container() :
           _materialbutton.materialButton("Compléter Le Questionnaire".toUpperCase(), () {
-            step1subs.editStep1(context, details: subStreamServices.currentdata["client_info"] == null  ? {} : subStreamServices.currentdata["client_info"]);
-            step2subs.editStep2(context, details: subStreamServices.currentdata["food_preference"] == null ? {} : subStreamServices.currentdata["food_preference"]);
-            step4subs.editStep4(context, details: subStreamServices.currentdata["goal"] == null ? {} : subStreamServices.currentdata["goal"]);
-            step5subs.editStep5(context, details: subStreamServices.currentdata["sport"] == null ? {} : subStreamServices.currentdata["sport"]);
-
-            // PRESENTATION
-            if(subStreamServices.currentdata["client_info"] == null){
-              _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloPresentationMainPage() : PresentationMainPage());
-            }else if(subStreamServices.currentdata["client_info"]["macro_status"] == false){
-              _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloPresentationMainPage() : PresentationMainPage());
-            }else{
-              // OBJECTIVE
-              if(subStreamServices.currentdata["goal"] == null){
-                _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloObjectiveMainPage() : ObjectiveMainPage());
-              }else if(subStreamServices.currentdata["goal"]["macro_status"] == false){
-                _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloObjectiveMainPage() : ObjectiveMainPage());
+            _screenLoaders.functionLoader(context);
+            _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString(), relation: "activeSubscription").whenComplete((){
+              Navigator.of(context).pop(null);
+              if(subStreamServices.currentdata["client_info"] == null){
+                _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloPresentationMainPage() : PresentationMainPage());
+              }else if(subStreamServices.currentdata["client_info"]["macro_status"] == false){
+                _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloPresentationMainPage() : PresentationMainPage());
               }else{
-                // SPORT
-                if(subStreamServices.currentdata["sport"] == null){
-                  _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloSportMainPage() : SportMainPage());
-                }else if(subStreamServices.currentdata["sport"]["macro_status"] == false){
-                  _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloSportMainPage() : SportMainPage());
+                // OBJECTIVE
+                if(subStreamServices.currentdata["goal"] == null){
+                  _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloObjectiveMainPage() : ObjectiveMainPage());
+                }else if(subStreamServices.currentdata["goal"]["macro_status"] == false){
+                  _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloObjectiveMainPage() : ObjectiveMainPage());
                 }else{
-                  // ALIMENTATION
-                  if(subStreamServices.currentdata["food_preference"] == null){
-                    _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloEatingMainPage() : EatingMainPage());
-                  }else if(subStreamServices.currentdata["food_preference"]["macro_status"] == false){
-                    _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloEatingMainPage() : EatingMainPage());
+                  // SPORT
+                  if(subStreamServices.currentdata["sport"] == null){
+                    _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloSportMainPage() : SportMainPage());
+                  }else if(subStreamServices.currentdata["sport"]["macro_status"] == false){
+                    _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloSportMainPage() : SportMainPage());
                   }else{
-                    _routes.navigator_push(context, FormCompleted());
+                    // ALIMENTATION
+                    if(subStreamServices.currentdata["food_preference"] == null){
+                      _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloEatingMainPage() : EatingMainPage());
+                    }else if(subStreamServices.currentdata["food_preference"]["macro_status"] == false){
+                      _routes.navigator_push(context, subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ? PackSoloEatingMainPage() : EatingMainPage());
+                    }else{
+                      _routes.navigator_push(context, FormCompleted());
+                    }
                   }
                 }
               }
-            }
+            });
           },bckgrndColor: AppColors.appmaincolor, textColor: Colors.white,radius: 10),
           Divider(),
           SizedBox(

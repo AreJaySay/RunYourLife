@@ -73,56 +73,63 @@ class _Eating8thPageState extends State<Eating8thPage> {
             },
           ),
         ),
-        // TextFields(_coffee,hintText: "Café par jour",onChanged: (text){
-        //   setState(() {
-        //     step2subs.coffee_per_day = text;
-        //   });
-        // },inputType: TextInputType.number,),
-        // SizedBox(
-        //   height: 30,
-        // ),
-        // ZoomTapAnimation(end: 0.99,child: Container(
-        //     width: 250,
-        //     padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-        //     decoration: BoxDecoration(
-        //       color: Colors.white,
-        //       borderRadius: BorderRadius.circular(10),
-        //       border: Border.all(color: step2subs.coffee_per_day == "I never drink coffee" ? AppColors.appmaincolor : Colors.transparent,)
-        //     ),
-        //     child: Row(
-        //       children: [
-        //         SizedBox(
-        //           width: 30,
-        //           height: 30,
-        //           child: Transform.scale(
-        //             scale: 1.4,
-        //             child: Radio(
-        //               activeColor: AppColors.appmaincolor,
-        //               value: 2,
-        //               groupValue: step2subs.coffee_per_day == "I never drink coffee" ? 2 : 1,
-        //               onChanged: (val) {
-        //                 setState(() {
-        //                   _coffee.text = "";
-        //                   step2subs.coffee_per_day = "I never drink coffee";
-        //                 });
-        //               },
-        //             ),
-        //           ),
-        //         ),
-        //         SizedBox(
-        //           width: 15,
-        //         ),
-        //         Text('Je ne bois jamais de café',style: new TextStyle(fontSize: 15,color: Colors.black,fontFamily: "AppFontStyle"),),
-        //       ],
-        //     ),
-        //   ),
-        //   onTap: (){
-        //     setState(() {
-        //       _coffee.text = "";
-        //       step2subs.coffee_per_day = "I never drink coffee";
-        //     });
-        //   },
-        // ),
+        SizedBox(
+          height: 20,
+        ),
+        Text("Combien de café bois-tu par jour ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        SizedBox(
+          height: 10,
+        ),
+        TextFields(_coffee,hintText: "Café par jour",onChanged: (text){
+          setState(() {
+            step2subs.coffee_per_day = text;
+          });
+        },inputType: TextInputType.number,),
+        SizedBox(
+          height: 30,
+        ),
+        ZoomTapAnimation(end: 0.99,child: Container(
+            width: 250,
+            padding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: step2subs.coffee_per_day == "Non" ? AppColors.appmaincolor : Colors.transparent,)
+            ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: Transform.scale(
+                    scale: 1.4,
+                    child: Radio(
+                      activeColor: AppColors.appmaincolor,
+                      value: 2,
+                      groupValue: step2subs.coffee_per_day == "Non" ? 2 : 1,
+                      onChanged: (val) {
+                        setState(() {
+                          _coffee.text = "";
+                          step2subs.coffee_per_day = "Non";
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 15,
+                ),
+                Text('Je ne bois jamais de café',style: new TextStyle(fontSize: 15,color: Colors.black,fontFamily: "AppFontStyle"),),
+              ],
+            ),
+          ),
+          onTap: (){
+            setState(() {
+              _coffee.text = "";
+              step2subs.coffee_per_day = "Non";
+            });
+          },
+        ),
         SizedBox(
           height: 30,
         ),

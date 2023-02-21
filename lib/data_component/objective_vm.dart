@@ -10,8 +10,13 @@ class ObjectivesVM {
   Stream<List<Objective>> get stream => _subject.stream;
   List<Objective> get value => _subject.value;
 
-
   void populate(List<Objective> data) {
     _subject.add(data);
+  }
+
+  void add(List<Objective> data) {
+    for(int x = 0; x < data.length; x++){
+      value.add(data[x]);
+    }
   }
 }

@@ -14,6 +14,7 @@ import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/str
 import 'package:run_your_life/screens/coaching/subscription/stepper.dart';
 import 'package:run_your_life/screens/landing.dart';
 import 'package:run_your_life/services/apis_services/credentials/auths.dart';
+import 'package:run_your_life/services/apis_services/screens/profile.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/step5subs.dart';
 import 'package:run_your_life/services/apis_services/subscriptions/subscriptions.dart';
 import 'package:run_your_life/services/stream_services/subscriptions/step5.dart';
@@ -31,10 +32,11 @@ class SportMainPage extends StatefulWidget {
 }
 
 class _SportMainPageState extends State<SportMainPage> {
-  List<Widget> _notpregnant = [Container(),SportMakeChoices(),NotPregnant1stPage(),Pregnant5thPage(),Pregnant6thPage()];
+  List<Widget> _notpregnant = [Container(),SportMakeChoices(),NotPregnant1stPage()];
   List<Widget> _pregnant = [Container(),SportMakeChoices(),Pregnant1stPage(),Pregnant2ndPage(),Pregnant3rdPage(),Pregnant4thPage(),Pregnant5thPage(),Pregnant6thPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final Step5Service _step5service = new Step5Service();
+  final ProfileServices _profileServices = new ProfileServices();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final Routes _routes = new Routes();
@@ -62,7 +64,7 @@ class _SportMainPageState extends State<SportMainPage> {
               ListView(
                 padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
                 children: [
-                  MyStepper(snapshot.data ? 7 : 4,range: double.parse(_currentPage.toString()),),
+                  MyStepper(snapshot.data ? 7 : 2,range: double.parse(_currentPage.toString()),),
                   SizedBox(
                     height: 30,
                   ),
@@ -134,7 +136,8 @@ class _SportMainPageState extends State<SportMainPage> {
                         ),
                         _materialbutton.materialButton("SUIVANT", () {
                           setState(() {
-                            if(_currentPage > (snapshot.data ? 6 : 3)){
+                            if(_currentPage > (snapshot.data ? 6 : 1)){
+                              print(step5subs.toMap());
                               _screenLoaders.functionLoader(context);
                               if(subscriptionDetails.currentdata[0]["sport"] != null){
                                 setState(() {
@@ -143,8 +146,10 @@ class _SportMainPageState extends State<SportMainPage> {
                               }
                               _step5service.submit(context).then((value){
                                 if(value != null){
-                                  Navigator.of(context).pop(null);
-                                  _routes.navigator_push(context, StressMainPage());
+                                  _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString(), relation: "activeSubscription").whenComplete((){
+                                    Navigator.of(context).pop(null);
+                                    _routes.navigator_push(context, StressMainPage());
+                                  });
                                 }
                               });
                             }else{

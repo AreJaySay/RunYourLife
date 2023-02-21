@@ -7,6 +7,7 @@ import 'package:run_your_life/widgets/no_data.dart';
 import 'package:intl/intl.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+import '../../../../../services/apis_services/screens/checkin.dart';
 import '../../../../../services/apis_services/screens/objective.dart';
 import '../../../../../utils/palettes/app_colors.dart';
 import '../../../../../widgets/materialbutton.dart';
@@ -20,6 +21,7 @@ class MyRessourcesImages extends StatefulWidget {
 
 class _MyRessourcesImagesState extends State<MyRessourcesImages> with WidgetsBindingObserver, ObjectiveService {
   final ObjectiveServices _objectiveServices = new ObjectiveServices();
+  final CheckinServices _checkinServices = new CheckinServices();
   final Materialbutton _materialButton = new Materialbutton();
 
   void init() async {
@@ -78,7 +80,7 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> with WidgetsBin
                             setState(() {
                               widget.images[index]["status"] = widget.images[index]["status"] == 0 ? 1 : 0;
                             });
-                            _objectiveServices.changeStatus(id: widget.images[index]["id"].toString(), status:widget.images[index]["status"].toString(), isObjective: false).then((value){
+                            _checkinServices.docStatus(id: widget.images[index]["id"].toString(), status:widget.images[index]["status"].toString(), isProgrammation: widget.images[index].toString().contains("programmation") ? true : false).then((value){
                               init();
                             });
                           },
@@ -107,7 +109,7 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> with WidgetsBin
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
                           fit: BoxFit.cover,
-                          image:  NetworkImage(widget.images[index]["programmation"]["file_path"])
+                          image:  NetworkImage(widget.images[index][widget.images[index].toString().contains("programmation") ? "programmation" : "documents"]["file_path"])
                       )
                   ),
                 ),
@@ -121,11 +123,11 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> with WidgetsBin
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(widget.images[index]["programmation"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
+                        Text(widget.images[index][widget.images[index].toString().contains("programmation") ? "programmation" : "documents"]["file_name"].toString().toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,),
                         SizedBox(
                           height: 5,
                         ),
-                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.images[index]["programmation"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
+                        Text(DateFormat("dd/MM/yyyy").format(DateTime.parse(widget.images[index][widget.images[index].toString().contains("programmation") ? "programmation" : "documents"]["created_at"].toString())),style: TextStyle(color: AppColors.pinkColor,fontSize: 12,fontFamily: "AppFontStyle"),),
                         // Text("0 commentaires",style: TextStyle(color: Colors.grey,fontSize: 12,fontFamily: "AppFontStyle"),),
                         Spacer(),
                         Row(
@@ -141,7 +143,7 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> with WidgetsBin
                             SizedBox(
                               width: 5,
                             ),
-                            widget.images[index]["programmation"]["file_type"] == "application/pdf" ? Container(
+                            widget.images[index][widget.images[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "application/pdf" ? Container(
                               child: Text("Read",style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
                               decoration: BoxDecoration(
                                   color: Colors.grey[400],

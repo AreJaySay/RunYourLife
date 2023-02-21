@@ -11,6 +11,11 @@ class ObjectiveService {
           _vm.populate(value);
         }
       });
+      await _api.get_programmation().then((value) {
+        if(value != null){
+          _vm.add(value);
+        }
+      });
       return;
     }catch (e){
       return;

@@ -42,37 +42,37 @@ class Step6Subs{
     "subscription_id": subscriptionDetails.currentdata[0]["id"].toString(),
   };
 
-  Future editStep6(context,{required Map details,})async{
-    if(details.toString() != "{}"){
-      job_or_study = details["job_or_study"] == null? "" : details["job_or_study"].toString();
-      stress_meter = double.parse( details["stress_meter"].toString());
-      fulfilling_meter = double.parse( details["fulfilling_meter"].toString());
-      home_stressed = double.parse( details["home_stressed"].toString());
-      manage_stress = details["manage_stress"] == null? "" : details["manage_stress"].toString();
-      plan_your_day = double.parse( details["plan_your_day"].toString());
-      time_outside_per_day = details["time_outside_per_day"] == null? "" : details["time_outside_per_day"].toString();
-    }
-  }
-
-  Widget richtext({required Map formInfo}){
-    return ReadMoreText(
-        "Travail ou étude: ${formInfo["job_or_study"] == null ? "N/A" : formInfo["job_or_study"].toString()}\n"
-        "Niveau de stress: ${formInfo["stress_meter"] == null ? "N/A" : formInfo["stress_meter"].toString()}\n"
-        "Niveau d’épanouissement: ${formInfo["fulfilling_meter"] == null ? "N/A" : formInfo["fulfilling_meter"].toString()}\n"
-        "Stress à la maison: ${formInfo["home_stressed"] == null ? "N/A" : formInfo["home_stressed"].toString()}\n"
-        "Gestion du stress: ${formInfo["manage_stress"] == null ? "N/A" : formInfo["manage_stress"].toString()}\n"
-        "Planification de la journée: ${formInfo["plan_your_day"] == null ? "N/A" : formInfo["plan_your_day"].toString()}\n"
-        "Temps passé à l’extérieur par jour: ${formInfo["time_outside_per_day"] == null ? "N/A" : formInfo["time_outside_per_day"].toString()}\n",
-      trimLines: 4,
-      colorClickableText: Colors.pink,
-      trimMode: TrimMode.Line,
-      trimCollapsedText: ' Voir plus',
-      trimExpandedText: ' Voir moins',
-      lessStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
-      moreStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
-      style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: "AppFontStyle"),
-    );
-  }
+  // Future editStep6(context,{required Map details,})async{
+  //   if(details.toString() != "{}"){
+  //     job_or_study = details["job_or_study"] == null? "" : details["job_or_study"].toString();
+  //     stress_meter = double.parse( details["stress_meter"].toString());
+  //     fulfilling_meter = double.parse( details["fulfilling_meter"].toString());
+  //     home_stressed = double.parse( details["home_stressed"].toString());
+  //     manage_stress = details["manage_stress"] == null? "" : details["manage_stress"].toString();
+  //     plan_your_day = double.parse( details["plan_your_day"].toString());
+  //     time_outside_per_day = details["time_outside_per_day"] == null? "" : details["time_outside_per_day"].toString();
+  //   }
+  // }
+  //
+  // Widget richtext({required Map formInfo}){
+  //   return ReadMoreText(
+  //       "Travail ou étude: ${formInfo["job_or_study"] == null ? "N/A" : formInfo["job_or_study"].toString()}\n"
+  //       "Niveau de stress: ${formInfo["stress_meter"] == null ? "N/A" : formInfo["stress_meter"].toString()}\n"
+  //       "Niveau d’épanouissement: ${formInfo["fulfilling_meter"] == null ? "N/A" : formInfo["fulfilling_meter"].toString()}\n"
+  //       "Stress à la maison: ${formInfo["home_stressed"] == null ? "N/A" : formInfo["home_stressed"].toString()}\n"
+  //       "Gestion du stress: ${formInfo["manage_stress"] == null ? "N/A" : formInfo["manage_stress"].toString()}\n"
+  //       "Planification de la journée: ${formInfo["plan_your_day"] == null ? "N/A" : formInfo["plan_your_day"].toString()}\n"
+  //       "Temps passé à l’extérieur par jour: ${formInfo["time_outside_per_day"] == null ? "N/A" : formInfo["time_outside_per_day"].toString()}\n",
+  //     trimLines: 4,
+  //     colorClickableText: Colors.pink,
+  //     trimMode: TrimMode.Line,
+  //     trimCollapsedText: ' Voir plus',
+  //     trimExpandedText: ' Voir moins',
+  //     lessStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
+  //     moreStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
+  //     style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: "AppFontStyle"),
+  //   );
+  // }
 }
 
 Step6Subs step6subs = new Step6Subs();

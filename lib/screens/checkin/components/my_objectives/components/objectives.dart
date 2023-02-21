@@ -35,7 +35,6 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
   void initState() {
     // TODO: implement initState
     init();
-    _checkinServices.getResources(context);
     _scrollController = ScrollController();
     super.initState();
   }
@@ -136,11 +135,12 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
                                                     style: BorderStyle.none
                                                 ),
                                                 onChanged: (value) {
+                                                  print(_result[index]);
                                                   setState(() {
                                                     _result[index].viewStatus = _result[index].viewStatus == 0 ? 1 : 0;
                                                   });
                                                   // _screenLoaders.functionLoader(context);
-                                                  _objectiveServices.changeStatus(id: _result[index].id.toString(), status: _result[index].viewStatus.toString()).then((value){
+                                                  _objectiveServices.objStatus(id: _result[index].id.toString(), status: _result[index].viewStatus.toString() ,isProgrammation: _result[index].toString().contains("obj_programmation") ? true : false).then((value){
                                                     init();
                                                   });
                                                 },

@@ -23,12 +23,16 @@ class CheckInStreamServices{
   }
 
   // MY RESSOURCES
-  BehaviorSubject<List> ressources = new BehaviorSubject();
+  BehaviorSubject<List> ressources = new BehaviorSubject.seeded([]);
   Stream get ressourceStream => ressources.stream;
   List get currentStream => ressources.value;
 
   updateRessources({required List data}){
     ressources.add(data);
+  }
+
+  addRessources({required Map data}){
+    currentStream.add(data);
   }
 
   // LAST UPDATED

@@ -67,6 +67,19 @@ class _NotPregnant1stPageState extends State<NotPregnant1stPage> {
               onDragging: (handlerIndex, lowerValue, upperValue) {
                 setState(() {
                   _values[x] = lowerValue;
+                  if(x == 0){
+                    step5subs.confident_on_athletic_ability = lowerValue;
+                  }else if(x == 1){
+                    step5subs.comfortable_place = lowerValue;
+                  }else if(x == 2){
+                    step5subs.place_to_practice = lowerValue;
+                  }else if(x == 3){
+                    step5subs.energy_to_practice = lowerValue;
+                  }else if(x == 4){
+                    step5subs.time = lowerValue;
+                  }else{
+                    step5subs.motivation = lowerValue;
+                  }
                 });
               },
             ),

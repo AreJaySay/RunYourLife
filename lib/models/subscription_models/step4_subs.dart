@@ -68,61 +68,61 @@ class Step4Subs{
     "id": id,
   };
 
-  Future editStep4(context,{required Map details,})async{
-    if(details.toString() != "{}"){
-      goal = details["goal"] == null? "" : details["goal"].toString();
-      desired_weight = details["desired_weight"] == null? "" : details["desired_weight"].toString();
-      // date_to_reach_goal = details["date_to_reach_goal"] == null? "" : details["date_to_reach_goal"].toString();
-      goal_importance = double.parse(details["goal_importance"].toString());
-      subscription_id = details["subscription_id"].toString();
-      id = details["id"].toString();
-      what_to_eat = double.parse(details["goal_hindrances"]["what_to_eat"].toString());
-      how_much_to_eat = double.parse(details["goal_hindrances"]["how_much_to_eat"].toString());
-      plan_meals = double.parse(details["goal_hindrances"]["plan_meals"].toString());
-      time_to_cook = double.parse(details["goal_hindrances"]["time_to_cook"].toString());
-      drink_alcohol = double.parse(details["goal_hindrances"]["drink_alcohol"].toString());
-      cravings = double.parse(details["goal_hindrances"]["cravings"].toString());
-      emotional_void = double.parse(details["goal_hindrances"]["emotional_void"].toString());
-      eat_when_not_hungry = double.parse(details["goal_hindrances"]["eat_when_not_hungry"].toString());
-      always_hungry = double.parse(details["goal_hindrances"]["always_hungry"].toString());
-      not_hungry = double.parse(details["goal_hindrances"]["not_hungry"].toString());
-      guilty_to_eat = double.parse(details["goal_hindrances"]["guilty_to_eat"].toString());
-      access_to_healthy_food = double.parse(details["goal_hindrances"]["access_to_healthy_food"].toString());
-    }
-  }
-
-  Widget richtext({required Map formInfo}){
-    return ReadMoreText(
-      subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ?
-      "Objectif: ${formInfo["goal"] == null ? "N/A" : formInfo["goal"].toString()}\n"
-      "Poids désiré: ${formInfo["desired_weight"] == null ? "N/A" : formInfo["desired_weight"].toString()}\n"
-      "Date pour l’objectif: ${formInfo["date_to_reach_goal"] == null ? "N/A" : formInfo["date_to_reach_goal"].toString()}\n" :
-      "Objectif: ${formInfo["goal"] == null ? "N/A" : formInfo["goal"].toString()}\n"
-      "Poids désiré: ${formInfo["desired_weight"] == null ? "N/A" : formInfo["desired_weight"].toString()}\n"
-      "Date pour l’objectif: ${formInfo["date_to_reach_goal"] == null ? "N/A" : formInfo["date_to_reach_goal"].toString()}\n"
-      "Importance de l’objectif: ${formInfo["goal_importance"].toString() == "0.0" ? "N/A" : formInfo["goal_importance"].toString()}\n"
-      "Que manger: ${formInfo["goal_hindrances"]["what_to_eat"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["what_to_eat"].toString()}\n"
-      "Quantité à manger: ${formInfo["goal_hindrances"]["how_much_to_eat"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["how_much_to_eat"].toString()}\n"
-      "Plan alimentaire: ${formInfo["goal_hindrances"]["plan_meals"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["plan_meals"].toString()}\n"
-      "Temps de préparation: ${formInfo["goal_hindrances"]["time_to_cook"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["time_to_cook"].toString()}\n"
-      "Bois de l’alcool: ${formInfo["goal_hindrances"]["drink_alcohol"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["drink_alcohol"].toString()}\n"
-      "Envies compulsives: ${formInfo["goal_hindrances"]["cravings"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["cravings"].toString()}\n"
-      "Problème affectif: ${formInfo["goal_hindrances"]["emotional_void"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["emotional_void"].toString()}\n"
-      "Manger sans avoir faim: ${formInfo["goal_hindrances"]["eat_when_not_hungry"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["eat_when_not_hungry"].toString()}\n"
-      "Avoir toujours faim: ${formInfo["goal_hindrances"]["always_hungry"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["always_hungry"].toString()}\n"
-      "Ne pas avoir faim: ${formInfo["goal_hindrances"]["not_hungry"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["not_hungry"].toString()}\n"
-      "Culpabilité de manger: ${formInfo["goal_hindrances"]["guilty_to_eat"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["guilty_to_eat"].toString()}\n"
-      "Accès à la nourriture saine: ${formInfo["goal_hindrances"]["access_to_healthy_food"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["access_to_healthy_food"].toString()}\n",
-      trimLines: 4,
-      colorClickableText: Colors.pink,
-      trimMode: TrimMode.Line,
-      trimCollapsedText: ' Voir plus',
-      trimExpandedText: ' Voir moins',
-      lessStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
-      moreStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
-      style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: "AppFontStyle"),
-    );
-  }
+  // Future editStep4(context,{required Map details,})async{
+  //   if(details.toString() != "{}"){
+  //     goal = details["goal"] == null? "" : details["goal"].toString();
+  //     desired_weight = details["desired_weight"] == null? "" : details["desired_weight"].toString();
+  //     // date_to_reach_goal = details["date_to_reach_goal"] == null? "" : details["date_to_reach_goal"].toString();
+  //     goal_importance = double.parse(details["goal_importance"].toString());
+  //     subscription_id = details["subscription_id"].toString();
+  //     id = details["id"].toString();
+  //     what_to_eat = double.parse(details["goal_hindrances"]["what_to_eat"].toString());
+  //     how_much_to_eat = double.parse(details["goal_hindrances"]["how_much_to_eat"].toString());
+  //     plan_meals = double.parse(details["goal_hindrances"]["plan_meals"].toString());
+  //     time_to_cook = double.parse(details["goal_hindrances"]["time_to_cook"].toString());
+  //     drink_alcohol = double.parse(details["goal_hindrances"]["drink_alcohol"].toString());
+  //     cravings = double.parse(details["goal_hindrances"]["cravings"].toString());
+  //     emotional_void = double.parse(details["goal_hindrances"]["emotional_void"].toString());
+  //     eat_when_not_hungry = double.parse(details["goal_hindrances"]["eat_when_not_hungry"].toString());
+  //     always_hungry = double.parse(details["goal_hindrances"]["always_hungry"].toString());
+  //     not_hungry = double.parse(details["goal_hindrances"]["not_hungry"].toString());
+  //     guilty_to_eat = double.parse(details["goal_hindrances"]["guilty_to_eat"].toString());
+  //     access_to_healthy_food = double.parse(details["goal_hindrances"]["access_to_healthy_food"].toString());
+  //   }
+  // }
+  //
+  // Widget richtext({required Map formInfo}){
+  //   return ReadMoreText(
+  //     subscriptionDetails.currentdata[0]["subscription_name"].toString().contains("macro solo") ?
+  //     "Objectif: ${formInfo["goal"] == null ? "N/A" : formInfo["goal"].toString()}\n"
+  //     "Poids désiré: ${formInfo["desired_weight"] == null ? "N/A" : formInfo["desired_weight"].toString()}\n"
+  //     "Date pour l’objectif: ${formInfo["date_to_reach_goal"] == null ? "N/A" : formInfo["date_to_reach_goal"].toString()}\n" :
+  //     "Objectif: ${formInfo["goal"] == null ? "N/A" : formInfo["goal"].toString()}\n"
+  //     "Poids désiré: ${formInfo["desired_weight"] == null ? "N/A" : formInfo["desired_weight"].toString()}\n"
+  //     "Date pour l’objectif: ${formInfo["date_to_reach_goal"] == null ? "N/A" : formInfo["date_to_reach_goal"].toString()}\n"
+  //     "Importance de l’objectif: ${formInfo["goal_importance"].toString() == "0.0" ? "N/A" : formInfo["goal_importance"].toString()}\n"
+  //     "Que manger: ${formInfo["goal_hindrances"]["what_to_eat"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["what_to_eat"].toString()}\n"
+  //     "Quantité à manger: ${formInfo["goal_hindrances"]["how_much_to_eat"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["how_much_to_eat"].toString()}\n"
+  //     "Plan alimentaire: ${formInfo["goal_hindrances"]["plan_meals"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["plan_meals"].toString()}\n"
+  //     "Temps de préparation: ${formInfo["goal_hindrances"]["time_to_cook"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["time_to_cook"].toString()}\n"
+  //     "Bois de l’alcool: ${formInfo["goal_hindrances"]["drink_alcohol"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["drink_alcohol"].toString()}\n"
+  //     "Envies compulsives: ${formInfo["goal_hindrances"]["cravings"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["cravings"].toString()}\n"
+  //     "Problème affectif: ${formInfo["goal_hindrances"]["emotional_void"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["emotional_void"].toString()}\n"
+  //     "Manger sans avoir faim: ${formInfo["goal_hindrances"]["eat_when_not_hungry"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["eat_when_not_hungry"].toString()}\n"
+  //     "Avoir toujours faim: ${formInfo["goal_hindrances"]["always_hungry"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["always_hungry"].toString()}\n"
+  //     "Ne pas avoir faim: ${formInfo["goal_hindrances"]["not_hungry"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["not_hungry"].toString()}\n"
+  //     "Culpabilité de manger: ${formInfo["goal_hindrances"]["guilty_to_eat"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["guilty_to_eat"].toString()}\n"
+  //     "Accès à la nourriture saine: ${formInfo["goal_hindrances"]["access_to_healthy_food"].toString() == "0.0" ? "N/A" : formInfo["goal_hindrances"]["access_to_healthy_food"].toString()}\n",
+  //     trimLines: 4,
+  //     colorClickableText: Colors.pink,
+  //     trimMode: TrimMode.Line,
+  //     trimCollapsedText: ' Voir plus',
+  //     trimExpandedText: ' Voir moins',
+  //     lessStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
+  //     moreStyle: TextStyle(fontWeight: FontWeight.w600,color: AppColors.appmaincolor,fontSize: 14.5,fontFamily: "AppFontStyle"),
+  //     style: TextStyle(color: Colors.black, fontSize: 15, fontFamily: "AppFontStyle"),
+  //   );
+  // }
 }
 
 Step4Subs step4subs = new Step4Subs();

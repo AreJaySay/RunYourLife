@@ -14,6 +14,7 @@ import 'package:run_your_life/widgets/materialbutton.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
+import '../../../coaching/recover_subscription.dart';
 import '../../../welcome.dart';
 import 'setting_components/delete_account_code.dart';
 
@@ -92,6 +93,35 @@ class _SettingsState extends State<Settings> {
                   width: 5,
                 ),
                 Icon(Icons.menu_book,color: Colors.white,),
+                SizedBox(
+                  width: 10,
+                ),
+                Text("Mes abonnement",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15,color: Colors.white),),
+              ],
+            ),
+          ),
+          onTap: (){
+            _routes.navigator_push(context, RecoverSubscription());
+          },
+        ),
+        SizedBox(
+          height: 15,
+        ),
+        ZoomTapAnimation(
+          end: 0.99,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 17),
+            height: 65,
+            decoration: BoxDecoration(
+                gradient: AppGradientColors.gradient,
+                borderRadius: BorderRadius.circular(10)
+            ),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 5,
+                ),
+                Icon(Icons.sticky_note_2,color: Colors.white,),
                 SizedBox(
                   width: 10,
                 ),
