@@ -38,7 +38,9 @@ class _CoachListViewWidgetState extends State<CoachListViewWidget> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(DateFormat("dd/MM/yyyy","fr").format(DateTime.parse(widget.details["created_at"].toString())),style: TextStyle(color: widget.isMacroSolo ? Colors.grey[300] : Colors.grey,fontSize: 13),),
+                DateFormat.yMMMd('fr_FR').format(DateTime.parse(widget.details["created_at"].toString())) == DateFormat.yMMMd('fr_FR').format(DateTime.now().toUtc().add(Duration(hours: 2))) ?
+                Text("Aujourd'hui, ${DateFormat("HH:mm",'fr_FR').format(DateTime.parse(widget.details["created_at"].toString()).toUtc().add(Duration(hours: 1)))}",style: TextStyle(color: widget.isMacroSolo ? Colors.grey[300] : Colors.grey,fontSize: 13),) :
+                Text(DateFormat.yMMMd('fr_FR').format(DateTime.parse(widget.details["created_at"].toString())),style: TextStyle(color: widget.isMacroSolo ? Colors.grey[300] : Colors.grey,fontSize: 13),),
                 SizedBox(
                   height: 8,
                 ),

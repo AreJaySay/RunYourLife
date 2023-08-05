@@ -8,7 +8,7 @@ class Health5thPage extends StatefulWidget {
 }
 
 class _Health5thPageState extends State<Health5thPage> {
-  TextEditingController _contraception = new TextEditingController()..text=step3subs.contraception == "Non" ||  step3subs.contraception == "none" || step3subs.contraception == "N/A" ? "" : step3subs.contraception;
+  TextEditingController _contraception = new TextEditingController()..text=step3subs.contraception == "Non" ||  step3subs.contraception == "none" || step3subs.contraception == "" ? "" : step3subs.contraception;
 
   @override
   void dispose() {

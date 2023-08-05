@@ -19,7 +19,7 @@ class _Pregnant5thPageState extends State<Pregnant5thPage> {
     "Je n'ai pas de douleur",
     "J'ai de petites douleurs, que je ne remarque presque pas. Je n'y pense pas",
     "J'ai quelques douleurs, ça reste occasionnel, cela m'embête ...",
-    // "4 : je remarque des douleurs, je m'y habitue et je m'entraine avec malgré tout",
+    "Je remarque des douleurs, je m'y habitue et je m'entraine avec malgré tout",
     "J'ai des douleurs, cela me gêne et ça interfère avec ma routine d'entrainement"
   ];
 

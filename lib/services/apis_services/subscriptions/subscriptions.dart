@@ -8,10 +8,12 @@ import 'package:run_your_life/services/stream_services/subscriptions/subscriptio
 import 'package:run_your_life/services/stream_services/subscriptions/update_data.dart';
 import 'package:run_your_life/utils/network_util.dart';
 import '../../../models/auths_model.dart';
+import '../../../utils/snackbars/snackbar_message.dart';
 
 
 class SubscriptionServices{
   final NetworkUtility _networkUtility = new NetworkUtility();
+  final SnackbarMessage _snackbarMessage = new SnackbarMessage();
 
   Future getInfos()async{
     try {
@@ -54,6 +56,33 @@ class SubscriptionServices{
     } catch (e) {
       Navigator.of(context).pop(null);
       print(e.toString());
+    }
+  }
+
+  // CANCEL SUBSCRIPTION
+  Future cancelSubscription(context,{required String subs_id})async{
+    try{
+      return await http.post(Uri.parse("${_networkUtility.url}/user/api/instant-cancel-subscription"),
+          headers: {
+            HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
+            "Accept": "application/json"
+          },
+          body: {
+            "subscription_id": subs_id,
+          }
+      ).then((data)async{
+        var respo = json.decode(data.body);
+        print("CANCEL SUBSCRIPTION ${respo.toString()}");
+        if(data.statusCode == 200 || data.statusCode == 201){
+          return respo;
+        }else{
+          Navigator.of(context).pop(null);
+          _snackbarMessage.snackbarMessage(context, message: respo['message'], is_error: true);
+        }
+      });
+    }catch(e){
+      Navigator.of(context).pop(null);
+      print("ERROR CANCEL SUBSCRIPTION ${e.toString()}");
     }
   }
 }

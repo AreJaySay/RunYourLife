@@ -10,7 +10,7 @@ class Eating10thPage extends StatefulWidget {
 }
 
 class _Eating10thPageState extends State<Eating10thPage> {
-  TextEditingController _supplement = new TextEditingController()..text=step2subs.food_supplement == "Non" || step2subs.food_supplement == "none" || step2subs.food_supplement == "N/A" ? "" : step2subs.food_supplement;
+  TextEditingController _supplement = new TextEditingController()..text=step2subs.food_supplement == "Non" || step2subs.food_supplement == "none" || step2subs.food_supplement == "" ? "" : step2subs.food_supplement;
 
   @override
   void dispose() {

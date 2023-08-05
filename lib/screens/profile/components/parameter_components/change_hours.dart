@@ -1,7 +1,12 @@
+import 'dart:async';
+
 import 'package:another_xlider/another_xlider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:run_your_life/functions/loaders.dart';
+import 'package:run_your_life/models/reminder_helper.dart';
 import 'package:run_your_life/models/screens/profile/parameters.dart';
 import 'package:run_your_life/screens/landing.dart';
 import 'package:run_your_life/services/apis_services/screens/parameters.dart';
@@ -11,8 +16,10 @@ import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:run_your_life/widgets/appbar.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
-
+import 'package:timezone/timezone.dart' as tz;
 import 'package:run_your_life/utils/palettes/app_gradient_colors.dart';
+
+import '../../../../services/apis_services/screens/home.dart';
 
 class ParametersChangeHour extends StatefulWidget {
   final int index;
@@ -27,6 +34,8 @@ class _ParametersChangeHourState extends State<ParametersChangeHour> {
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final Materialbutton _materialbutton = new Materialbutton();
   final Routes _routes = new Routes();
+  final NotificationService _notificationService = NotificationService();
+  final HomeServices _homeServices = new HomeServices();
   final AppBars _appBars = new AppBars();
   int _hoursselected = 1;
   int? _minutesselected = 0;
@@ -35,6 +44,27 @@ class _ParametersChangeHourState extends State<ParametersChangeHour> {
   FixedExtentScrollController _minutesController =
   FixedExtentScrollController(initialItem: 0);
   double _days = 1;
+  // Timer? timer;
+  //
+  // Future _reminders({String secondTime = "",String thirdTime = "",required bool hasMeeting, required String daysLeft})async{
+  //   final String currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
+  //   if(secondTime != ""){
+  //     await _notificationService.scheduleNotifications(
+  //         id: 1,
+  //         title: "RAPPEL",
+  //         body: "N'oublie pas de faire ton journal de bord journalier",
+  //         time: tz.TZDateTime.from(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(secondTime.split(":")[0].toString()), int.parse(secondTime.split(":")[1].toString())), tz.getLocation(currentTimeZone)));
+  //   }
+  //   if(thirdTime != ""){
+  //     if(int.parse(daysLeft) >= int.parse(thirdTime.toString().split(",")[1])){
+  //       await _notificationService.scheduleNotifications(
+  //           id: 1,
+  //           title: "RAPPEL",
+  //           body: hasMeeting ? "${daysLeft} jours avant mon rendez-vous avec mon coach" : "N'oubliez pas de prendre rendez-vous avec votre coach",
+  //           time: tz.TZDateTime.from(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day, int.parse(thirdTime.split(":")[0].toString()), int.parse(thirdTime.split(":")[1].toString().replaceAll(",1","").replaceAll(",2","")..replaceAll(",3",""))), tz.getLocation(currentTimeZone)));
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -227,6 +257,18 @@ class _ParametersChangeHourState extends State<ParametersChangeHour> {
                     Navigator.of(context).pop(null);
                     _snackbarMessage.snackbarMessage(context, message: "Une erreur s'est produite. Veuillez réessayer !", is_error: true);
                   }
+                  // _homeServices.getSchedule().then((meeting)async{
+                  //   final String currentTimeZone = await FlutterNativeTimezone.getLocalTimezone();
+                  //   String _daysLeft = "0";
+                  //   if(meeting["upcomingschedule"].isNotEmpty){
+                  //     setState(() {
+                  //       _daysLeft = tz.TZDateTime.parse(tz.getLocation(currentTimeZone), meeting["upcomingschedule"]["date"].toString()).difference(tz.TZDateTime.parse(tz.getLocation(currentTimeZone), DateFormat("yyyy-MM-dd").format(tz.TZDateTime.now(tz.getLocation(currentTimeZone))).toString())).inDays.toString();
+                  //     });
+                  //   }
+                  //   timer = Timer.periodic(Duration(seconds: 1), (Timer t){
+                  //     _reminders(hasMeeting: meeting["upcomingschedule"].isNotEmpty ? true : false, daysLeft: _daysLeft, secondTime: Parameters.hour2nd, thirdTime: Parameters.hour3rd);
+                  //   });
+                  // });
                 });
               }),
               SizedBox(

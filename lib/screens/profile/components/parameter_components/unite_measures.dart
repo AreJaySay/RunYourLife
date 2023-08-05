@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:run_your_life/functions/loaders.dart';
 import 'package:run_your_life/models/auths_model.dart';
 import 'package:run_your_life/models/screens/profile/parameters.dart';
+import 'package:run_your_life/services/apis_services/screens/parameters.dart';
+import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
 import '../../../../utils/palettes/app_colors.dart';
@@ -13,6 +16,9 @@ class UniteMeasures extends StatefulWidget {
 }
 
 class _UniteMeasuresState extends State<UniteMeasures> {
+  final ParameterServices _parameterServices = new ParameterServices();
+  final ScreenLoaders _screenLoaders = new ScreenLoaders();
+  final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   List<String> _titles = ["Stress","Sommeil","Tabac","Alcool","Complément\nalimentaire","Médicaments","Café","Eau","Entraînements","Suivi de Cycle"];
 
   @override
@@ -314,6 +320,18 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                     setState(() {
                       parameters.trackings[x] = "1";
                     });
+                    _screenLoaders.functionLoader(context);
+                    _parameterServices.submit(context).then((value){
+                      if(value != null){
+                        _parameterServices.getSetting().whenComplete((){
+                          Navigator.of(context).pop(null);
+                          _snackbarMessage.snackbarMessage(context , message: "Le paramètre a été mis à jour avec succès !");
+                        });
+                      }else{
+                        Navigator.of(context).pop(null);
+                        _snackbarMessage.snackbarMessage(context, message: "Une erreur s'est produite. Veuillez réessayer !", is_error: true);
+                      }
+                    });
                   }
                 },
                 child: ZoomTapAnimation(
@@ -348,6 +366,18 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                                   setState(() {
                                     parameters.trackings[x] = "1";
                                   });
+                                  _screenLoaders.functionLoader(context);
+                                  _parameterServices.submit(context).then((value){
+                                    if(value != null){
+                                      _parameterServices.getSetting().whenComplete((){
+                                        Navigator.of(context).pop(null);
+                                        _snackbarMessage.snackbarMessage(context , message: "Le paramètre a été mis à jour avec succès !");
+                                      });
+                                    }else{
+                                      Navigator.of(context).pop(null);
+                                      _snackbarMessage.snackbarMessage(context, message: "Une erreur s'est produite. Veuillez réessayer !", is_error: true);
+                                    }
+                                  });
                                 }
                               },
                             ),
@@ -373,8 +403,21 @@ class _UniteMeasuresState extends State<UniteMeasures> {
               GestureDetector(
                 onTap: (){
                   if(!Auth.isNotSubs!){
+                    print(parameters.trackings);
                     setState(() {
                       parameters.trackings[x] = "0";
+                    });
+                    _screenLoaders.functionLoader(context);
+                    _parameterServices.submit(context).then((value){
+                      if(value != null){
+                        _parameterServices.getSetting().whenComplete((){
+                          Navigator.of(context).pop(null);
+                          _snackbarMessage.snackbarMessage(context , message: "Le paramètre a été mis à jour avec succès !");
+                        });
+                      }else{
+                        Navigator.of(context).pop(null);
+                        _snackbarMessage.snackbarMessage(context, message: "Une erreur s'est produite. Veuillez réessayer !", is_error: true);
+                      }
                     });
                   }
                 },
@@ -407,6 +450,18 @@ class _UniteMeasuresState extends State<UniteMeasures> {
                                 if(!Auth.isNotSubs!){
                                   setState(() {
                                     parameters.trackings[x] = "0";
+                                  });
+                                  _screenLoaders.functionLoader(context);
+                                  _parameterServices.submit(context).then((value){
+                                    if(value != null){
+                                      _parameterServices.getSetting().whenComplete((){
+                                        Navigator.of(context).pop(null);
+                                        _snackbarMessage.snackbarMessage(context , message: "Le paramètre a été mis à jour avec succès !");
+                                      });
+                                    }else{
+                                      Navigator.of(context).pop(null);
+                                      _snackbarMessage.snackbarMessage(context, message: "Une erreur s'est produite. Veuillez réessayer !", is_error: true);
+                                    }
                                   });
                                 }
                               },

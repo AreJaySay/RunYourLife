@@ -11,6 +11,7 @@ import 'package:run_your_life/widgets/appbar.dart';
 import 'package:intl/intl.dart';
 import 'package:run_your_life/widgets/shimmering_loader.dart';
 import 'package:run_your_life/widgets/textfields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyWeights extends StatefulWidget {
   @override
@@ -72,7 +73,7 @@ class _MyWeightsState extends State<MyWeights> {
                 padding: EdgeInsets.symmetric(vertical: 50,horizontal: 20),
                 child: Column(
                     children: [
-                      TextFields(_weight, hintText: "Entrer le poids", inputType: TextInputType.number),
+                      TextFields(_weight, hintText: "Entrer le poids", inputType: TextInputType.numberWithOptions(decimal: true)),
                       SizedBox(
                         height: 50,
                       ),
@@ -96,19 +97,23 @@ class _MyWeightsState extends State<MyWeights> {
                         ),
                       ),
                       Spacer(),
-                      _materialbutton.materialButton("VALIDER", () {
+                      _materialbutton.materialButton("VALIDER", (){
+                        print(_weight.text);
                         if(_weight.text.isEmpty){
                           _snackbarMessage.snackbarMessage(context, message: "Veuillez entrer votre poids.", is_error: true);
                         }else{
                           _screenLoaders.functionLoader(context);
                           _checkinServices.submit_weight(context, weight: _weight.text).then((value){
                             if(value != null){
-                              _checkinServices.getUpdated().whenComplete((){
+                              _checkinServices.getUpdated().whenComplete(()async{
                                 setState(() {
                                   if(!CheckinServices.checkinSelected.toString().contains("MON POIDS")){
                                     CheckinServices.checkinSelected.add('MON POIDS');
                                   }
                                 });
+                                SharedPreferences prefs = await SharedPreferences.getInstance();
+                                prefs.setString("poid_date", DateTime.now().toUtc().add(Duration(hours: 2)).next(DateTime.monday).toString());
+                                prefs.setStringList("checkin", CheckinServices.checkinSelected.cast<String>());
                                 Navigator.of(context).pop(null);
                                 Navigator.of(context).pop(null);
                               });
@@ -124,6 +129,16 @@ class _MyWeightsState extends State<MyWeights> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+extension DateTimeExtension on DateTime {
+  DateTime next(int day) {
+    return this.add(
+      Duration(
+        days: (day - this.weekday) % DateTime.daysPerWeek,
       ),
     );
   }

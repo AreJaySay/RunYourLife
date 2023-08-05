@@ -67,7 +67,7 @@ class _SearchNotificationState extends State<SearchNotification> {
                 child: GroupedListView<dynamic, String>(
                   stickyHeaderBackgroundColor: Colors.transparent,
                   elements: widget.notifications,
-                  groupBy: (element) => DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(element['updated_at'].toString())),
+                  groupBy: (element) => DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.parse(element['updated_at'].toString())),
                   groupComparator: (value1, value2) => value2.compareTo(value1),
                   // itemComparator: (item1, item2) =>
                   //     item1['name'].compareTo(item2['name']),
@@ -82,7 +82,7 @@ class _SearchNotificationState extends State<SearchNotification> {
                       "HIER" :
                       DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(value)).inDays > 1 && DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(value)).inDays < 7 ?
                       "IL Y A UNE SEMAINE" :
-                      DateFormat.yMMMd("fr").format(DateTime.parse(value.toString())),
+                      DateFormat.yMMMd("fr_FR").format(DateTime.parse(value.toString())),
                       style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),
                     ),
                   ),
@@ -114,7 +114,7 @@ class _SearchNotificationState extends State<SearchNotification> {
                             Row(
                               children: [
                                 Expanded(child: Text(element['title'],style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15.5,color: AppColors.appmaincolor))),
-                                Text(DateFormat("HH:mm","fr").format(DateTime.parse(element['updated_at'])),style: TextStyle(fontFamily: "AppFontStyle")),
+                                Text(DateFormat("HH:mm","fr_FR").format(DateTime.parse(element['updated_at'])),style: TextStyle(fontFamily: "AppFontStyle")),
                               ],
                             ),
                             SizedBox(

@@ -41,6 +41,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>sms</string>
@@ -62,6 +64,8 @@
 	<string>Activez l'application pour accéder à votre photothèque afin de télécharger vos photos et de les utiliser comme image de profil ou images de produits dans l'application.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Activez l'application pour accéder à votre photothèque afin de télécharger vos photos et de les utiliser comme image de profil ou images de produits dans l'application.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

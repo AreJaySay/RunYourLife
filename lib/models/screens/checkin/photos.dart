@@ -5,8 +5,6 @@ class Photos{
   String description;
   String sharable;
   List<String> taggable = [];
-  // GET PHOTO
-  List<String> dates;
 
   Photos({
     this.image = "",
@@ -14,7 +12,6 @@ class Photos{
     this.description = "",
     this.sharable = "",
     required this.taggable,
-    required this.dates
   });
 
   Map<String, dynamic> toMap() => {
@@ -28,4 +25,4 @@ class Photos{
   };
 }
 
-Photos photos = new Photos(taggable: [], dates: []);
+Photos photos = new Photos(taggable: []);

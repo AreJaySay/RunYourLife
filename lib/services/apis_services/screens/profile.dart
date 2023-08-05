@@ -41,7 +41,7 @@ class ProfileServices{
         }
       });
     } catch (e) {
-      
+      print("GET PROFILE ERROR ${e}");
     }
   }
 

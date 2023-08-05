@@ -15,6 +15,7 @@ import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/utils/palettes/app_gradient_colors.dart';
 import 'package:run_your_life/widgets/appbar.dart';
 import '../../models/auths_model.dart';
+import '../../models/device_model.dart';
 import '../../services/stream_services/subscriptions/subscription_details.dart';
 import '../../widgets/message_notifier.dart';
 import '../../widgets/notification_notifier.dart';
@@ -36,6 +37,10 @@ class _BlogState extends State<Blog> with SingleTickerProviderStateMixin {
   bool _keyboardVisible = false;
   List? _searchData;
   int _total = 0;
+  bool _isAllLoading = false;
+  bool _isRecettesLoading = false;
+  bool _isLifestyleLoading = false;
+  bool _isNutritionLoading = false;
 
   @override
   void initState() {
@@ -54,9 +59,34 @@ class _BlogState extends State<Blog> with SingleTickerProviderStateMixin {
         _keyboardVisible = event;
       });
     });
+    _isAllLoading = true;
+    _isRecettesLoading = true;
+    _isLifestyleLoading = true;
+    _isNutritionLoading = true;
     _blogServices.getblogs(page: "1").then((total){
       _total = total;
       _searchData = blogStreamServices.currentdata;
+      setState(() {
+        _isAllLoading = false;
+      });
+    });
+    _blogServices.getBlogCategory(category_id: "1").then((value){
+      blogStreamServices.updateRecettes(data: value);
+      setState(() {
+        _isRecettesLoading = false;
+      });
+    });
+    _blogServices.getBlogCategory(category_id: "2").then((value){
+      blogStreamServices.updateLifestyle(data: value);
+      setState(() {
+        _isLifestyleLoading = false;
+      });
+    });
+    _blogServices.getBlogCategory(category_id: "3").then((value){
+      blogStreamServices.updateNutrition(data: value);
+      setState(() {
+        _isNutritionLoading = false;
+      });
     });
     super.initState();
   }
@@ -193,7 +223,7 @@ class _BlogState extends State<Blog> with SingleTickerProviderStateMixin {
                                 height: 5,
                               ),
                               TabBar(
-                                isScrollable: true,
+                                isScrollable: DeviceModel.isMobile ? true : false,
                                 labelStyle: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontFamily: "AppFontStyle",
@@ -230,25 +260,25 @@ class _BlogState extends State<Blog> with SingleTickerProviderStateMixin {
                     body: TabBarView(
                           physics: NeverScrollableScrollPhysics(),
                           children: <Widget>[
-                            !snapshot.hasData ?
+                            _isAllLoading ?
                             BlogShimmerLoader() :
                             Articles(article: snapshot.data!,index: 0,total: _total,),
 
-                            !snapshot.hasData ?
+                            _isRecettesLoading ?
                             BlogShimmerLoader() :
-                            Articles(article: snapshot.data!.where((s) => s["category"]["id"].toString() == "1").toList(),index: 1,total: _total),
+                            Articles(article: blogStreamServices.currentRecettes,index: 1,total: _total),
 
-                            !snapshot.hasData ?
+                            _isLifestyleLoading ?
                             BlogShimmerLoader() :
-                            Articles(article: snapshot.data!.where((s) => s["category"]["id"].toString() == "2").toList(),index: 2,total: _total),
+                            Articles(article: blogStreamServices.currentLifestyle,index: 2,total: _total),
 
-                            !snapshot.hasData ?
+                            _isNutritionLoading ?
                             BlogShimmerLoader() :
-                            Articles(article: snapshot.data!.where((s) => s["category"]["id"].toString() == "3").toList(),index: 3,total: _total),
+                            Articles(article: blogStreamServices.currentNutrition,index: 3,total: _total),
 
                             !favoriteStreamServices.subject.hasValue?
                             BlogShimmerLoader() :
-                            Articles(article: favoriteStreamServices.currentdata,index: 4,total: _total),
+                            Articles(article: favoriteStreamServices.currentdata,index: 4,total: _total, isFavorite: true,),
 
                           ],
                         ),

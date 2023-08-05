@@ -23,19 +23,20 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
   final HomeServices _homeServices = new HomeServices();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
-  int? _selected;
+  int _selected = 1;
+  int _listChecker = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    homeTracking.trainingChecker = "";
+    _listChecker = step5subs.sports.length;
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
@@ -44,19 +45,43 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
           width: double.infinity,
           height: double.infinity,
           child: ListView(
-            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 40),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 40),
             children: [
-              Text("Entraînements".toUpperCase(),style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),),
+              Text(
+                "Entraînements".toUpperCase(),
+                style: TextStyle(
+                    fontSize: 17,
+                    color: AppColors.pinkColor,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "AppFontStyle"),
+              ),
               SizedBox(
                 height: 10,
               ),
-              Text("Entre le sport effectué et sa durée en minutes",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15),),
+              Text(
+                "Entre le sport effectué et sa durée en minutes",
+                style: TextStyle(fontFamily: "AppFontStyle", fontSize: 15),
+              ),
               SizedBox(
                 height: 20,
               ),
-              for(var x = 0; x < step5subs.sports.length; x++)...{
+              for (var x = 0; x < step5subs.sports.length; x++) ...{
                 SizedBox(
                   height: x == 0 ? 0 : 20,
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    icon: Icon(Icons.close),
+                    onPressed: (){
+                      setState(() {
+                        step5subs.sports.remove(step5subs.sports[x]);
+                        step5subs.duration.remove(step5subs.duration[x]);
+                        step5subs.performances.remove(step5subs.performances[x]);
+                      });
+                      print(step5subs.sports.length);
+                    },
+                  ),
                 ),
                 Container(
                   width: double.infinity,
@@ -64,19 +89,25 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: TextFields(step5subs.sports[x],hintText: "Nom du sport",onChanged: (text){
-                          setState(() {
-                            homeTracking.trainingChecker = "no null";
-                            _selected = 1;
-                          });
-                        },),
+                        child: TextFields(
+                          step5subs.sports[x],
+                          hintText: "Nom du sport",
+                          onChanged: (text) {
+                            setState(() {
+                              _selected = 1;
+                            });
+                          },
+                        ),
                       ),
                       SizedBox(
                         width: 10,
                       ),
                       Container(
                         width: 120,
-                        child: TextFields(step5subs.duration[x],hintText: "min/sem",),
+                        child: TextFields(
+                          step5subs.duration[x],
+                          hintText: "Durée",
+                        ),
                       )
                     ],
                   ),
@@ -84,15 +115,27 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                 SizedBox(
                   height: 15,
                 ),
-                Text("Décris le type de sport que tu as effectué \nDonne l’effort que tu as perçu",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15),),
+                Text(
+                  "Décris le type de sport que tu as effectué \nDonne l’effort que tu as perçu",
+                  style: TextStyle(fontFamily: "AppFontStyle", fontSize: 15),
+                ),
                 SizedBox(
                   height: 5,
                 ),
-                Text("0 : léger / 5 : modéré / 8 : Difficile / 10 : Très intense",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15),),
+                Text(
+                  "0 : léger / 5 : modéré / 8 : Difficile / 10 : Très intense",
+                  style: TextStyle(fontFamily: "AppFontStyle", fontSize: 15),
+                ),
                 SizedBox(
                   height: 15,
                 ),
-                Text("EFFORT PERÇU",style: TextStyle(fontFamily: "AppFontStyle",fontSize: 15,fontWeight: FontWeight.w600),),
+                Text(
+                  "EFFORT PERÇU",
+                  style: TextStyle(
+                      fontFamily: "AppFontStyle",
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600),
+                ),
                 Container(
                   height: 70,
                   child: FlutterSlider(
@@ -102,28 +145,29 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                     handlerWidth: 65,
                     handlerHeight: 45,
                     tooltip: FlutterSliderTooltip(
-                        alwaysShowTooltip: false,
-                        disabled: true
-                    ),
+                        alwaysShowTooltip: false, disabled: true),
                     trackBar: FlutterSliderTrackBar(
                       inactiveTrackBarHeight: 10,
                       activeTrackBarHeight: 10,
                       activeTrackBar: BoxDecoration(
-                          color:  AppColors.appmaincolor,
-                          borderRadius: BorderRadius.circular(1000)
-                      ),
+                          color: AppColors.appmaincolor,
+                          borderRadius: BorderRadius.circular(1000)),
                       inactiveTrackBar: BoxDecoration(
                           color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(1000)
-                      ),
+                          borderRadius: BorderRadius.circular(1000)),
                     ),
                     handler: FlutterSliderHandler(
                         decoration: BoxDecoration(
                             color: AppColors.appmaincolor,
-                            borderRadius: BorderRadius.circular(10)
-                        ),
-                        child: Text(step5subs.performances[x].floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
-                    ),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Text(
+                          step5subs.performances[x].floor().toString(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "AppFontStyle"),
+                        )),
                     onDragging: (handlerIndex, lowerValue, upperValue) {
                       setState(() {
                         step5subs.performances[x] = lowerValue;
@@ -140,19 +184,36 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                   height: 45,
                   width: double.infinity,
                   child: Center(
-                      child: Icon(Icons.add,color: Colors.white,)
-                  ),
+                      child: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  )),
                   decoration: BoxDecoration(
                       color: AppColors.pinkColor,
-                      borderRadius: BorderRadius.circular(1000)
-                  ),
+                      borderRadius: BorderRadius.circular(1000)),
                 ),
-                onTap: (){
+                onTap: () {
                   setState(() {
-                    step5subs.sports.add(TextEditingController());
-                    step5subs.duration.add(TextEditingController());
-                    step5subs.performances.add(0);
+                    _selected = 1;
                   });
+                  if(step5subs.sports.isEmpty){
+                    setState(() {
+                      step5subs.sports.add(TextEditingController());
+                      step5subs.duration.add(TextEditingController());
+                      step5subs.performances.add(0);
+                      HomeTracking.hasTraining = true;
+                    });
+                  }else{
+                    if (step5subs.sports[step5subs.sports.length - 1].text.toString().isNotEmpty && step5subs.duration[step5subs.sports.length - 1].text.toString().isNotEmpty) {
+                      setState(() {
+                        step5subs.sports.add(TextEditingController());
+                        step5subs.duration.add(TextEditingController());
+                        step5subs.performances.add(0);
+                      });
+                    }else{
+                      _snackbarMessage.snackbarMessage(context, message: "Veuillez renseigner le nom et la durée du sport avant d'en ajouter un nouveau!", is_error: true);
+                    }
+                  }
                 },
               ),
               SizedBox(
@@ -160,12 +221,13 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
               ),
               ZoomTapAnimation(
                 end: 0.99,
-                onTap: (){
+                onTap: () {
                   setState(() {
                     _selected = 2;
-                    step5subs.sports.clear();
+                    HomeTracking.hasTraining = false;
                     step5subs.duration.clear();
-                    homeTracking.trainingChecker = "null";
+                    step5subs.sports.clear();
+                    step5subs.performances.clear();
                   });
                 },
                 child: Container(
@@ -184,9 +246,10 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                           onChanged: (val) {
                             setState(() {
                               _selected = 2;
-                              step5subs.sports.clear();
+                              HomeTracking.hasTraining = false;
                               step5subs.duration.clear();
-                              homeTracking.trainingChecker = "null";
+                              step5subs.sports.clear();
+                              step5subs.performances.clear();
                             });
                           },
                         ),
@@ -194,7 +257,13 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Aucun entrainement",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),)
+                      Text(
+                        "Aucun entrainement",
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: "AppFontStyle"),
+                      )
                     ],
                   ),
                 ),
@@ -203,36 +272,45 @@ class _EntertainmentTrackingState extends State<EntertainmentTracking> {
                 height: 100,
               ),
               _materialbutton.materialButton("VALIDER", () {
-                homeTracking.sports.remove("null");
-                homeTracking.sports.remove("");
-                homeTracking.durations.remove("null");
-                homeTracking.durations.remove("");
-                if(homeTracking.trainingChecker != ""){
-                  if(!homeTracking.sports.toString().toLowerCase().contains(step5subs.sports[step5subs.sports.length - 1].text.toString().toLowerCase())){
-                    for(int x = 0;x < step5subs.sports.length; x++){
-                      setState((){
-                        if(!homeTracking.sports.toString().toLowerCase().contains(step5subs.sports[x].text.toString().toLowerCase())){
-                          homeTracking.sports.add(step5subs.sports[x].text.toString());
-                          homeTracking.durations.add(step5subs.duration[x].text.toString());
-                          homeTracking.performances.add(step5subs.performances[x].floor().toString());
-                        }
-                      });
-                      print(homeTracking.sports.toString());
-                    }
+                print(homeTracking.toMap());
+                if (step5subs.sports.isNotEmpty || _selected == 2) {
+                  if(_selected == 2){
                     _screenLoaders.functionLoader(context);
-                    _homeServices.submit_tracking(context).then((value){
-                      if(value != null){
-                        _homeServices.getTracking(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(homeTracking.date))).then((value){
+                    _homeServices.submit_tracking(context).then((value) {
+                      if (value != null) {
+                        _homeServices
+                            .getTracking(
+                            date: DateFormat("yyyy-MM-dd", "fr_FR")
+                                .format(DateTime.parse(homeTracking.date)))
+                            .then((value) {
                           Navigator.of(context).pop(null);
                           Navigator.of(context).pop(null);
                         });
                       }
                     });
                   }else{
-                    _snackbarMessage.snackbarMessage(context, message: "Ce sport est déjà sur la liste!", is_error: true);
+                    if (step5subs.sports[step5subs.sports.length - 1].text.toString().isNotEmpty && step5subs.duration[step5subs.sports.length - 1].text.toString().isNotEmpty) {
+                      _screenLoaders.functionLoader(context);
+                      _homeServices.submit_tracking(context).then((value) {
+                        if (value != null) {
+                          _homeServices
+                              .getTracking(
+                              date: DateFormat("yyyy-MM-dd", "fr_FR")
+                                  .format(DateTime.parse(homeTracking.date)))
+                              .then((value) {
+                            Navigator.of(context).pop(null);
+                            Navigator.of(context).pop(null);
+                          });
+                        }
+                      });
+                    }else{
+                      _snackbarMessage.snackbarMessage(context, message: "Veuillez renseigner le nom du sport et sa durée avant de le soumettre!", is_error: true);
+                    }
                   }
-                }else{
-                  _snackbarMessage.snackbarMessage(context, message: "Ajoutez des données pour continuer !",is_error: true);
+                } else {
+                  _snackbarMessage.snackbarMessage(context,
+                      message: "Ajoutez des données pour continuer !",
+                      is_error: true);
                 }
               }),
             ],

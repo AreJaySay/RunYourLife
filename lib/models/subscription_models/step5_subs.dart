@@ -53,9 +53,13 @@ class Step5Subs{
       "training_recovery" : training_recovery.toString(),
       "no_training_day" : no_training_day.toString(),
       "pain" : pain,
-      // for(int x = 0; x < name.length; x++)...{
-      //   "name": name[x],
-      //   "duration": duration[x]
+      for(int x = 0; x < sports.length; x++)...{
+        "sport_types[$x][name]": sports[x].text.toString(),
+        "sport_types[$x][duration]": duration[x].text.toString(),
+      },
+      // for(int x = 0; x < sports.length; x++)...{
+      //   "name": sports[x].text,
+      //   "duration": duration[x].text
       // },
     }else...{
       "no_sports[confident_on_athletic_ability]": confident_on_athletic_ability.floor().toString(),

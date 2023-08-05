@@ -26,6 +26,7 @@ import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import '../../../../../../functions/loaders.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
+import '../../../../../functions/fillup_later.dart';
 import '../../../../../models/subscription_models/step2_subs.dart';
 import '1st_page.dart';
 
@@ -42,6 +43,7 @@ class _EatingMainPageState extends State<EatingMainPage> {
   final ProfileServices _profileServices = new ProfileServices();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
+  final SignLater _signLater = new SignLater();
   final Routes _routes = new Routes();
   int _currentPage = 1;
 
@@ -169,19 +171,20 @@ class _EatingMainPageState extends State<EatingMainPage> {
                           ),
                         ),
                         onTap: (){
-                          _screenLoaders.functionLoader(context);
-                          if(subscriptionDetails.currentdata[0]["food_preference"] != null){
-                            setState(() {
-                              step2subs.id = subscriptionDetails.currentdata[0]["food_preference"]["id"].toString();
-                            });
-                          }
-                          _step2service.submit(context).then((value){
-                            if(value != null){
-                              _subscriptionServices.getInfos().whenComplete((){
-                                _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
-                              });
-                            }
-                          });
+                          _signLater.signLater(context);
+                          // _screenLoaders.functionLoader(context);
+                          // if(subscriptionDetails.currentdata[0]["food_preference"] != null){
+                          //   setState(() {
+                          //     step2subs.id = subscriptionDetails.currentdata[0]["food_preference"]["id"].toString();
+                          //   });
+                          // }
+                          // _step2service.submit(context).then((value){
+                          //   if(value != null){
+                          //     _subscriptionServices.getInfos().whenComplete((){
+                          //       _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
+                          //     });
+                          //   }
+                          // });
                         },
                       ),
                     ],

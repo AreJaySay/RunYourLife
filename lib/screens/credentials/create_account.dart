@@ -156,9 +156,11 @@ class _CreateAccountState extends State<CreateAccount> {
                     _snackbarMessage.snackbarMessage(context, message: "Prénom ne peut pas être vide !", is_error: true);
                   }else if(_email.text.isEmpty){
                     _snackbarMessage.snackbarMessage(context, message: "Adresse mail ne peut pas être vide !", is_error: true);
-                  }else if(_phonenumber.text.isEmpty){
-                    _snackbarMessage.snackbarMessage(context, message: "Le numéro de téléphone est requis !", is_error: true);
-                  }else if(step1subs.birthdate == ""){
+                  }
+                  // else if(_phonenumber.text.isEmpty){
+                  //   _snackbarMessage.snackbarMessage(context, message: "Le numéro de téléphone est requis !", is_error: true);
+                  // }
+                  else if(step1subs.birthdate == ""){
                     _snackbarMessage.snackbarMessage(context, message: "La date de naissance ne peut pas être vide !", is_error: true);
                   }else if(_password.text.isEmpty){
                     _snackbarMessage.snackbarMessage(context, message: "Mot de passe ne peut pas être vide !", is_error: true);

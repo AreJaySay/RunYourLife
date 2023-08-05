@@ -18,23 +18,41 @@ class ObjectivesPage extends StatefulWidget {
   State<ObjectivesPage> createState() => _ObjectivesPageState();
 }
 
-class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObserver, ObjectiveService {
+class _ObjectivesPageState extends State<ObjectivesPage>{
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
-  final ObjectivesVM _vm = ObjectivesVM.instance;
   final CheckinServices _checkinServices = new CheckinServices();
   final ObjectiveServices _objectiveServices = new ObjectiveServices();
   late final ScrollController _scrollController;
 
-  void init() async {
-    await fetchObjectiveAndPopulate();
-  }
-
-
   @override
   void initState() {
     // TODO: implement initState
-    init();
+    objectivesVM.update(data: true);
+    objectivesVM.value.clear();
+    _objectiveServices.get().then((objectives){
+      if(objectives != null){
+        setState(() {
+          for(int x = 0; x < objectives["data"].length; x++){
+            if(!objectivesVM.value.toString().contains(objectives["data"][x].toString())){
+              objectivesVM.add(data: objectives["data"][x]);
+            }
+          }
+        });
+      }
+      _objectiveServices.get_programmation().then((programmation){
+        if(programmation != null){
+          setState(() {
+            for(int x = 0; x < programmation["data"].length; x++){
+              if(!objectivesVM.value.toString().contains(programmation["data"][x].toString())){
+                objectivesVM.add(data: programmation["data"][x]);
+              }
+            }
+          });
+          objectivesVM.update(data: false);
+        }
+      });
+    });
     _scrollController = ScrollController();
     super.initState();
   }
@@ -63,33 +81,16 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
                 image: AssetImage("assets/important_assets/heart_icon.png"),
               ),
               Positioned.fill(
-                child: StreamBuilder<List<Objective>>(
-                  stream: _vm.stream,
+                child: StreamBuilder<List>(
+                  stream: objectivesVM.subject,
                   builder: (_, snapshot) {
-                    if (snapshot.hasError || !snapshot.hasData) {
-                      if (!snapshot.hasData) {
-                        return LoadingAnimationWidget.hexagonDots(
-                          color: AppColors.appmaincolor,
-                          size: 40,
-                        );
-                      } else {
-                        return const Center(
-                          child: Text(
-                            "Erreur lors de la récupération des données, veuillez réessayer.",
-                            style: TextStyle(
-                              color: AppColors.appmaincolor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      }
-                    }
-                    final List<Objective> _result = snapshot.data!;
                     return Scrollbar(
                       controller: _scrollController,
-                      child: _result.isEmpty ?
+                      child: objectivesVM.currentLoader ?
+                      Center(
+                        child: CircularProgressIndicator(color: AppColors.appmaincolor,)
+                      ) :
+                      snapshot.data!.isEmpty ?
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20,vertical: 30),
                         child: NoDataFound(firstString: "AUCUN", secondString: "OBJECTIF TROUVÉ", thirdString: "Tu verras ici tous tes objectifs lorsque tu en auras."),
@@ -104,7 +105,7 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
                             ZoomTapAnimation(
                               end: 0.99,
                               onTap: (){
-
+                                print(snapshot.data![index]);
                               },
                               child: Card(
                                 color: Colors.white,
@@ -124,7 +125,7 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
                                               child: Checkbox(
                                                 checkColor: AppColors.pinkColor,
                                                 activeColor: Colors.white,
-                                                value:  _result[index].viewStatus == 1,
+                                                value:  snapshot.data![index]["view_status"] == 1,
                                                 shape: CircleBorder(
                                                     side: BorderSide.none
                                                 ),
@@ -135,13 +136,12 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
                                                     style: BorderStyle.none
                                                 ),
                                                 onChanged: (value) {
-                                                  print(_result[index]);
+                                                  print(snapshot.data![index]);
                                                   setState(() {
-                                                    _result[index].viewStatus = _result[index].viewStatus == 0 ? 1 : 0;
+                                                    snapshot.data![index]["view_status"] = snapshot.data![index]["view_status"] == 0 ? 1 : 0;
                                                   });
-                                                  // _screenLoaders.functionLoader(context);
-                                                  _objectiveServices.objStatus(id: _result[index].id.toString(), status: _result[index].viewStatus.toString() ,isProgrammation: _result[index].toString().contains("obj_programmation") ? true : false).then((value){
-                                                    init();
+                                                  _objectiveServices.objStatus(id: snapshot.data![index]["id"].toString(), status: snapshot.data![index]["view_status"].toString() ,isProgrammation: snapshot.data![index].toString().contains("obj_programmation") ? true : false).then((value){
+
                                                   });
                                                 },
                                               ),
@@ -149,7 +149,7 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
                                           ),
                                           decoration: BoxDecoration(
                                             color: Colors.white,
-                                            border: Border.all(color: _result[index].viewStatus == 0 ? Colors.grey : AppColors.pinkColor ,width: 2),
+                                            border: Border.all(color: snapshot.data![index]["view_status"] == 0 ? Colors.grey : AppColors.pinkColor ,width: 2),
                                             borderRadius: BorderRadius.circular(1000),
                                           ),
                                           padding: EdgeInsets.all(3),
@@ -165,24 +165,24 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            Text(_result[index].objective?.title ?? "Pas de titre", style: TextStyle(
+                                            Text(snapshot.data![index].toString().contains("obj_programmation") ? snapshot.data![index]["obj_programmation"]["title"] : snapshot.data![index]["objective"]["title"] ?? "Pas de titre", style: TextStyle(
                                               color: AppColors.appmaincolor,
                                               fontSize: 17.5,
                                               height: 1,
                                               fontWeight: FontWeight.w600,
                                             ),
                                             ),
-                                            if (_result[index].objective != null &&
-                                                _result[index]
-                                                    .objective!
-                                                    .description
-                                                    .isNotEmpty) ...{
+                                            if (snapshot.data![index].toString().contains("obj_programmation") ? snapshot.data![index]["obj_programmation"] != null : snapshot.data![index]["objective"] != null) ...{
                                               const SizedBox(
                                                 height: 5,
                                               ),
                                               Text(
-                                                _result[index].objective?.description ??
-                                                    "Pas de description",
+                                                snapshot.data![index].toString().contains("obj_programmation") ?
+                                                snapshot.data![index]["obj_programmation"]["programmation_description"] == null ?
+                                                "Pas de description" : snapshot.data![index]["obj_programmation"]["programmation_description"] :
+
+                                                snapshot.data![index]["objective"]["obj_description"] == null ?
+                                                    "Pas de description": snapshot.data![index]["objective"]["obj_description"],
                                                 style: TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 15,
@@ -191,19 +191,20 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
                                                 ),
                                               ),
                                             },
-                                            if (_result[index].objective != null &&
-                                                _result[index].objective!.relatedTags !=
+                                            if (snapshot.data![index].toString().contains("obj_programmation") ? snapshot.data![index]["obj_programmation"] != null : snapshot.data![index]["objective"] != null &&
+                                                snapshot.data![index].toString().contains("obj_programmation") ?
+                                               snapshot.data![index]["obj_programmation"]["related_tags"]  !=
+                                                null :
+                                               snapshot.data![index]["objective"]["related_tags"] !=
                                                     null) ...{
                                               const SizedBox(
                                                 height: 10,
                                               ),
                                               Chip(
                                                 label: Text(
-                                                  _result[index]
-                                                      .objective!
-                                                      .relatedTags!
-                                                      .name
-                                                      .toUpperCase(),
+                                                  snapshot.data![index].toString().contains("obj_programmation") ?
+                                                  snapshot.data![index]["obj_programmation"]["related_tags"]["name"].toString() :
+                                                  snapshot.data![index]["objective"]["related_tags"]["name"].toUpperCase(),
                                                 ),
                                               ),
                                             },
@@ -212,7 +213,7 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
                                             ),
                                             Text(
                                               DateFormat("dd, MMMM yyyy", "fr_FR")
-                                                  .format(_result[index].createdAt)
+                                                  .format(DateTime.parse(snapshot.data![index]["updated_at"].toString()))
                                                   .toUpperCase(),
                                               style: TextStyle(
                                                 color: AppColors.darpinkColor,
@@ -231,7 +232,7 @@ class _ObjectivesPageState extends State<ObjectivesPage> with WidgetsBindingObse
                         separatorBuilder: (_, i) => const SizedBox(
                           height: 10,
                         ),
-                        itemCount: _result.length,
+                        itemCount: snapshot.data!.length,
                       ),
                     );
                   },

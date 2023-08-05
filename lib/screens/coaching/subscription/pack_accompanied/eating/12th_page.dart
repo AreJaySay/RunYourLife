@@ -283,7 +283,7 @@ class _Eating12thPageState extends State<Eating12thPage> {
         SizedBox(
           height: 30,
         ),
-        Text("DÉSIRES-TU PESER TES ALIMENTS DANS UN BUT DE PERFORMER LORS D’ÉCHÉANCES SPORTIVES OU PROFESSIONNELLES ? (CELA SIGNIFIE QUE D’ARRÊTER DE PESER TES ALIMENTS À TOUT MOMENT NE TE POSERAIT AUCUN GÊNE OU ANGOISSE)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("DÉSIRES-TU PESER TES ALIMENTS DANS UN BUT DE PERFORMER LORS D’ÉCHÉANCES SPORTIVES OU PROFESSIONNELLES ? (CELA SIGNIFIE QUE D’ARRÊTER DE PESER TES ALIMENTS À TOUT MOMENT NE TE POSERAIT AUCUNE GÊNE OU ANGOISSE)".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 20,
         ),

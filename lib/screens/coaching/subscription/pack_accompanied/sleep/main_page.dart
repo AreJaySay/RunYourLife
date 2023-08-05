@@ -17,6 +17,7 @@ import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import '../../../../../../services/other_services/routes.dart';
 import '../../../../../../utils/palettes/app_colors.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
+import '../../../../../functions/fillup_later.dart';
 import '1st_page.dart';
 import '3rd_page.dart';
 
@@ -30,6 +31,7 @@ class _SleepMainPageState extends State<SleepMainPage> {
   final Materialbutton _materialbutton = new Materialbutton();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final Step7Service _step7service = new Step7Service();
+  final SignLater _signLater = new SignLater();
   final ProfileServices _profileServices = new ProfileServices();
   final Routes _routes = new Routes();
   int _currentPage = 1;
@@ -158,18 +160,19 @@ class _SleepMainPageState extends State<SleepMainPage> {
                           ),
                         ),
                         onTap: (){
-                          _screenLoaders.functionLoader(context);
-                          if(subscriptionDetails.currentdata[0]["sleep"] != null){
-                            setState(() {
-                              step7subs.id = subscriptionDetails.currentdata[0]["sleep"]["id"].toString();
-                            });
-                          }
-                          _step7service.submit(context).then((value){
-                            if(value != null){
-                              Navigator.of(context).pop(null);
-                              _routes.navigator_push(context, Landing(), transitionType: PageTransitionType.fade);
-                            }
-                          });
+                          _signLater.signLater(context);
+                          // _screenLoaders.functionLoader(context);
+                          // if(subscriptionDetails.currentdata[0]["sleep"] != null){
+                          //   setState(() {
+                          //     step7subs.id = subscriptionDetails.currentdata[0]["sleep"]["id"].toString();
+                          //   });
+                          // }
+                          // _step7service.submit(context).then((value){
+                          //   if(value != null){
+                          //     Navigator.of(context).pop(null);
+                          //     _routes.navigator_push(context, Landing(), transitionType: PageTransitionType.fade);
+                          //   }
+                          // });
                         },
                       ),
                     ],

@@ -8,6 +8,7 @@ import 'package:run_your_life/models/auths_model.dart';
 import 'package:run_your_life/models/device_model.dart';
 import 'package:run_your_life/services/apis_services/screens/feedback.dart';
 import 'package:run_your_life/services/apis_services/screens/home.dart';
+import 'package:run_your_life/services/apis_services/subscriptions/subscriptions.dart';
 import 'package:run_your_life/utils/palettes/app_gradient_colors.dart';
 import 'package:run_your_life/widgets/notification_notifier.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
@@ -21,6 +22,7 @@ import '../../../services/stream_services/screens/feedback.dart';
 import '../../../services/stream_services/subscriptions/subscription_details.dart';
 import '../../../widgets/message_notifier.dart';
 import '../../coaching/subscription/pack_accompanied/presentation/main_page.dart';
+import '../../profile/components/subscription_modal.dart';
 import '../components/coach/listview_widget.dart';
 import '../components/shimmer_loader.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
@@ -40,6 +42,7 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
   ScrollController _scrollController = new ScrollController();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final ChoosePlanService _choosePlanService = new ChoosePlanService();
+  final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final InAppPurchase _iap = InAppPurchase.instance;
   bool _isAvailable = false;
   List<ProductDetails> _products = [];
@@ -113,31 +116,21 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
           handleError(purchaseDetails.error!);
-          print(purchaseDetails.verificationData.serverVerificationData);
-          print(purchaseDetails.verificationData.source);
-          print(purchaseDetails.status);
-          print(purchaseDetails.purchaseID);
-          print(purchaseDetails.productID);
-          print(purchaseDetails.transactionDate);
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
           bool valid = await _verifyPurchase(purchaseDetails);
           if (valid) {
-            print(purchaseDetails.verificationData.serverVerificationData);
-            print(purchaseDetails.verificationData.source);
-            print(purchaseDetails.status);
-            print(purchaseDetails.purchaseID);
-            print(purchaseDetails.productID);
-            print(purchaseDetails.transactionDate);
             _screenLoaders.functionLoader(context);
-            _choosePlanService.upgrade(context, planid: "3",
+            _choosePlanService.choosePlan(context, planid: "3",
               purchaseToken: purchaseDetails.verificationData
                   .serverVerificationData.toString(),
               transacId: "accompagned_subs",
               type: Platform.isIOS ? "appstore" : "playstore",).then((value) {
-              if (value != null) {
-                _routes.navigator_pushreplacement(context, PresentationMainPage());
-              }
+              _subscriptionServices.cancelSubscription(context, subs_id: subscriptionDetails.currentdata[subscriptionDetails.currentdata.length - 1]["id"].toString()).then((upgrade){
+                if(upgrade != null){
+                  _routes.navigator_pushreplacement(context, PresentationMainPage());
+                }
+              });
             });
           } else {
             _handleInvalidPurchase(purchaseDetails);
@@ -164,7 +157,7 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
     });
     _initialize();
     _homeServices.getSchedule();
-    _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
+    _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
     _feedbackServices.getFeedback().then((value){
       for(int x = 0; x < value.length; x++){
         if(DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(value[x]["created_at"])).inDays <= 7){
@@ -298,20 +291,43 @@ class _PackSoloFeedbackState extends State<PackSoloFeedback> {
                                 SizedBox(
                                   height: 10,
                                 ),
+                                subscriptionDetails.currentdata[0]["stripe_id"].toString().contains("mobile-subs") ? Container() :
                                 ZoomTapAnimation(
                                   end: 0.99,
                                   onTap: ()async{
-                                    setState(() {
-                                      planDetails = coachingStreamServices.currentdata[1];
-                                    });
-                                    if(Platform.isIOS){
-                                      var paymentWrapper = SKPaymentQueueWrapper();
-                                      var transactions = await paymentWrapper.transactions();
-                                      transactions.forEach((transaction) async {
-                                        await paymentWrapper.finishTransaction(transaction);
+                                    if(subscriptionDetails.currentdata[0]["stripe_id"].toString().contains("mobile-subs")){
+                                      showModalBottomSheet(
+                                          backgroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
+                                          isScrollControlled: true,
+                                          context: context, builder: (context){
+                                        return SubscriptionModal();
                                       });
+                                    }else{
+                                      setState((){
+                                        planDetails = coachingStreamServices.currentdata[1];
+                                      });
+                                      if(Platform.isIOS){
+                                        var paymentWrapper = SKPaymentQueueWrapper();
+                                        var transactions = await paymentWrapper.transactions();
+                                        transactions.forEach((transaction) async {
+                                          await paymentWrapper.finishTransaction(transaction);
+                                        });
+                                      }
+                                      _buyProduct(_products[_products.length - 1]);
                                     }
-                                    _buyProduct(_products[_products.length - 1]);
+                                    // setState(() {
+                                    //   planDetails = coachingStreamServices.currentdata[1];
+                                    // });
+                                    // if(Platform.isIOS){
+                                    //   var paymentWrapper = SKPaymentQueueWrapper();
+                                    //   var transactions = await paymentWrapper.transactions();
+                                    //   transactions.forEach((transaction) async {
+                                    //     await paymentWrapper.finishTransaction(transaction);
+                                    //   });
+                                    // }
+                                    // _buyProduct(_products[_products.length - 1]);
                                   },
                                   child: Container(
                                     margin: EdgeInsets.symmetric(horizontal: 20),

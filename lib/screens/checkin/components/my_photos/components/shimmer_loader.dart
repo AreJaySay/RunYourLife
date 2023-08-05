@@ -23,7 +23,7 @@ class _PhotosShimmerLoaderState extends State<PhotosShimmerLoader> {
             height: 30,
           ),
           Padding(
-            padding: EdgeInsets.only(right: 170),
+            padding: EdgeInsets.only(right: 200),
             child: _shimmeringLoader.pageLoader(radius: 10, width: 50, height: 20),
           ),
           SizedBox(

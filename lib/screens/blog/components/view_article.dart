@@ -21,8 +21,8 @@ import 'components/associate.dart';
 
 class ViewArticle extends StatefulWidget {
   final Map articledetails;
-  final bool isRelated;
-  ViewArticle({required this.articledetails, this.isRelated = true});
+  final bool isRelated, isFavorite;
+  ViewArticle({required this.articledetails, this.isRelated = true, this.isFavorite = false});
   @override
   _ViewArticleState createState() => _ViewArticleState();
 }
@@ -46,7 +46,7 @@ class _ViewArticleState extends State<ViewArticle> {
     await FlutterShare.share(
         title: 'Run Your Life Blog',
         text: _details!["title"],
-        linkUrl: 'https://app.runyourlife.fr/blog/${_details!["id"].toString()}/shared_preview',
+        linkUrl: _details!["preview"],
     );
   }
 
@@ -143,7 +143,7 @@ class _ViewArticleState extends State<ViewArticle> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                Text("${DateFormat.yMMMd("fr").format(DateTime.parse(_details!['created_at'].toString()))}  \npar ${_details!['coach']["full_name"].toString()}",style: TextStyle(fontSize: 14,fontFamily: "AppFontStyle",color: Colors.grey),),
+                                Text("${DateFormat.yMMMd("fr_FR").format(DateTime.parse(_details!['created_at'].toString()))}  \npar ${_details!['coach']["full_name"].toString()}",style: TextStyle(fontSize: 14,fontFamily: "AppFontStyle",color: Colors.grey),),
                                 SizedBox(
                                   height: 40,
                                 ),
@@ -221,6 +221,8 @@ class _ViewArticleState extends State<ViewArticle> {
                     ],
                   ),
                 ),
+                widget.isFavorite?
+                Container() :
                 widget.isRelated ?
                 widget.articledetails["relate_art"].isEmpty ?
                 Container() : Column(

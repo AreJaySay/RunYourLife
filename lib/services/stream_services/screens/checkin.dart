@@ -1,6 +1,7 @@
 import 'package:rxdart/rxdart.dart';
 
 class CheckInStreamServices{
+
   // MY PHOTOS
   BehaviorSubject<List> subject = new BehaviorSubject();
   Stream get stream => subject.stream;
@@ -22,17 +23,22 @@ class CheckInStreamServices{
     currentTags.add(data);
   }
 
+  // LOADER
+  BehaviorSubject<bool> loader = new BehaviorSubject();
+  Stream get streamLoader => loader.stream;
+  bool get currentLoader => loader.value;
+
+  updateloader({required bool data}){
+    loader.add(data);
+  }
+
   // MY RESSOURCES
   BehaviorSubject<List> ressources = new BehaviorSubject.seeded([]);
   Stream get ressourceStream => ressources.stream;
-  List get currentStream => ressources.value;
-
-  updateRessources({required List data}){
-    ressources.add(data);
-  }
+  List get currentRessources => ressources.value;
 
   addRessources({required Map data}){
-    currentStream.add(data);
+    currentRessources.add(data);
   }
 
   // LAST UPDATED

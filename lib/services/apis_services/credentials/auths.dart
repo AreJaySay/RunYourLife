@@ -21,6 +21,7 @@ class CredentialsServices{
           headers: _request.defaultHeader,
           body: {"email": email, "password": password, "fcm_token": DeviceModel.devicefcmToken.toString()}).then((respo) async {
         var data = json.decode(respo.body);
+        print(data);
         if (respo.statusCode == 200 || respo.statusCode == 201){
           SharedPreferences prefs = await SharedPreferences.getInstance();
           prefs.setString('email', email.toString());
@@ -34,7 +35,7 @@ class CredentialsServices{
         }
       });
     } catch (e) {
-
+      print(e);
     }
   }
   

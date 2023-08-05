@@ -61,8 +61,9 @@ class _DeletePhotoDialogState extends State<DeletePhotoDialog> {
                         _checkinServices.remove_photo(context, id: widget.details["id"].toString()).whenComplete((){
                           Navigator.of(context).pop(null);
                           Navigator.of(context).pop(null);
+                          Navigator.of(context).pop(null);
                           _routes.navigator_pushreplacement(context, MyPhotos(), transitionType: PageTransitionType.leftToRightWithFade);
-                          _snackbarMessage.snackbarMessage(context, message: "La photo a été supprimée.", is_error: true);
+                          _snackbarMessage.snackbarMessage(context, message: "La photo a été supprimée.");
                         });
                       }),
                       SizedBox(

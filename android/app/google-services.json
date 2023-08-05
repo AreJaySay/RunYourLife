@@ -1,48 +1,49 @@
 {
   "project_info": {
-    "project_number": "367283710387",
-    "project_id": "runyourlife-c4671",
-    "storage_bucket": "runyourlife-c4671.appspot.com"
+    "project_number": "686465129970",
+    "project_id": "runyourlife-38309",
+    "storage_bucket": "runyourlife-38309.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:367283710387:android:766b0971529342cd2d03c6",
+        "mobilesdk_app_id": "1:686465129970:android:dcae1acbb163ffbbeadf6b",
         "android_client_info": {
           "package_name": "com.runyourlife4.runyourlife"
         }
       },
       "oauth_client": [
         {
-          "client_id": "367283710387-k5grvfgf7l8fui7ab0kvps338jgj0hhq.apps.googleusercontent.com",
+          "client_id": "686465129970-r2t4ta9cnct7q0qk2a22j5m94odgn56u.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.runyourlife4.runyourlife",
-            "certificate_hash": "b9bc410a84be4fa1cd512c6a784570ac96c60447"
+            "certificate_hash": "7c70e11b5f6f55f3b13189c451dbf9205c7c4639"
           }
         },
         {
-          "client_id": "367283710387-32nkd3lke3gma4ko0akhu39helopiat1.apps.googleusercontent.com",
+          "client_id": "686465129970-sugbd18g8g6din9h61urebs0jo3qe96i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBpQU-CXgDHcptLwgqrvLHA30YX2kbKiI8"
+          "current_key": "AIzaSyCzZzkhm2LInHflCMZpbzYHkpWWiE6mXNM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "367283710387-32nkd3lke3gma4ko0akhu39helopiat1.apps.googleusercontent.com",
+              "client_id": "686465129970-sugbd18g8g6din9h61urebs0jo3qe96i.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "367283710387-f2gu83bdb0v5vbo9upt8e58qufbiqs28.apps.googleusercontent.com",
+              "client_id": "686465129970-9crhtr9kbthk7uvu87euag4t6fl7p5ts.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ohmconception.runYourLife"
+                "bundle_id": "com.runyourlife4.runyourlife",
+                "app_store_id": "6443908614"
               }
             }
           ]

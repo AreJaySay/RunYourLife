@@ -3,28 +3,28 @@ import 'package:run_your_life/screens/profile/components/parameters.dart';
 class Parameters{
   String weight_unit;
   String height_unit;
-  static String alcohol = "0";
-  static String stress = "0";
-  static String sleep = "0";
-  static String tobacco = "0";
-  static String food_supplement = "0";
-  static String medicine = "0";
-  static String coffee = "0";
-  static String water = "0";
-  static String training = "0";
-  static String menstruation = "0";
-  static String notify1st = "";
-  static String notify2nd = "";
+  static String alcohol = "1";
+  static String stress = "1";
+  static String sleep = "1";
+  static String tobacco = "1";
+  static String food_supplement = "1";
+  static String medicine = "1";
+  static String coffee = "1";
+  static String water = "1";
+  static String training = "1";
+  static String menstruation = "1";
+  static String notify1st = "Me notifier quand le coach m’a envoyé un message";
+  static String notify2nd = "Me rappeler de faire mon journal de bord journalier à";
   static String notify3rd = "";
   static String hour1st = "null";
-  static String hour2nd = "";
+  static String hour2nd = "18:00";
   static String hour3rd = "";
   List trackings = [stress,sleep,tobacco,alcohol,food_supplement,medicine,coffee,water,training,menstruation];
   String id;
 
   Parameters({
-    this.weight_unit = "",
-    this.height_unit = "",
+    this.weight_unit = "kg",
+    this.height_unit = "Cm",
     this.id = "",
   });
 

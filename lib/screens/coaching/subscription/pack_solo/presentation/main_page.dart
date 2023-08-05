@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:run_your_life/functions/fillup_later.dart';
 import 'package:run_your_life/functions/loaders.dart';
 import 'package:run_your_life/models/subscription_models/step1_subs.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/presentation/1st_page.dart';
@@ -12,6 +13,8 @@ import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import '../../../../../../services/other_services/routes.dart';
 import '../../../../../../utils/palettes/app_colors.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
+
+import '../../../../../services/stream_services/subscriptions/subscription_details.dart';
 
 class PackSoloPresentationMainPage extends StatefulWidget {
   @override
@@ -25,6 +28,7 @@ class _PackSoloPresentationMainPageState extends State<PackSoloPresentationMainP
   final Step1Service _step1service = new Step1Service();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final Routes _routes = new Routes();
+  final SignLater _signLater = new SignLater();
 
   @override
   Widget build(BuildContext context) {
@@ -113,12 +117,12 @@ class _PackSoloPresentationMainPageState extends State<PackSoloPresentationMainP
                     children: [
                       _materialbutton.materialButton("SUIVANT", () {
                         setState(() {
-                          step1subs.target_weight = "N/A";
-                          step1subs.isMarried = "N/A";
-                          step1subs.haveChildren = "N/A";
-                          step1subs.shopforHousehold = "N/A";
-                          step1subs.cookforHousehold= "N/A";
                           _screenLoaders.functionLoader(context);
+                          if(subscriptionDetails.currentdata[0]["client_info"] != null){
+                            setState(() {
+                              step1subs.id = subscriptionDetails.currentdata[0]["client_info"]["id"].toString();
+                            });
+                          }
                           _step1service.submit(context).then((value){
                             if(value != null){
                               Navigator.of(context).pop(null);
@@ -142,21 +146,22 @@ class _PackSoloPresentationMainPageState extends State<PackSoloPresentationMainP
                           ),
                         ),
                         onTap: (){
-                          setState((){
-                            step1subs.target_weight = "N/A";
-                            step1subs.isMarried = "N/A";
-                            step1subs.haveChildren = "N/A";
-                            step1subs.shopforHousehold = "N/A";
-                            step1subs.cookforHousehold= "N/A";
-                            _screenLoaders.functionLoader(context);
-                            _step1service.submit(context).then((value){
-                              if(value != null){
-                                _subscriptionServices.getInfos().whenComplete((){
-                                  _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
-                                });
-                              }
-                            });
-                          });
+                          _signLater.signLater(context);
+                          // setState((){
+                          //   step1subs.target_weight = "";
+                          //   step1subs.isMarried = "";
+                          //   step1subs.haveChildren = "";
+                          //   step1subs.shopforHousehold = "";
+                          //   step1subs.cookforHousehold= "";
+                          //   _screenLoaders.functionLoader(context);
+                          //   _step1service.submit(context).then((value){
+                          //     if(value != null){
+                          //       _subscriptionServices.getInfos().whenComplete((){
+                          //         _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
+                          //       });
+                          //     }
+                          //   });
+                          // });
                         },
                       ),
                     ],

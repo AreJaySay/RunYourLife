@@ -1,111 +1,34 @@
 import 'dart:async';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:run_your_life/models/device_model.dart';
 import 'package:run_your_life/screens/welcome.dart';
 import 'package:run_your_life/services/apis_services/credentials/auths.dart';
+import 'package:run_your_life/services/apis_services/screens/checkin.dart';
 import 'package:run_your_life/services/apis_services/screens/profile.dart';
 import 'package:run_your_life/services/other_services/push_notifications.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
-import 'package:run_your_life/services/stream_services/screens/landing.dart';
 import 'package:run_your_life/splashscreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:workmanager/workmanager.dart';
 import 'models/auths_model.dart';
+import 'models/reminder_helper.dart';
 import 'screens/landing.dart';
-
-class ReceivedNotification {
-  ReceivedNotification({
-    required this.id,
-    required this.title,
-    required this.body,
-    required this.payload,
-  });
-
-  final int id;
-  final String? title;
-  final String? body;
-  final String? payload;
-}
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService().init();
+  await NotificationService().requestIOSPermissions();
   await Firebase.initializeApp();
-  await _initialize();
-  Workmanager().initialize(
-    callbackDispatcher,
-    isInDebugMode: false
-  );
   runApp(MyApp());
 }
-
- _initialize()async{
-  const String navigationActionId = 'id_3';
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-  final StreamController<ReceivedNotification> didReceiveLocalNotificationStream =
-  StreamController<ReceivedNotification>.broadcast();
-  final StreamController<String?> selectNotificationStream =
-  StreamController<String?>.broadcast();
-
-  const AndroidInitializationSettings initializationSettingsAndroid =
-  AndroidInitializationSettings('@mipmap/ic_launcher');
-  final DarwinInitializationSettings initializationSettingsDarwin =
-  DarwinInitializationSettings(
-    onDidReceiveLocalNotification:
-        (int id, String? title, String? body, String? payload) async {
-      didReceiveLocalNotificationStream.add(
-        ReceivedNotification(
-          id: id,
-          title: title,
-          body: body,
-          payload: payload,
-        ),
-      );
-    },
-  );
-  final Routes _routes = Routes();
-  final LinuxInitializationSettings initializationSettingsLinux = LinuxInitializationSettings(defaultActionName: 'Open notification');
-  final InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsDarwin,
-      macOS: initializationSettingsDarwin,
-      linux: initializationSettingsLinux);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse notificationResponse) {
-        switch (notificationResponse.notificationResponseType) {
-          case NotificationResponseType.selectedNotification:
-            print("SELECTED NOTIFIC");
-            landingServices.updateIndex(index: 1);
-            selectNotificationStream.add(notificationResponse.payload);
-            break;
-          case NotificationResponseType.selectedNotificationAction:
-            if (notificationResponse.actionId == navigationActionId) {
-              selectNotificationStream.add(notificationResponse.payload);
-            }
-            break;
-        }
-      },
-  );
-}
-
-@pragma('vm:entry-point')
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) {
-    FlutterLocalNotificationsPlugin flip = new FlutterLocalNotificationsPlugin();
-    var android = new AndroidInitializationSettings('@mipmap/ic_launcher');
-    var IOS = new DarwinInitializationSettings();
-    var settings = new InitializationSettings(android: android, iOS: IOS);
-    flip.initialize(settings);
-    return Future.value(true);
-  });
-}
-
 
 class MyApp extends StatelessWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
@@ -113,7 +36,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -143,6 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final PushNotifications _pushNotifications = new PushNotifications();
   final CredentialsServices _credentialsServices = new CredentialsServices();
   final ProfileServices _profileServices = new ProfileServices();
+  List _todos = ['MON POIDS',"MES MESURES","MES PHOTOS","MES OBJECTIFS DE LA SEMAINE"];
 
 
   @override
@@ -150,19 +74,40 @@ class _MyHomePageState extends State<MyHomePage> {
     // TODO: implement initState
     super.initState();
     _pushNotifications.firebasemessaging.getToken().then((value)async{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       setState(() {
         DeviceModel.devicefcmToken = value;
+        print("APNS TOKEN ${value.toString()}");
+        Auth.email = prefs.getString('email');
+        Auth.pass = prefs.getString('password');
+        if(prefs.getString("poid_date") == null && prefs.getString("other_date") == null){
+        }else{
+          for(int x = 0; x < prefs.getStringList('checkin')!.length; x++){
+            if(prefs.getStringList('checkin')![x] == "MON POIDS"){
+              if(DateTime.parse(DateFormat("yyyy-MM-dd").format(DateTime.parse(prefs.getString("poid_date").toString()))).difference(DateTime.parse(DateFormat("yyyy-MM-dd").format(DateTime.now().toUtc().add(Duration(hours: 2))))).inDays == 0){
+                CheckinServices.checkinSelected.remove(prefs.getStringList('checkin')![0]);
+              }else{
+                print("didi");
+                CheckinServices.checkinSelected.add(prefs.getStringList('checkin')![x]);
+              }
+            }else{
+              if(DateTime.now().toUtc().add(Duration(hours: 2)).difference(DateTime.parse(prefs.getString("other_date").toString())).inDays > 0){
+                CheckinServices.checkinSelected.remove(prefs.getStringList('checkin')![0]);
+              }else{
+                print("didi");
+                CheckinServices.checkinSelected.add(prefs.getStringList('checkin')![x]);
+              }
+            }
+          }
+        }
       });
-      print("APNS TOKEN ${value.toString()}");
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      Auth.email = prefs.getString('email');
-      Auth.pass = prefs.getString('password');
       if(Auth.email == null && Auth.pass == null){
         _routes.navigator_pushreplacement(context, Welcome(), transitionType: PageTransitionType.fade);
       }else{
         credentialsServices.login(context, email: Auth.email!, password: Auth.pass!).then((value){
           if(value != null){
             _profileServices.getProfile(clientid: value['client_id'].toString()).then((result){
+              print(result);
               if(result != null){
                 _routes.navigator_pushreplacement(context, Landing());
               }else{

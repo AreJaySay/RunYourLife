@@ -9,7 +9,7 @@ class Objective6thPage extends StatefulWidget {
 }
 
 class _Objective6thPageState extends State<Objective6thPage> {
-  List<String> _reasons = ["Je ne sais pas quoi manger","Je ne connais pas la quantité à manger","Je ne prépare pas mes repas ou ne plannifie pas mes repas","Je n'ai pas le temps de cuisiner","Je bois de l'alcool","J'ai des envies compulsives de manger sucrées et/ou salées","Je mange pour combler un manque émotionnel ou quand je suis stréssé(e)","Je mange même quand je n'ai pas faim","Je ne me sens jamais rasasié(e), j'ai toujours faim, j'ai toujours faim","Je n'ai pas faim","Je me sens coupable/ j'ai honte de manger ","Je n'ai pas accès à de la nourriture saine "];
+  List<String> _reasons = ["Je ne sais pas quoi manger","Je ne connais pas la quantité à manger","Je ne prépare pas mes repas ou ne plannifie pas mes repas","Je n'ai pas le temps de cuisiner","Je bois de l'alcool","J'ai des envies compulsives de manger sucrées et/ou salées","Je mange pour combler un manque émotionnel ou quand je suis stréssé(e)","Je mange même quand je n'ai pas faim","Je ne me sens jamais rasasié(e), j'ai toujours faim","Je n'ai pas faim","Je me sens coupable/ j'ai honte de manger ","Je n'ai pas accès à de la nourriture saine "];
   List<double> _values = [step4subs.what_to_eat,step4subs.how_much_to_eat,step4subs.plan_meals,step4subs.time_to_cook,step4subs.drink_alcohol,step4subs.cravings,step4subs.emotional_void,step4subs.eat_when_not_hungry,step4subs.always_hungry,step4subs.not_hungry,step4subs.guilty_to_eat,step4subs.access_to_healthy_food];
   @override
   Widget build(BuildContext context) {

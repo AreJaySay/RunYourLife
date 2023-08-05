@@ -9,7 +9,6 @@ import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../../widgets/cache_network_image.dart';
 import 'package:intl/intl.dart';
-
 import '../../functions/loaders.dart';
 import '../../models/screens/blog/blog.dart';
 import '../../services/apis_services/screens/blogs.dart';
@@ -18,7 +17,8 @@ import '../../services/stream_services/screens/favorites.dart';
 class Articles extends StatefulWidget {
   final List article;
   final int index,total;
-  Articles({required this.article, required this.index, required this.total});
+  final bool isFavorite;
+  Articles({required this.article, required this.index, required this.total, this.isFavorite = false});
   @override
   _ArticlesState createState() => _ArticlesState();
 }
@@ -157,7 +157,7 @@ class _ArticlesState extends State<Articles> {
                     ),
                   ),
                   onTap: (){
-                    _routes.navigator_push(context, ViewArticle(articledetails: widget.article[index],), transitionType: PageTransitionType.bottomToTop);
+                    _routes.navigator_push(context, ViewArticle(articledetails: widget.article[index],isFavorite: widget.isFavorite,), transitionType: PageTransitionType.bottomToTop);
                   },
                 );
               }

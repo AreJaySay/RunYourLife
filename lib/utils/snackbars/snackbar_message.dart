@@ -4,10 +4,13 @@ import 'package:run_your_life/services/stream_services/screens/landing.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 
 class SnackbarMessage{
+  final GlobalKey flushBarKey = GlobalKey();
+
   Future<void> snackbarMessage(context,{String? message,bool is_error = false,bool isChat = false, bool isReminder = false})async{
     await Flushbar(
       flushbarStyle: FlushbarStyle.FLOATING,
       isDismissible: true,
+      key: flushBarKey,
       messageText: Text(message!,style: TextStyle(color: Colors.white,fontSize: 14.5,fontFamily: "AppFontStyle"),),
       icon: isReminder ?
       Icon(
@@ -29,7 +32,7 @@ class SnackbarMessage{
       IconButton(
         icon: Icon(Icons.close,color: Colors.white,),
         onPressed: (){
-          Navigator.pop(context);
+          (flushBarKey.currentWidget as Flushbar).dismiss();
         },
       ),
     )..show(context);

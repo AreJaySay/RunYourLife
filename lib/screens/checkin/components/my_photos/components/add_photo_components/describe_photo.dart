@@ -39,7 +39,7 @@ class _DescribePhotoState extends State<DescribePhoto> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _checkinServices.getPhotoTags(context);
+    // _checkinServices.getPhotoTags(context);
     Uint8List bytes = File(widget.photo.path).readAsBytesSync();
     photos.image = "data:image/jpeg;base64,"+base64Encode(bytes);
     photos.sharable = "0";

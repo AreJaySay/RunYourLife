@@ -34,6 +34,15 @@ class _SlideWidgetsState extends State<SlideWidgets> {
                   setState(() {
                     if(Tracking.gramslider[x] != 0){
                       Tracking.gramslider[x]--;
+                      if(x == 0){
+                        tracking.protein--;
+                      }else if(x == 1){
+                        tracking.lipid--;
+                      }else if(x == 2){
+                        tracking.carbohydrate--;
+                      }else{
+                        tracking.vegetable--;
+                      }
                     }
                   });
                 },
@@ -46,6 +55,15 @@ class _SlideWidgetsState extends State<SlideWidgets> {
                 onTap: (){
                   setState(() {
                     Tracking.gramslider[x]++;
+                    if(x == 0){
+                      tracking.protein++;
+                    }else if(x == 1){
+                      tracking.lipid++;
+                    }else if(x == 2){
+                      tracking.carbohydrate++;
+                    }else{
+                      tracking.vegetable++;
+                    }
                   });
                 },
               )
@@ -70,7 +88,7 @@ class _SlideWidgetsState extends State<SlideWidgets> {
                   borderRadius: BorderRadius.circular(1000)
               ) :
               BoxDecoration(
-                  color: Tracking.gramslider[x] > int.parse(subscriptionDetails.currentdata[0]["coach_macros"][0][x == 0 ? "protein" : x == 1 ? "lipid" : x == 2 ? "carbohydrate" : "vegetable"].toString()) ? Colors.redAccent : AppColors.appmaincolor,
+                  color: Tracking.gramslider[x] > double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0][x == 0 ? "protein" : x == 1 ? "lipid" : x == 2 ? "carbohydrate" : "vegetable"].toString()) ? Colors.redAccent : AppColors.appmaincolor,
                   borderRadius: BorderRadius.circular(1000)
               ),
               inactiveTrackBar: BoxDecoration(
@@ -85,7 +103,7 @@ class _SlideWidgetsState extends State<SlideWidgets> {
                     borderRadius: BorderRadius.circular(10)
                 ) :
                 BoxDecoration(
-                    color:Tracking.gramslider[x] > int.parse(subscriptionDetails.currentdata[0]["coach_macros"][0][x == 0 ? "protein" : x == 1 ? "lipid" : x == 2 ? "carbohydrate" : "vegetable"].toString()) ? Colors.redAccent : AppColors.appmaincolor,
+                    color:Tracking.gramslider[x] > double.parse(subscriptionDetails.currentdata[0]["coach_macros"][0][x == 0 ? "protein" : x == 1 ? "lipid" : x == 2 ? "carbohydrate" : "vegetable"].toString()) ? Colors.redAccent : AppColors.appmaincolor,
                     borderRadius: BorderRadius.circular(10)
                 ),
                 child: Text(Tracking.gramslider[x].round().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)

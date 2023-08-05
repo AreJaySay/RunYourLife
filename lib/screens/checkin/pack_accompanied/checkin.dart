@@ -16,6 +16,7 @@ import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:run_your_life/widgets/appbar.dart';
 import 'package:run_your_life/widgets/notification_notifier.dart';
 import 'package:run_your_life/widgets/shimmering_loader.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../services/stream_services/subscriptions/subscription_details.dart';
 import '../../../widgets/finish_questioner_popup.dart';
@@ -45,37 +46,39 @@ class _PackAccompaniedCheckInState extends State<PackAccompaniedCheckIn> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _checkinServices.getUpdated().then((value){
-      print("WEIGHT ${value["last_photos"].toString()}");
-      if(value["last_weight"] == "" || value["last_weight"].toString() == "null"){
-      }else{
-        // if(DateTime.parse(DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString()).difference(DateTime.parse(DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(value["last_weight"]["updated_at"]).toUtc().add(Duration(hours: 2))))).inDays < 7){
-          setState(() {
-            CheckinServices.checkinSelected.add('MON POIDS');
-          });
-        // }
-      }
-      if(value["last_photos"].toString() != "null"){
-        // if(DateTime.parse(DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString()).difference(DateTime.parse(DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(value["last_photos"]["updated_at"]).toUtc().add(Duration(hours: 2))))).inDays > 7){
-          setState(() {
-            CheckinServices.checkinSelected.add('MES PHOTOS');
-          });
-        // }
-      }
-      if(value["last_measure"].toString() != "null"){
-        // if(DateTime.parse(DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString()).difference(DateTime.parse(DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(value["last_measure"]["updated_at"]).toUtc().add(Duration(hours: 2))))).inDays > 7){
-          setState(() {
-            CheckinServices.checkinSelected.add('MES MESURES');
-          });
-        // }
-      }
-      if(value["last_weight"].toString() != "null" && value["last_measure"].toString() != "null" && value["last_photos"].toString() != "null"){
-        setState(() {
-          CheckinServices.checkinSelected.add('MES OBJECTIFS DE LA SEMAINE');
-        });
-      }
-    });
+    _checkinServices.getUpdated();
     _checkinServices.subsCheckInStatus();
+    _checkinServices.getPhotoTags(context);
+    // _checkinServices.getUpdated().then((value){
+    //   print("WEIGHT ${value["last_photos"].toString()}");
+    //   if(value["last_weight"] == "" || value["last_weight"].toString() == "null"){
+    //   }else{
+    //     // if(DateTime.parse(DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString()).difference(DateTime.parse(DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.parse(value["last_weight"]["updated_at"]).toUtc().add(Duration(hours: 2))))).inDays < 7){
+    //       setState(() {
+    //         CheckinServices.checkinSelected.add('MON POIDS');
+    //       });
+    //     // }
+    //   }
+    //   if(value["last_photos"].toString() != "null"){
+    //     // if(DateTime.parse(DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString()).difference(DateTime.parse(DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.parse(value["last_photos"]["updated_at"]).toUtc().add(Duration(hours: 2))))).inDays > 7){
+    //       setState(() {
+    //         CheckinServices.checkinSelected.add('MES PHOTOS');
+    //       });
+    //     // }
+    //   }
+    //   if(value["last_measure"].toString() != "null"){
+    //     // if(DateTime.parse(DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString()).difference(DateTime.parse(DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.parse(value["last_measure"]["updated_at"]).toUtc().add(Duration(hours: 2))))).inDays > 7){
+    //       setState(() {
+    //         CheckinServices.checkinSelected.add('MES MESURES');
+    //       });
+    //     // }
+    //   }
+    //   if(value["last_weight"].toString() != "null" && value["last_measure"].toString() != "null" && value["last_photos"].toString() != "null"){
+    //     setState(() {
+    //       CheckinServices.checkinSelected.add('MES OBJECTIFS DE LA SEMAINE');
+    //     });
+    //   }
+    // });
   }
 
   @override
@@ -204,9 +207,7 @@ class _PackAccompaniedCheckInState extends State<PackAccompaniedCheckIn> {
                   }else...{
                     GestureDetector(
                       onTap: (){
-                        if(x != 4){
-                          _routes.navigator_push(context, _pages[x],);
-                        }
+                        _routes.navigator_push(context, _pages[x],);
                       },
                       child: Row(
                         children: [
@@ -230,14 +231,23 @@ class _PackAccompaniedCheckInState extends State<PackAccompaniedCheckIn> {
                                         color: Colors.transparent,
                                         style: BorderStyle.none
                                     ),
-                                    onChanged: (value) {
+                                    onChanged: (value)async{
+                                      SharedPreferences prefs = await SharedPreferences.getInstance();
                                       setState(() {
                                         if(CheckinServices.checkinSelected.contains(_todos[x])){
                                           CheckinServices.checkinSelected.remove(_todos[x]);
+                                          prefs.remove(_todos[x]);
                                         }else{
                                           CheckinServices.checkinSelected.add(_todos[x]);
+                                          prefs.setString(_todos[x], _todos[x]);
                                         }
                                       });
+                                      if(x == 0){
+                                        prefs.setString("poid_date", DateTime.now().toUtc().add(Duration(hours: 2)).next(DateTime.monday).toString());
+                                      }else{
+                                        prefs.setString("other_date", DateTime.now().toUtc().add(Duration(hours: 2)).toString());
+                                      }
+                                      prefs.setStringList("checkin", CheckinServices.checkinSelected.cast<String>());
                                     },
                                   ),
                                 ),
@@ -249,14 +259,23 @@ class _PackAccompaniedCheckInState extends State<PackAccompaniedCheckIn> {
                               ),
                               padding: EdgeInsets.all(3),
                             ),
-                            onTap: (){
+                            onTap: ()async{
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
                               setState(() {
                                 if(CheckinServices.checkinSelected.contains(_todos[x])){
                                   CheckinServices.checkinSelected.remove(_todos[x]);
+                                  prefs.remove(_todos[x]);
                                 }else{
                                   CheckinServices.checkinSelected.add(_todos[x]);
+                                  prefs.setString(_todos[x], _todos[x]);
                                 }
                               });
+                              if(x == 0){
+                                prefs.setString("poid_date", DateTime.now().toUtc().add(Duration(hours: 2)).next(DateTime.monday).toString());
+                              }else{
+                                prefs.setString("other_date", DateTime.now().toUtc().add(Duration(hours: 2)).toString());
+                              }
+                              prefs.setStringList("checkin", CheckinServices.checkinSelected.cast<String>());
                             },
                           ),
                           SizedBox(
@@ -314,12 +333,8 @@ class _PackAccompaniedCheckInState extends State<PackAccompaniedCheckIn> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      DateTime.parse(snapshot.data!["last_weight"]["updated_at"]).difference(DateTime.now().toUtc().add(Duration(hours: 2))).inDays  == 0 ?
-                                      Text("Aujourd'hui ${DateFormat("HH:mm","fr").format(DateTime.parse(snapshot.data!["last_weight"]["updated_at"]))}",style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),) :
-                                      DateTime.parse(snapshot.data!["last_weight"]["updated_at"]).difference(DateTime.now().toUtc().add(Duration(hours: 2))).inDays  == 1 ?
-                                      Text("Hier ${DateFormat("HH:mm","fr").format(DateTime.parse(snapshot.data!["last_weight"]["updated_at"]))}",style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),) :
-                                      Text(DateFormat.yMMMd("fr").format(DateTime.parse(snapshot.data!["last_weight"]["updated_at"])).toUpperCase(),style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),),
-                                      Text("dernière entrée",style: TextStyle(fontSize: 13,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[600],fontFamily: "AppFontStyle"),),
+                                      Text(DateFormat.yMMMd("fr_FR").format(DateTime.parse(DateTime.now().toUtc().add(Duration(hours: 2)).next(DateTime.monday).toString())).toString().toUpperCase(),style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),),
+                                      Text("Mesure à entrer le",style: TextStyle(fontSize: 13,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[600],fontFamily: "AppFontStyle"),),
                                     ],
                                   ) :
                                   x == 1 ?
@@ -330,10 +345,10 @@ class _PackAccompaniedCheckInState extends State<PackAccompaniedCheckIn> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       DateTime.parse(snapshot.data!["last_measure"]["updated_at"]).difference(DateTime.now().toUtc().add(Duration(hours: 2))).inDays  == 0 ?
-                                      Text("Aujourd'hui ${DateFormat("HH:mm","fr").format(DateTime.parse(snapshot.data!["last_measure"]["updated_at"]))}",style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),) :
+                                      Text("Aujourd'hui ${DateFormat("HH:mm","fr_FR").format(DateTime.parse(snapshot.data!["last_measure"]["updated_at"]))}",style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),) :
                                       DateTime.parse(snapshot.data!["last_measure"]["updated_at"]).difference(DateTime.now().toUtc().add(Duration(hours: 2))).inDays  == 1 ?
-                                      Text("Hier ${DateFormat("HH:mm","fr").format(DateTime.parse(snapshot.data!["last_measure"]["updated_at"]))}",style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),) :
-                                      Text(DateFormat.yMMMd("fr").format(DateTime.parse(snapshot.data!["last_measure"]["updated_at"])).toUpperCase(),style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),),
+                                      Text("Hier ${DateFormat("HH:mm","fr_FR").format(DateTime.parse(snapshot.data!["last_measure"]["updated_at"]))}",style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),) :
+                                      Text(DateFormat.yMMMd("fr_FR").format(DateTime.parse(snapshot.data!["last_measure"]["updated_at"])).toUpperCase(),style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),),
                                       Text("dernière entrée",style: TextStyle(fontSize: 13,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[600],fontFamily: "AppFontStyle"),),
                                     ],
                                   ) :
@@ -345,10 +360,10 @@ class _PackAccompaniedCheckInState extends State<PackAccompaniedCheckIn> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       DateTime.parse(snapshot.data!["last_photos"]["updated_at"]).difference(DateTime.now().toUtc().add(Duration(hours: 2))).inDays  == 0 ?
-                                      Text("Aujourd'hui ${DateFormat("HH:mm","fr").format(DateTime.parse(snapshot.data!["last_photos"]["updated_at"]))}",style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),) :
+                                      Text("Aujourd'hui ${DateFormat("HH:mm","fr_FR").format(DateTime.parse(snapshot.data!["last_photos"]["updated_at"]))}",style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),) :
                                       DateTime.parse(snapshot.data!["last_photos"]["updated_at"]).difference(DateTime.now().toUtc().add(Duration(hours: 2))).inDays  == 1 ?
-                                      Text("Hier ${DateFormat("HH:mm","fr").format(DateTime.parse(snapshot.data!["last_photos"]["updated_at"]))}",style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),) :
-                                      Text(DateFormat.yMMMd("fr").format(DateTime.parse(snapshot.data!["last_photos"]["updated_at"])).toUpperCase(),style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),),
+                                      Text("Hier ${DateFormat("HH:mm","fr_FR").format(DateTime.parse(snapshot.data!["last_photos"]["updated_at"]))}",style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),) :
+                                      Text(DateFormat.yMMMd("fr_FR").format(DateTime.parse(snapshot.data!["last_photos"]["updated_at"])).toUpperCase(),style: TextStyle(fontSize: 15,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[800],fontFamily: "AppFontStyle"),),
                                       Text("dernière entrée",style: TextStyle(fontSize: 13,color: CheckinServices.checkinSelected.contains(_todos[x]) ? Colors.white : Colors.grey[600],fontFamily: "AppFontStyle"),),
                                     ],
                                   ) : SizedBox(),

@@ -200,9 +200,9 @@ class _PinMessagesState extends State<PinMessages> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: DateFormat.yMMMd("fr").format(DateTime.parse(snapshot.data![index]["created_at"].toString())) == DateFormat.yMMMd("fr").format(DateTime.now().toUtc().add(Duration(hours: 2))) ?
+                            child: DateFormat.yMMMd("fr_FR").format(DateTime.parse(snapshot.data![index]["created_at"].toString())) == DateFormat.yMMMd("fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))) ?
                             Text("Aujourd'hui, ${DateFormat("HH:mm").format(DateTime.parse(snapshot.data![index]["created_at"].toString()))}",style: TextStyle(fontSize: 11,color: Colors.grey),) :
-                            Text(DateFormat.yMMMd("fr").format(DateTime.parse(snapshot.data![index]["created_at"].toString())),style: TextStyle(fontSize: 11,color: Colors.grey),),
+                            Text(DateFormat.yMMMd("fr_FR").format(DateTime.parse(snapshot.data![index]["created_at"].toString())),style: TextStyle(fontSize: 11,color: Colors.grey),),
                           ),
                           SizedBox(
                             height: 15,

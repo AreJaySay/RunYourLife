@@ -92,7 +92,22 @@ class _CirclesTrackingState extends State<CirclesTracking> {
         ) :
         ZoomTapAnimation(
           onTap:(){
-            _routes.navigator_push(context, MyTracking());
+            if(snapshot.data!["clientTracking"].toString() != "null"){
+              setState(() {
+                tracking.protein = double.parse(snapshot.data!["clientTracking"]["protein"].toString());
+                tracking.lipid = double.parse(snapshot.data!["clientTracking"]["lipid"].toString());
+                tracking.carbohydrate = double.parse(snapshot.data!["clientTracking"]["carbohydrate"].toString());
+                tracking.vegetable = double.parse(snapshot.data!["clientTracking"]["vegetable"].toString());
+              });
+            }else{
+              setState(() {
+                tracking.protein = 0;
+                tracking.lipid = 0;
+                tracking.carbohydrate = 0;
+                tracking.vegetable = 0;
+              });
+            }
+            _routes.navigator_push(context, MyTracking(initialDate: DateTime.parse(HomeTracking.currentDate!),));
           },
           end: 0.99,
           child: Container(

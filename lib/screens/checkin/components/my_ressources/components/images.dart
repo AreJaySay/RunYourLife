@@ -19,14 +19,10 @@ class MyRessourcesImages extends StatefulWidget {
   _MyRessourcesImagesState createState() => _MyRessourcesImagesState();
 }
 
-class _MyRessourcesImagesState extends State<MyRessourcesImages> with WidgetsBindingObserver, ObjectiveService {
+class _MyRessourcesImagesState extends State<MyRessourcesImages>{
   final ObjectiveServices _objectiveServices = new ObjectiveServices();
   final CheckinServices _checkinServices = new CheckinServices();
   final Materialbutton _materialButton = new Materialbutton();
-
-  void init() async {
-    await fetchObjectiveAndPopulate();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +77,7 @@ class _MyRessourcesImagesState extends State<MyRessourcesImages> with WidgetsBin
                               widget.images[index]["status"] = widget.images[index]["status"] == 0 ? 1 : 0;
                             });
                             _checkinServices.docStatus(id: widget.images[index]["id"].toString(), status:widget.images[index]["status"].toString(), isProgrammation: widget.images[index].toString().contains("programmation") ? true : false).then((value){
-                              init();
+
                             });
                           },
                         ),

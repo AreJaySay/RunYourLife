@@ -1,7 +1,7 @@
-import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:horizontal_center_date_picker/datepicker_controller.dart';
+import 'package:horizontal_center_date_picker/horizontal_date_picker.dart';
 import 'package:run_your_life/functions/loaders.dart';
-import 'package:run_your_life/models/auths_model.dart';
 import 'package:run_your_life/models/device_model.dart';
 import 'package:run_your_life/services/apis_services/screens/feedback.dart';
 import 'package:run_your_life/services/apis_services/screens/home.dart';
@@ -30,31 +30,12 @@ class _ScheduleCallState extends State<ScheduleCall> {
   final Materialbutton _materialbutton = new Materialbutton();
   final AppBars _appBars = AppBars();
   final TextEditingController _message = new TextEditingController();
-
-  int selected = DateTime.now().toUtc().add(Duration(hours: 2)).day - DateTime.now().toUtc().add(Duration(hours: 2)).day;
   final FeedbackServices _feedbackServices = new FeedbackServices();
   final HomeServices _homeServices = new HomeServices();
-  FixedExtentScrollController _scrollController =
-  FixedExtentScrollController(initialItem: DateTime.now().toUtc().add(Duration(hours: 2)).day - DateTime.now().toUtc().add(Duration(hours: 2)).day);
+  DatePickerController _datePickerController = DatePickerController();
+  String _dateChecker = DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now()).toString();
   String _selectedhour = "";
   int _selected = 1;
-  DateTime _currentDate = DateTime.now().toUtc().add(Duration(hours: 2));
-  String _dateChecker = DateFormat("yyyy-MM-dd","fr").format(DateTime(DateTime.now().toUtc().add(Duration(hours: 2)).year, DateTime.now().toUtc().add(Duration(hours: 2)).month,DateTime.now().toUtc().add(Duration(hours: 2)).day)).toString();
-  DateTime? _selectedDate = DateTime.now().toUtc().add(Duration(hours: 2));
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        locale: Locale('fr'),
-        initialDate: _currentDate,
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2101));
-    if (picked != null) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -85,90 +66,99 @@ class _ScheduleCallState extends State<ScheduleCall> {
                     image: AssetImage("assets/important_assets/heart_icon.png"),
                   ),
                   ListView(
-                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                    padding: EdgeInsets.symmetric(vertical: 20),
                     children: [
-                      Text("CHOISIS LA MANIÈRE",style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontFamily: "AppFontStyle"),),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text("CHOISIS LA MANIÈRE",style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontFamily: "AppFontStyle"),),
+                      ),
                       SizedBox(
                         height: 20,
                       ),
-                      Text("Un appel de 15 à 30 minutes avec ton coach ou, si tu manques de temps cette semaine, écris un message.",style: TextStyle(fontFamily: "AppFontStyle"),),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Text("Un appel de 15 à 30 minutes avec ton coach ou, si tu manques de temps cette semaine, écris un message.",style: TextStyle(fontFamily: "AppFontStyle"),),
+                      ),
                       SizedBox(
                         height: 20,
                       ),
-                      Row(
-                        children: <Widget>[
-                          ZoomTapAnimation(
-                            end: 0.99,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: _selected == 1 ? AppColors.appmaincolor : Colors.transparent)
-                              ),
-                              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                              child: Row(
-                                children: [
-                                  Transform.scale(
-                                    scale: 1.5,
-                                    child: Radio(
-                                      activeColor: AppColors.appmaincolor,
-                                      value: 1,
-                                      groupValue: _selected,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          _selected = 1;
-                                        });
-                                      },
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          children: <Widget>[
+                            ZoomTapAnimation(
+                              end: 0.99,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: _selected == 1 ? AppColors.appmaincolor : Colors.transparent)
+                                ),
+                                padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                                child: Row(
+                                  children: [
+                                    Transform.scale(
+                                      scale: 1.5,
+                                      child: Radio(
+                                        activeColor: AppColors.appmaincolor,
+                                        value: 1,
+                                        groupValue: _selected,
+                                        onChanged: (val) {
+                                          setState(() {
+                                            _selected = 1;
+                                          });
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  Text('Appel',style: new TextStyle(fontSize: 16,color: Colors.black,fontFamily: "AppFontStyle"),),
-                                ],
+                                    Text('Appel',style: new TextStyle(fontSize: 16,color: Colors.black,fontFamily: "AppFontStyle"),),
+                                  ],
+                                ),
                               ),
+                              onTap: (){
+                                setState(() {
+                                  _selected = 1;
+                                });
+                              },
                             ),
-                            onTap: (){
-                              setState(() {
-                                _selected = 1;
-                              });
-                            },
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          ZoomTapAnimation(
-                            end: 0.99,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: _selected == 2 ? AppColors.appmaincolor : Colors.transparent)
-                              ),
-                              padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
-                              child: Row(
-                                children: [
-                                  Transform.scale(
-                                    scale: 1.5,
-                                    child: Radio(
-                                      activeColor: AppColors.appmaincolor,
-                                      value: 2,
-                                      groupValue: _selected,
-                                      onChanged: (val) {
-                                        setState(() {
-                                          _selected = 2;
-                                        });
-                                      },
+                            SizedBox(
+                              width: 20,
+                            ),
+                            ZoomTapAnimation(
+                              end: 0.99,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(color: _selected == 2 ? AppColors.appmaincolor : Colors.transparent)
+                                ),
+                                padding: EdgeInsets.symmetric(horizontal: 15,vertical: 5),
+                                child: Row(
+                                  children: [
+                                    Transform.scale(
+                                      scale: 1.5,
+                                      child: Radio(
+                                        activeColor: AppColors.appmaincolor,
+                                        value: 2,
+                                        groupValue: _selected,
+                                        onChanged: (val) {
+                                          setState(() {
+                                            _selected = 2;
+                                          });
+                                        },
+                                      ),
                                     ),
-                                  ),
-                                  Text('Message',style: new TextStyle(fontSize: 16,color: Colors.black,fontFamily: "AppFontStyle"),),
-                                ],
+                                    Text('Message',style: new TextStyle(fontSize: 16,color: Colors.black,fontFamily: "AppFontStyle"),),
+                                  ],
+                                ),
                               ),
+                              onTap: (){
+                                setState(() {
+                                  _selected = 2;
+                                });
+                              },
                             ),
-                            onTap: (){
-                              setState(() {
-                                _selected = 2;
-                              });
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       _selected == 2 ?
                       Column(
@@ -178,37 +168,46 @@ class _ScheduleCallState extends State<ScheduleCall> {
                           SizedBox(
                             height: 30,
                           ),
-                          Text("DÉCRIS TA SEMAINE ET ENVOIE LE À TON COACH",style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontFamily: "AppFontStyle"),),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Text("DÉCRIS TA SEMAINE ET ENVOIE LE À TON COACH",style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontFamily: "AppFontStyle"),),
+                          ),
                           SizedBox(
                             height: 10,
                           ),
-                          Text("Décris tout d’abord: les forces de cette semaine, les changements implémentés, tes succès. Puis les difficultés rencontrées face au objectifs et/ou de manière générale. C’est aussi le moment de poser une question à ton coach.",style: new TextStyle(fontSize: 15,fontFamily: "AppFontStyle"),),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Text("Décris tout d’abord: les forces de cette semaine, les changements implémentés, tes succès. Puis les difficultés rencontrées face au objectifs et/ou de manière générale. C’est aussi le moment de poser une question à ton coach.",style: new TextStyle(fontSize: 15,fontFamily: "AppFontStyle"),),
+                          ),
                           SizedBox(
                             height: 20,
                           ),
-                          TextField(
-                            controller: _message,
-                            maxLines: 5,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
-                              border: InputBorder.none,
-                              hintText: "Ton message...",
-                              hintStyle: TextStyle(color: Colors.grey,fontFamily: "AppFontStyle"),
-                              fillColor: Colors.white,
-                              filled: true,
-                              enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey.shade400),
-                                  borderRadius: BorderRadius.circular(10)
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: TextField(
+                              controller: _message,
+                              maxLines: 5,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 15),
+                                border: InputBorder.none,
+                                hintText: "Ton message...",
+                                hintStyle: TextStyle(color: Colors.grey,fontFamily: "AppFontStyle"),
+                                fillColor: Colors.white,
+                                filled: true,
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey.shade400),
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: AppColors.appmaincolor),
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: AppColors.appmaincolor),
-                                  borderRadius: BorderRadius.circular(10)
-                              ),
+                              onChanged: (text){
+                                setState(() {
+                                });
+                              },
                             ),
-                            onChanged: (text){
-                              setState(() {
-                              });
-                            },
                           ),
                         ],
                       ) : Column(
@@ -218,59 +217,30 @@ class _ScheduleCallState extends State<ScheduleCall> {
                           SizedBox(
                             height: 20,
                           ),
-                          Text("CHOISIS LE JOUR ET LE CRÉNEAU QUI T’INTERESSE",style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontFamily: "AppFontStyle"),),
-                          Container(
-                            height: DeviceModel.isMobile ? 130 : 160,
-                            child: RotatedBox(
-                                quarterTurns: -1,
-                                child: ClickableListWheelScrollView(
-                                  scrollController: _scrollController,
-                                  itemHeight: 55,
-                                  itemCount: _selectedDate != null ? int.parse(DateTime(_selectedDate!.year, _selectedDate!.month + 1, 0).day.toString()) - _selectedDate!.day  + 1 : int.parse(DateTime(_currentDate.year, _currentDate.month + 1, 0).day.toString()) - _currentDate.day  + 1,
-                                  child: ListWheelScrollView(
-                                    onSelectedItemChanged: (x) {
-                                      setState(() {
-                                          selected = x;
-                                          _dateChecker = DateFormat("yyyy-MM-dd","fr").format(DateTime(DateTime.now().toUtc().add(Duration(hours: 2)).year, DateTime.now().toUtc().add(Duration(hours: 2)).month,x + DateTime.now().toUtc().add(Duration(hours: 2)).day)).toString();
-                                          print(DateFormat("yyyy-MM-dd","fr").format(DateTime(DateTime.now().toUtc().add(Duration(hours: 2)).year, DateTime.now().toUtc().add(Duration(hours: 2)).month,x + DateTime.now().toUtc().add(Duration(hours: 2)).day)));
-                                          _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr").format(DateTime(DateTime.now().toUtc().add(Duration(hours: 2)).year, DateTime.now().toUtc().add(Duration(hours: 2)).month,x + DateTime.now().toUtc().add(Duration(hours: 2)).day)), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
-                                      });
-                                    },
-                                    controller: _scrollController,
-                                    children: List.generate(
-                                        _selectedDate != null ? int.parse(DateTime(_selectedDate!.year, _selectedDate!.month + 1, 0).day.toString()) - _selectedDate!.day + 1 : int.parse(DateTime(_currentDate.year, _currentDate.month + 1, 0).day.toString()) - _currentDate.day + 1,
-                                            (x) => RotatedBox(
-                                          quarterTurns: 1,
-                                              child: AnimatedContainer(
-                                                  duration: Duration(milliseconds: 400),
-                                                  height: 80 ,
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                      color: x == selected ? AppColors.appmaincolor : Colors.transparent,
-                                                      borderRadius: BorderRadius.circular(10)
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                                    children: [
-                                                      _selectedDate != null ?
-                                                      Text("${DateFormat('EEE',"fr").format(DateTime(_selectedDate!.year, _selectedDate!.month,x + _selectedDate!.day))[0].toUpperCase()}${DateFormat('EEE',"fr").format(DateTime(_selectedDate!.year, _selectedDate!.month,x + _selectedDate!.day,)).substring(1).toLowerCase()}",style: TextStyle(color: x == selected ? Colors.white : Colors.black,fontFamily: "AppFontStyle"),) :
-                                                      Text("${DateFormat('EEE',"fr").format(DateTime(_currentDate.year, _currentDate.month,x + _currentDate.day,))[0].toUpperCase()}${DateFormat('EEE',"fr").format(DateTime(_currentDate.year, _currentDate.month,x + _currentDate.day,)).substring(1).toLowerCase()}",style: TextStyle(color: x == selected ? Colors.white : Colors.black,fontFamily: "AppFontStyle"),),
-                                                      _selectedDate != null ?
-                                                      Text('${x + _selectedDate!.day}',style: TextStyle(fontSize: 30,color: x == selected ? Colors.white : Colors.black,fontWeight: x == selected ? FontWeight.bold : FontWeight.w600,fontFamily: "AppFontStyle"),) :
-                                                      Text('${x + _currentDate.day}',style: TextStyle(fontSize: 30,color: x == selected ? Colors.white : Colors.black,fontWeight: x == selected ? FontWeight.bold : FontWeight.w600,fontFamily: "AppFontStyle"),),
-                                                    ],
-                                                  )),
-                                        )),
-                                    itemExtent: 55,
-                                  ),
-                                )),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Text("CHOISIS LE JOUR ET LE CRÉNEAU QUI T’INTERESSE",style: TextStyle(fontSize: 17,color: AppColors.pinkColor,fontFamily: "AppFontStyle"),),
                           ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: _selectedDate != null ?
-                            Text("${DateFormat('MMMM',"fr").format(_selectedDate!)[0].toUpperCase()}${DateFormat('MMMM',"fr").format(_selectedDate!).substring(1).toLowerCase()}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle",color: AppColors.appmaincolor),) :
-                            Text("${DateFormat('MMMM',"fr").format(_currentDate)[0].toUpperCase()}${DateFormat('MMMM',"fr").format(_currentDate).substring(1).toLowerCase()}",style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle",color: AppColors.appmaincolor),),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          HorizontalDatePickerWidget(
+                            locale: 'fr_FR',
+                            startDate: DateTime(2020,01,01),
+                            endDate:  DateTime(2100,01,01),
+                            selectedDate: DateTime.now(),
+                            widgetWidth: MediaQuery.of(context).size.width,
+                            datePickerController: _datePickerController,
+                            weekDayFontSize: 14,
+                            monthFontSize: 14,
+                            dayFontSize: 22,
+                            selectedColor: AppColors.appmaincolor,
+                            onValueSelected: (date)async{
+                              setState(() {
+                                _dateChecker = DateFormat("yyyy-MM-dd","fr_FR").format(date).toString();
+                                _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr_FR").format(date), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
+                              });
+                            },
                           ),
                           SizedBox(
                             height: 10,
@@ -279,13 +249,13 @@ class _ScheduleCallState extends State<ScheduleCall> {
                           TimeShimmerLoader() :
                           snapshot.data.toString() == "{}"?
                           Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: NoDataFound(firstString: "PAS DE ", secondString: "créneaux disponible...".toUpperCase(), thirdString: "l’entraîneur n’a plus de disponibilités à cette date")) :
+                            padding: EdgeInsets.only(top: 20,left: 20,right: 20),
+                            child: NoDataFound(firstString: "PAS DE ", secondString: "créneaux disponibles...".toUpperCase(), thirdString: "l’entraîneur n’a plus de disponibilités à cette date")) :
                           snapshot.data!["time"].isEmpty ? Padding(
-                            padding: EdgeInsets.only(top: 20),
-                            child: NoDataFound(firstString: "PAS DE ", secondString: "créneaux disponible...".toUpperCase(), thirdString: "l’entraîneur n’a plus de disponibilités à cette date")) :
+                            padding: EdgeInsets.only(top: 20,left: 20,right: 20),
+                            child: NoDataFound(firstString: "PAS DE ", secondString: "créneaux disponibles...".toUpperCase(), thirdString: "l’entraîneur n’a plus de disponibilités à cette date")) :
                           GridView.count(
-                            padding: EdgeInsets.only(left: 5,bottom: 10,top: 20),
+                            padding: EdgeInsets.all(20),
                             primary: false,
                             shrinkWrap: true,
                             crossAxisSpacing: 12,
@@ -388,7 +358,7 @@ class _ScheduleCallState extends State<ScheduleCall> {
                                   _screenLoaders.functionLoader(context);
                                   _feedbackServices.submit(date_id: snapshot.data!["id_date"].toString(), time: _selectedhour).then((value){
                                     if(value != null){
-                                      _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
+                                      _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
                                       _homeServices.getSchedule().whenComplete((){
                                         Navigator.of(context).pop(null);
                                         Navigator.of(context).pop(null);

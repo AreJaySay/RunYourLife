@@ -11,6 +11,7 @@ import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:run_your_life/widgets/appbar.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
 import 'package:run_your_life/widgets/textfields.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 
@@ -28,6 +29,7 @@ class _MyMeasurementsState extends State<MyMeasurements> {
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final CheckinServices _checkinServices = new CheckinServices();
   final Materialbutton _materialbutton = new Materialbutton();
+  bool _isLoading = false;
   List _bodyparts = ["Cou","Epaules","Poitrine","Haut du bras","Taille","Hanches","Haut de cuisse","Mollet"];
   List<TextEditingController> _controllers = [TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController()];
 
@@ -35,6 +37,7 @@ class _MyMeasurementsState extends State<MyMeasurements> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _isLoading = true;
     _checkinServices.getUpdated().then((value){
       if(value != null){
         setState(() {
@@ -47,6 +50,14 @@ class _MyMeasurementsState extends State<MyMeasurements> {
             _controllers[5].text = value["last_measure"]["hips"].toString() == "null" ? "" : value["last_measure"]["hips"].toString();
             _controllers[6].text = value["last_measure"]["upper_thigh"].toString() == "null" ? "" : value["last_measure"]["upper_thigh"].toString();
             _controllers[7].text = value["last_measure"]["calf"].toString() == "null" ? "" : value["last_measure"]["calf"].toString();
+            measures.neck =  value["last_measure"]["neck"].toString() == "null" ? "" : value["last_measure"]["neck"].toString();;
+            measures.shoulder = value["last_measure"]["shoulder"].toString() == "null" ? "" : value["last_measure"]["shoulder"].toString();
+            measures.chest = value["last_measure"]["chest"].toString() == "null" ? "" : value["last_measure"]["chest"].toString();
+            measures.upper_arm = value["last_measure"]["upper_arm"].toString() == "null" ? "" : value["last_measure"]["upper_arm"].toString();
+            measures.waist = value["last_measure"]["waist"].toString() == "null" ? "" : value["last_measure"]["waist"].toString();
+            measures.hips = value["last_measure"]["hips"].toString() == "null" ? "" : value["last_measure"]["hips"].toString();
+            measures.upper_thigh = value["last_measure"]["upper_thigh"].toString() == "null" ? "" : value["last_measure"]["upper_thigh"].toString();
+            measures.calf = value["last_measure"]["calf"].toString() == "null" ? "" : value["last_measure"]["calf"].toString();
           }else{
             _controllers[0].text = "";
             _controllers[1].text = "";
@@ -57,6 +68,7 @@ class _MyMeasurementsState extends State<MyMeasurements> {
             _controllers[6].text = "";
             _controllers[7].text = "";
           }
+          _isLoading = false;
         });
       }
     });
@@ -77,6 +89,12 @@ class _MyMeasurementsState extends State<MyMeasurements> {
               fit: BoxFit.cover,
               image: AssetImage("assets/important_assets/heart_icon.png"),
             ),
+            _isLoading?
+            Center(child: SizedBox(
+              width: 40,
+              height: 40,
+              child: CircularProgressIndicator(color: AppColors.appmaincolor,),
+            )) :
             ListView(
               padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
               children: [
@@ -132,7 +150,7 @@ class _MyMeasurementsState extends State<MyMeasurements> {
                         measures.calf = text;
                       }
                     });
-                  },inputType: TextInputType.number),
+                  },inputType: TextInputType.numberWithOptions(decimal: true)),
                   SizedBox(
                     height: 15,
                   )
@@ -167,9 +185,12 @@ class _MyMeasurementsState extends State<MyMeasurements> {
                       _screenLoaders.functionLoader(context);
                       _checkinServices.submit_measures(context).then((res){
                         if(res != null){
-                          _checkinServices.getUpdated().then((value){
+                          _checkinServices.getUpdated().then((value)async{
                             if(value != null){
                               setState(() {
+                                if(!CheckinServices.checkinSelected.toString().contains("MES MESURES")){
+                                  CheckinServices.checkinSelected.add("MES MESURES");
+                                }
                                 if(value["last_measure"] != null){
                                   _controllers[0].text = value["last_measure"]["neck"].toString();
                                   _controllers[1].text = value["last_measure"]["shoulder"].toString();
@@ -191,6 +212,9 @@ class _MyMeasurementsState extends State<MyMeasurements> {
                                 }
                               });
                             }
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            prefs.setString("other_date", DateTime.now().toUtc().add(Duration(hours: 2)).toString());
+                            prefs.setStringList("checkin", CheckinServices.checkinSelected.cast<String>());
                             Navigator.of(context).pop(null);
                             Navigator.of(context).pop(null);
                             print("MEASURES ${value.toString()}");
@@ -225,8 +249,9 @@ class _MyMeasurementsState extends State<MyMeasurements> {
               _screenLoaders.functionLoader(context);
               _checkinServices.submit_measures(context).then((value){
                 if(value != null){
-                  _checkinServices.getUpdated().whenComplete((){
+                  _checkinServices.getUpdated().whenComplete(()async{
                     setState(() {
+                      print("SELECTED"+CheckinServices.checkinSelected.toString());
                       if(!CheckinServices.checkinSelected.toString().contains("MES MESURES")){
                         CheckinServices.checkinSelected.add("MES MESURES");
                       }
@@ -250,6 +275,9 @@ class _MyMeasurementsState extends State<MyMeasurements> {
                         _controllers[7].text = "";
                       }
                     });
+                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                    prefs.setString("other_date", DateTime.now().toUtc().add(Duration(hours: 2)).toString());
+                    prefs.setStringList("checkin", CheckinServices.checkinSelected.cast<String>());
                     Navigator.of(context).pop(null);
                     Navigator.of(context).pop(null);
                     print("MEASURES ${value.toString()}");

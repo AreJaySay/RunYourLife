@@ -27,55 +27,55 @@ class _Eating8thPageState extends State<Eating8thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Combien de café bois-tu par jour ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
-        SizedBox(
-          height: 20,
-        ),
-        Text("0 à 10",style: TextStyle(fontFamily: "AppFontStyle"),),
-        SizedBox(
-          height: 10,
-        ),
-        Container(
-          height: 70,
-          child: FlutterSlider(
-            values: [homeTracking.coffee],
-            max: 10,
-            min: 0,
-            handlerWidth: 65,
-            handlerHeight: 45,
-            tooltip: FlutterSliderTooltip(
-                alwaysShowTooltip: false,
-                disabled: true
-            ),
-            trackBar: FlutterSliderTrackBar(
-              inactiveTrackBarHeight: 10,
-              activeTrackBarHeight: 10,
-              activeTrackBar: BoxDecoration(
-                  color: AppColors.appmaincolor,
-                  borderRadius: BorderRadius.circular(1000)
-              ),
-              inactiveTrackBar: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(1000)
-              ),
-            ),
-            handler: FlutterSliderHandler(
-                decoration: BoxDecoration(
-                    color: AppColors.appmaincolor,
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: Text(homeTracking.coffee.floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
-            ),
-            onDragging: (handlerIndex, lowerValue, upperValue) {
-              setState(() {
-                homeTracking.coffee = lowerValue;
-              });
-            },
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
+        // Text("Combien de café bois-tu par jour ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        // SizedBox(
+        //   height: 20,
+        // ),
+        // Text("0 à 10",style: TextStyle(fontFamily: "AppFontStyle"),),
+        // SizedBox(
+        //   height: 10,
+        // ),
+        // Container(
+        //   height: 70,
+        //   child: FlutterSlider(
+        //     values: [homeTracking.coffee],
+        //     max: 10,
+        //     min: 0,
+        //     handlerWidth: 65,
+        //     handlerHeight: 45,
+        //     tooltip: FlutterSliderTooltip(
+        //         alwaysShowTooltip: false,
+        //         disabled: true
+        //     ),
+        //     trackBar: FlutterSliderTrackBar(
+        //       inactiveTrackBarHeight: 10,
+        //       activeTrackBarHeight: 10,
+        //       activeTrackBar: BoxDecoration(
+        //           color: AppColors.appmaincolor,
+        //           borderRadius: BorderRadius.circular(1000)
+        //       ),
+        //       inactiveTrackBar: BoxDecoration(
+        //           color: Colors.grey[200],
+        //           borderRadius: BorderRadius.circular(1000)
+        //       ),
+        //     ),
+        //     handler: FlutterSliderHandler(
+        //         decoration: BoxDecoration(
+        //             color: AppColors.appmaincolor,
+        //             borderRadius: BorderRadius.circular(10)
+        //         ),
+        //         child: Text(homeTracking.coffee.floor().toString(),style: TextStyle(color: Colors.white,fontSize: 17,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),)
+        //     ),
+        //     onDragging: (handlerIndex, lowerValue, upperValue) {
+        //       setState(() {
+        //         homeTracking.coffee = lowerValue;
+        //       });
+        //     },
+        //   ),
+        // ),
+        // SizedBox(
+        //   height: 20,
+        // ),
         Text("Combien de café bois-tu par jour ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 10,

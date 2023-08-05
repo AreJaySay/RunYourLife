@@ -7,6 +7,7 @@ import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:run_your_life/widgets/appbar.dart';
 
+import '../../../../services/stream_services/screens/checkin.dart';
 import '../my_ressources/my_ressources.dart';
 import 'components/objectives.dart';
 
@@ -42,6 +43,7 @@ class _MyObjectivesState extends State<MyObjectives> with TickerProviderStateMix
               height: 5,
             ),
             TabBar(
+
               indicatorColor: AppColors.appmaincolor,
               labelColor: Colors.black,
               unselectedLabelColor: Colors.grey,

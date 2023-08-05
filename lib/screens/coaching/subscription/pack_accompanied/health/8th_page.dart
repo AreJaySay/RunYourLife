@@ -10,7 +10,7 @@ class Health8thPage extends StatefulWidget {
 }
 
 class _Health8thPageState extends State<Health8thPage> {
-  final TextEditingController _cycle = new TextEditingController()..text=step3subs.cycle_average == "Non" || step3subs.cycle_average == "none" || step3subs.cycle_average == "N/A" ? "" : step3subs.cycle_average;
+  final TextEditingController _cycle = new TextEditingController()..text=step3subs.cycle_average == "Non" || step3subs.cycle_average == "none" || step3subs.cycle_average == "" ? "" : step3subs.cycle_average;
 
   @override
   void initState() {

@@ -14,7 +14,7 @@ class Eating1stPage extends StatefulWidget {
 
 class _Eating1stPageState extends State<Eating1stPage> {
   TextEditingController _mealday = new TextEditingController()..text=step2subs.meals_per_day;
-  List<String> _preferences = ["Végétarienne","Complétement baseé sur les plantes/Vegan","Méditerranéenne","Paleo","Cétogène","Non/Aucun"];
+  List<String> _preferences = ["Végétarienne","Complètement basée sur les plantes/Vegan","Méditerranéenne","Paleo","Cétogène","Non/Aucune"];
 
   @override
   void dispose() {

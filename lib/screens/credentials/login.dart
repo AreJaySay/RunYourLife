@@ -146,6 +146,7 @@ class _LoginState extends State<Login> {
                   }else{
                     _screenLoaders.functionLoader(context);
                     credentialsServices.login(context, email: _email.text, password: _pass.text,).then((value){
+                      print(DeviceModel.devicefcmToken.toString());
                       if(value != null){
                         _profileServices.getProfile(clientid: value['client_id'].toString()).then((result){
                           if(result != null){

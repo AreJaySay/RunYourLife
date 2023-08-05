@@ -36,6 +36,7 @@ class BlogServices{
     }
   }
 
+  // GET CATEORIES
   Future blogCategory({required String category_id})async{
     try {
       return await http.get(Uri.parse("${_networkUtility.url}/user/api/blogs?category_id=${category_id}"),
@@ -45,11 +46,33 @@ class BlogServices{
         },
       ).then((respo) async {
         var data = json.decode(respo.body);
-        print("BLOG BY CATEGORY ${data.toString()}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           blogStreamServices.updateBlogCategory(data: data["data"]);
         }else{
           blogStreamServices.updateBlogCategory(data: []);
+        }
+        return data["data"];
+      });
+    } catch (e) {
+
+    }
+  }
+
+  // GET BLOGS BY CATEGORIES
+  Future getBlogCategory({required String category_id})async{
+    try {
+      return await http.get(Uri.parse("${_networkUtility.url}/user/api/blogs?category=${category_id}"),
+        headers: {
+          HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
+          "Accept": "application/json"
+        },
+      ).then((respo) async {
+        var data = json.decode(respo.body);
+        print("BLOG BY CATEGORY ${data.toString()}");
+        if (respo.statusCode == 200 || respo.statusCode == 201){
+          return data["data"];
+        }else{
+          return null;
         }
       });
     } catch (e) {
@@ -74,7 +97,7 @@ class BlogServices{
         }
       });
     } catch (e) {
-      
+      print(e);
     }
   }
 

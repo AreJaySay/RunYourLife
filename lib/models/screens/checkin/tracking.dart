@@ -18,7 +18,7 @@ class Tracking{
   });
 
   Map<String, dynamic> toMap() => {
-    "type": subscriptionDetails.currentdata[0]["coach_macros"].isEmpty ? "portions" : subscriptionDetails.currentdata[0]["coach_macros"][0]["type"].toString(),
+    "type": subscriptionDetails.currentdata[0]["coach_macros"].toString() == "[]" ? "grams" : subscriptionDetails.currentdata[0]["coach_macros"][0]["type"].toString(),
     "carbohydrate": carbohydrate.toString(),
     "vegetable": vegetable.toString(),
     "lipid": lipid.toString(),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:run_your_life/models/device_model.dart';
 import 'package:run_your_life/screens/coaching/page_loader/shimmer.dart';
 import 'package:run_your_life/services/apis_services/screens/coaching.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
@@ -14,10 +15,7 @@ import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../functions/loaders.dart';
 import '../../services/apis_services/subscriptions/choose_plan.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
-import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
-
 import 'components/view_details.dart';
-import 'in_app_purchase/consumable_store.dart';
 
 class Coaching extends StatefulWidget {
   @override
@@ -105,7 +103,7 @@ class _CoachingState extends State<Coaching> {
       stream: coachingStreamServices.subject,
       builder: (context, snapshot) {
         return Scaffold(
-          appBar:  _appBars.preferredSize(height: 60,logowidth: 90),
+          appBar:  _appBars.preferredSize(height: DeviceModel.isMobile ? 60 : 80,logowidth: DeviceModel.isMobile ? 90 : 110),
           body: Container(
             width: double.infinity,
             height: double.infinity,
@@ -116,18 +114,19 @@ class _CoachingState extends State<Coaching> {
               children: [
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Text("LES ABONNEMENTS",style: TextStyle(color: AppColors.appmaincolor,fontSize: 22,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),),
+                  child: Text("LES ABONNEMENTS",style: TextStyle(color: AppColors.appmaincolor,fontSize: DeviceModel.isMobile ? 22 : 26,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),),
                 ),
                 SizedBox(
                   height: 23,
                 ),
                 for(int x = 0; x < _products.length; x++)...{
-                  if(_products[x].id.toString() != "accompagned_subs")...{
-                    ZoomTapAnimation(end: 0.99,
+                  if(_products[x].id.toString() != "macroSolo_subs" && _products[x].id.toString() != "macro_solo_subs")...{
+                    ZoomTapAnimation(
+                      end: 0.99,
                       child: Container(
                         margin: EdgeInsets.only(left: 20,right: 20,bottom: 30),
                         width: double.infinity,
-                        height: 200,
+                        height: DeviceModel.isMobile ? 400 : 250,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           gradient: AppGradientColors.gradient,
@@ -160,18 +159,22 @@ class _CoachingState extends State<Coaching> {
                                     alignment: Alignment.centerLeft,
                                     child: Row(
                                       children: [
-                                        Text("PACK",style: TextStyle(color: Colors.white,fontSize: 17.5,fontFamily: "AppFontStyle"),),
-                                        Expanded(child: Text(" ${snapshot.data![0]["name"]}".toString().toUpperCase(),style: TextStyle(color: Colors.white,fontSize: 17.5,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"))),
+                                        Text("PACK",style: TextStyle(color: Colors.white,fontSize: DeviceModel.isMobile ? 17.5 : 23,fontFamily: "AppFontStyle"),),
+                                        Expanded(child: Text(" ${snapshot.data![0]["name"]}".toString().toUpperCase(),style: TextStyle(color: Colors.white,fontSize: DeviceModel.isMobile ? 17.5 : 23,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"))),
                                       ],
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                     ),
                                     padding: EdgeInsets.only(left: 20,right: 20,top: 30)
                                 ),
-                                Container(
+                                Padding(
                                   padding: EdgeInsets.only(left: 20,right: 20,top: 15),
-                                  child: Text(snapshot.data![0]["description"].toString().replaceAll("Ressources", "\nRessources").replaceAll("Feedback", "\nFeedback").replaceAll("Appel", "\nAppel"),style: TextStyle(fontSize: 15,color: Colors.white,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+                                  child: Text("Questionnaire d’entrée personnalisé \nCalcul des besoins en macro-nutriments par son coach \nProgression individualisée grâce : \n   • À un appel hebdomadaire avec son coach \n   • À des ressources individualisées chaque semaine \n    • À des objectifs individualisés par son coach \n    • À échange illimité avec son coach (chat : de 9h à 18h) \nSuivi de ses données au jour le jour via l’application \nSuivi de l’évolution de sa courbe de poids et mesures",style: TextStyle(color: Colors.white,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
                                 ),
+                                // Container(
+                                //   padding: EdgeInsets.only(left: 20,right: 20,top: 15),
+                                //   child: Text(snapshot.data![0]["description"].toString().replaceAll("Ressources", "\nRessources").replaceAll("Feedback", "\nFeedback").replaceAll("Appel", "\nAppel"),style: TextStyle(fontSize: DeviceModel.isMobile ? 15 : 18,color: Colors.white,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+                                // ),
                                 Spacer(),
                                 Align(
                                   child: Container(
@@ -185,10 +188,10 @@ class _CoachingState extends State<Coaching> {
                                     child: snapshot.data![0]["prices"].toString() == "[]" ? Container() :
                                     RichText(
                                       text: TextSpan(
-                                        text: _products[0].price.toString(),
-                                        style: TextStyle(color: AppColors.appmaincolor,fontSize: 19,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),
+                                        text: _products[x].price.toString(),
+                                        style: TextStyle(color: AppColors.appmaincolor,fontSize: DeviceModel.isMobile ? 19 : 23,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),
                                         children: <TextSpan>[
-                                          TextSpan(text: '/mois', style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 14)),
+                                          TextSpan(text: '/mois', style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: DeviceModel.isMobile ? 14 : 19)),
                                         ],
                                       ),
                                     ),
@@ -202,7 +205,7 @@ class _CoachingState extends State<Coaching> {
                         ),
                       ),
                       onTap: ()async{
-                        _routes.navigator_push(context, ViewCoachingDetails(planDetails: snapshot.data![0],productDetails: _products[0],price: _products[0].price.toString(),));
+                        _routes.navigator_push(context, ViewCoachingDetails(planDetails: snapshot.data![0],productDetails: _products[x],price: _products[x].price.toString(),));
                       },
                     ),
                   }else...{
@@ -210,7 +213,7 @@ class _CoachingState extends State<Coaching> {
                       child: Container(
                         margin: EdgeInsets.only(left: 20,right: 20,bottom: 25),
                         width: double.infinity,
-                        height: 200,
+                        height: 370,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
@@ -233,19 +236,23 @@ class _CoachingState extends State<Coaching> {
                                 alignment: Alignment.centerLeft,
                                 child: Row(
                                   children: [
-                                    Text("PACK",style: TextStyle(color: AppColors.pinkColor,fontSize: 17.5,fontFamily: "AppFontStyle"),),
-                                    Expanded(child: Text(" ${snapshot.data![1]["name"]}".toString().toUpperCase(),style: TextStyle(color: AppColors.pinkColor,fontSize: 17.5,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,)),
+                                    Text("PACK",style: TextStyle(color: AppColors.pinkColor,fontSize: DeviceModel.isMobile ? 17.5 : 23,fontFamily: "AppFontStyle"),),
+                                    Expanded(child: Text(" ${snapshot.data![1]["name"]}".toString().toUpperCase(),style: TextStyle(color: AppColors.pinkColor,fontSize: DeviceModel.isMobile ? 17.5 : 23,fontWeight: FontWeight.bold,fontFamily: "AppFontStyle"),maxLines: 2,overflow: TextOverflow.ellipsis,)),
                                   ],
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                 ),
                                 padding: EdgeInsets.only(left: 20,right: 20,top: 30)
                             ),
-                            Container(
-                              width: double.infinity,
+                            Padding(
                               padding: EdgeInsets.only(left: 20,right: 20,top: 15),
-                              child: Text(snapshot.data![1]["description"].toString().replaceAll("Accès", "\nAccès"),maxLines: 3,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: 15,color: Colors.black,fontFamily: "AppFontStyle"),),
+                              child: Text("Questionnaire d’entrée personnalisé \nCalcul des besoins en macro-nutriments par un coach \nProgression autonome grâce : \n   • À un parcours éducatif automatisé quotidien \n   • À de nouveaux objectifs automatisés chaque jour \nSuivi de ses données au jour le jour via l’application \nSuivi de l’évolution de sa courbe de poids et mesures \nAppel groupé des abonnés « Macro solos » mensuel d’une heure",style: TextStyle(color: Colors.black,fontFamily: "AppFontStyle"),),
                             ),
+                            // Container(
+                            //   width: double.infinity,
+                            //   padding: EdgeInsets.only(left: 20,right: 20,top: 15),
+                            //   child: Text(snapshot.data![1]["description"].toString().replaceAll("Accès", "\nAccès"),maxLines: 3,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: DeviceModel.isMobile ? 15 : 18,color: Colors.black,fontFamily: "AppFontStyle"),),
+                            // ),
                             Spacer(),
                             Align(
                               child: Container(
@@ -259,10 +266,10 @@ class _CoachingState extends State<Coaching> {
                                 child: snapshot.data![1]["prices"].toString() == "[]" ? Container() :
                                 RichText(
                                   text: TextSpan(
-                                    text: _products[1].price,
-                                    style: TextStyle(color: Colors.white,fontSize: 19,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),
+                                    text: _products[x].price,
+                                    style: TextStyle(color: Colors.white,fontSize: DeviceModel.isMobile ? 19 : 23,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),
                                     children: <TextSpan>[
-                                      TextSpan(text: '/mois', style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 14)),
+                                      TextSpan(text: '/mois', style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: DeviceModel.isMobile ? 14 : 19)),
                                     ],
                                   ),
                                 ),
@@ -274,7 +281,7 @@ class _CoachingState extends State<Coaching> {
                         ),
                       ),
                       onTap: ()async{
-                        _routes.navigator_push(context, ViewCoachingDetails(planDetails: snapshot.data![1]!, productDetails: _products[1],price: _products[1].price.toString(),));
+                        _routes.navigator_push(context, ViewCoachingDetails(planDetails: snapshot.data![1]!, productDetails: _products[x],price: _products[x].price.toString(),));
                       },
                     ),
                   }
@@ -286,16 +293,16 @@ class _CoachingState extends State<Coaching> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Pas de minimum d'engagement",style: TextStyle(color: Colors.grey[500],fontFamily: "AppFontStyle",fontSize: 15),),
+                      Text("Pas de minimum d'engagement",style: TextStyle(color: Colors.grey[500],fontFamily: "AppFontStyle",fontSize: DeviceModel.isMobile ? 15 : 20),),
                       SizedBox(
                         height: 5,
                       ),
-                      Text("Prix préferentiel via le site internet",style: TextStyle(color: Colors.grey[500],fontFamily: "AppFontStyle",fontSize: 15),),
+                      Text("Prix préferentiel via le site internet",style: TextStyle(color: Colors.grey[500],fontFamily: "AppFontStyle",fontSize: DeviceModel.isMobile ? 15 : 20),),
                     ],
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 20,
                 )
               ],
             ),

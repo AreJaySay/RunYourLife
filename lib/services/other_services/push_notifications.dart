@@ -33,7 +33,7 @@ class PushNotifications{
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final ParameterServices _parameterServices = new ParameterServices();
 
-  final String serverToken = 'AAAAVYPQqbM:APA91bEFYu0SIzRqgrVr6W38X2WM2zKycMBc1PNMXmaTKCLBuVfQp0AaHIL_N1JGECnH1cVfa_6bv_-POYp2FacfNHttHaqYJeI-b9T3sWVpPI_6yE8IChYT7FORP6iEqIdg_ZBybrnO';
+  final String serverToken = 'AAAAn9SCnfI:APA91bEgnXZLvAhg_sFBYx9ldJkCW4dk61-T-l8zLyPtLIZI4qYS0Veb2FWSpyDFRBHqiSLTDYuHGp3y1GGrr-Vo0-NMXXaV4o2bmcb9WR9lsfvAwK8rZjrWFtjO9zTtfnZf4hAgZJkv';
   FirebaseMessaging firebasemessaging = FirebaseMessaging.instance;
 
   Future<void> initialize(context)async{
@@ -60,8 +60,8 @@ class PushNotifications{
       FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
-        print(notification!.title.toString());
-        print(notification.body.toString());
+        print("TITLE"+notification!.title.toString());
+        print("BODY"+notification.body.toString());
         if(notification.title!.contains("New Message")){
           _messageServices.getMessages();
           notificationNotifyStreamServices.update(data: true);
@@ -92,11 +92,14 @@ class PushNotifications{
             }
           });
            notificationNotifyStreamServices.updateNotic(data: true);
-          // _message.notificSnackbar(context, message: notification.body.toString());
+          _message.notificSnackbar(context, message: notification.body.toString());
+        }else if(notification.title!.contains("RAPPEL")){
+          notificationNotifyStreamServices.updateNotic(data: true);
+          _message.notificSnackbar(context, message: notification.body!);
         }else{
           _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString(), relation: "activeSubscription");
           _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString(), relation: "notifications");
-          _checkinServices.getTracking(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(notification.body!)));
+          _checkinServices.getTracking(date: DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.parse(notification.body!)));
           _homeServices.getSchedule();
           _coachingServices.getplans();
           _subscriptionServices.getInfos();
@@ -104,7 +107,7 @@ class PushNotifications{
           _homeServices.getWeights();
           _homeServices.getHeights();
           notificationNotifyStreamServices.updateNotic(data: true);
-          // _message.notificSnackbar(context, message: "Un nouveau fichier a été envoyé");
+          _message.notificSnackbar(context, message: "Un nouveau fichier a été envoyé");
         }
       });
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async{
@@ -115,20 +118,21 @@ class PushNotifications{
             _routes.navigator_pushreplacement(context, Messages());
             notificationNotifyStreamServices.update(data: false);
           });
-        }else{
-          _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString());
-          _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString(), relation: "notifications").whenComplete((){
-            _routes.navigator_pushreplacement(context, Notifications());
-            _homeServices.getSchedule();
-            _coachingServices.getplans();
-            _subscriptionServices.getInfos();
-            _parameterServices.getSetting();
-            _homeServices.getWeights();
-            _homeServices.getHeights();
-            notificationNotifyStreamServices.updateNotic(data: true);
-          });
-          _checkinServices.getTracking(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(notification.body!)));
         }
+        // else{
+        //   _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString());
+        //   _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString(), relation: "notifications").whenComplete((){
+        //     _routes.navigator_pushreplacement(context, Notifications());
+        //     _homeServices.getSchedule();
+        //     _coachingServices.getplans();
+        //     _subscriptionServices.getInfos();
+        //     _parameterServices.getSetting();
+        //     _homeServices.getWeights();
+        //     _homeServices.getHeights();
+        //     notificationNotifyStreamServices.updateNotic(data: true);
+        //   });
+        //   // _checkinServices.getTracking(date: DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.parse(notification.body!)));
+        // }
       });
       FirebaseMessaging.onBackgroundMessage((RemoteMessage message) async{
         RemoteNotification? notification = message.notification;

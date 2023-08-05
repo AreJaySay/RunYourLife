@@ -17,7 +17,7 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
   TextEditingController _other = new TextEditingController();
   int _horizontalSelected = 10;
   String? _horizontalChoosen;
-  List<String> _horizontalTitle = ["Entre 0 et 1 an","Il y'a plus de 2 ans","Il y'a 1 an / 2ans"];
+  List<String> _horizontalTitle = ["Entre 0 et 1 an","Il y'a 1 an / 2ans","Il y'a plus de 2 ans"];
   List<String> _preferences = ["Hypocalorique","type Dukan","Cétogène","Monodiète","Autre"];
   String? _verticalChoosen;
 
@@ -143,7 +143,7 @@ class _Eating2ndPageState extends State<Eating2ndPage> {
          mainAxisAlignment: MainAxisAlignment.start,
          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Il y'a combien de temps".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+            Text("IL Y A COMBIEN DE TEMPS",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
             SizedBox(
               height: 20,
             ),

@@ -1,5 +1,6 @@
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:run_your_life/functions/loaders.dart';
 import 'package:run_your_life/screens/home/components/circles_tracking.dart';
@@ -24,6 +25,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../models/device_model.dart';
 import '../../../models/measurement.dart';
+import '../../../models/screens/home/tracking.dart';
 import '../../../services/apis_services/screens/coaching.dart';
 import '../../../services/other_services/routes.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
@@ -59,17 +61,26 @@ class _PackSoloHomeState extends State<PackSoloHome> {
   DateTime selectedDate = DateTime.now().toUtc().add(Duration(hours: 2));
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-        context: context,
-        locale: Locale('fr'),
-        initialDate:  DateTime.now().toUtc().add(Duration(hours: 2)),
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
+    await showMonthPicker(
+      context: context,
+      headerColor: AppColors.appmaincolor,
+      selectedMonthBackgroundColor: AppColors.appmaincolor,
+      locale: Locale('fr'),
+      roundedCornersRadius: 10,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2101),
+      initialDate: DateTime.now().toUtc().add(Duration(hours: 2)),
+    ).then((date) {
+      if (date != null) {
+        setState(() {
+          String _date = DateFormat("yyyy-MM").format(DateTime.parse(date.toString()));
+          selectedDate = DateTime.parse(_date+"-"+DateTime(date.year, date.month + 1, 0).day.toString());
+          HomeTracking.currentDate = DateFormat("yyyy-MM-dd","fr_FR").format(DateTime(date.year,date.month + 1)).toString();
+          homeTracking.date =  DateFormat("yyyy-MM-dd","fr_FR").format(DateTime(date.year,date.month + 1)).toString();
+          print(selectedDate);
+        });
+      }
+    });
   }
 
   @override
@@ -93,12 +104,9 @@ class _PackSoloHomeState extends State<PackSoloHome> {
     _homeServices.getHeights();
     _homeServices.getLatestCheckin();
     _checkinServices.subsCheckInStatus().then((value){
-      print("SUBSCIRPTION CHECK IN ${value.toString()}");
       setState(() {
         if(value != null){
           CheckinServices.checkinSelected = ['MON POIDS',"MES MESURES","MES MACROS","MES PHOTOS","MES OBJECTIFS DE LA SEMAINE"];
-        }else{
-          CheckinServices.checkinSelected.clear();
         }
       });
     });
@@ -210,63 +218,45 @@ class _PackSoloHomeState extends State<PackSoloHome> {
                     ),
                     ZoomTapAnimation(
                       end: 0.99,
-                      child: Stack(
-                        children: [
-                          Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            alignment: Alignment.bottomRight,
-                            child: Image(
-                              image: AssetImage("assets/icons/lock.png"),
-                              width: 90,
-                              filterQuality: FilterQuality.high,
-                              fit: BoxFit.cover,
-                              color: Colors.black.withOpacity(0.2),
+                      child: Container(
+                        margin: EdgeInsets.only(left: 20,right: 20),
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        width: double.infinity,
+                        height: DeviceModel.isMobile ? 100 : 120,
+                        decoration: CheckinServices.checkinSelected.length == 4 ?
+                        BoxDecoration(
+                            color: Colors.blueGrey,
+                            borderRadius: BorderRadius.circular(10)
+                        ) :
+                        BoxDecoration(
+                            gradient: AppGradientColors.gradient,
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // TERMINER DE REMPLIR LE FORMULAIRE
+                            Text("Mes actions du jour".toUpperCase(),style: TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+                            SizedBox(
+                              height: 7,
                             ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 20,right: 20),
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            width: double.infinity,
-                            height: 90,
-                            decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.4),
-                                borderRadius: BorderRadius.circular(10)
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // TERMINER DE REMPLIR LE FORMULAIRE
-                                Text("Mes actions de la semaine".toUpperCase(),style: TextStyle(color: Colors.white,fontSize: 15,fontFamily: "AppFontStyle"),),
-                                SizedBox(
-                                  height: 7,
-                                ),
-                                Text("--",style: TextStyle(color: Colors.white,fontSize: 13,fontFamily: "AppFontStyle"),textAlign: TextAlign.center),
-                              ],
-                            ),
-                          ),
-                        ],
+                            Text(CheckinServices.checkinSelected.length == 4 ? "Toutes les actions de la semaine sont bien validées, tu es prêt pour le point avec ton coach" : "Il te reste des actions hebdomadaires. Accomplis-les avant de faire le point avec ton coach.",style: TextStyle(color: Colors.white,fontSize: 13,fontFamily: "AppFontStyle"),textAlign: TextAlign.center),
+                          ],
+                        ),
                       ),
                       onTap: ()async{
                         if(subscriptionDetails.currentdata[0]["macro_status"] == false){
                           await showModalBottomSheet(
                               backgroundColor: Colors.white,
                               shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
-                              isScrollControlled: true,
-                              context: context, builder: (context){
-                            return FinishQuestionerPopup();
-                          });
+                              borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
+                            isScrollControlled: true,
+                            context: context, builder: (context){
+                        return FinishQuestionerPopup();
+                        });
                         }else{
-                          await showModalBottomSheet(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
-                              isScrollControlled: true,
-                              context: context, builder: (context){
-                            return FinishQuestionerPopup(isComplete: false,);
-                          });
+                         landingServices.updateIndex(index: 1);
                         }
                       },
                     ),
@@ -280,12 +270,18 @@ class _PackSoloHomeState extends State<PackSoloHome> {
                           Text("MON",style: TextStyle(fontSize: 20,color: subscriptionDetails.currentdata[0]["macro_status"] == false ? Colors.grey : AppColors.appmaincolor,fontFamily: "AppFontStyle"),),
                           Text(" SUIVI JOURNALIER",style: TextStyle(fontSize: 20,color: subscriptionDetails.currentdata[0]["macro_status"] == false ? Colors.grey : AppColors.appmaincolor,fontFamily: "AppFontStyle",fontWeight: FontWeight.bold),),
                           Spacer(),
+                          DateTime.now().month == selectedDate.month && DateTime.now().year == selectedDate.year ?
                           IconButton(
                             icon: Icon(Icons.calendar_month,size: 23,color: subscriptionDetails.currentdata[0]["macro_status"] == false ? Colors.grey : AppColors.appmaincolor,),
                             onPressed: (){
                               if(subscriptionDetails.currentdata[0]["macro_status"] != false){
                                 _selectDate(context);
                               }
+                            },
+                          ) : IconButton(
+                            icon: Icon(Icons.calendar_today,size: 23,color: subscriptionDetails.currentdata[0]["macro_status"] == false ? Colors.grey : AppColors.appmaincolor,),
+                            onPressed: (){
+                              _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
                             },
                           )
                         ],
@@ -345,24 +341,25 @@ class _PackSoloHomeState extends State<PackSoloHome> {
                             Padding(
                               child: SfCartesianChart(
                                 primaryXAxis: CategoryAxis(
-                                    placeLabelsNearAxisLine: true,
-                                    labelPlacement: LabelPlacement.onTicks
+                                  labelPlacement: LabelPlacement.onTicks,
+                                  labelRotation: -90
                                 ),
                                 series: <LineSeries<SalesData, String>>[
                                   LineSeries<SalesData, String>(
                                       dataSource:  <SalesData>[
-                                        if(snapshot.data!["dates"].toString() != "null")...{
-                                          for(int x = 0; x < snapshot.data!["dates"].length; x++)...{
-                                            SalesData('Semaine ${(x + 1).toString()}', double.parse(snapshot.data!["data"][x].toString())),
+                                        if(snapshot.data!["weights"] != null)...{
+                                          for(int x = 0; x < snapshot.data!["weights"].length; x++)...{
+                                            SalesData(snapshot.data!["weights"][x]["date"].toString().replaceAll("-", "/"), double.parse(snapshot.data!["weights"][x]["weight"].toString().replaceAll(",", "."))),
                                           }
                                         }
                                       ],
                                       xValueMapper: (SalesData sales, _) => sales.year,
-                                      yValueMapper: (SalesData sales, _) => sales.sales
+                                      yValueMapper: (SalesData sales, _) => sales.sales,
+
                                   )
                                 ],
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              padding: EdgeInsets.symmetric(horizontal: 5,vertical: 10),
                             ),
                           ],
                         );
@@ -406,7 +403,7 @@ class _PackSoloHomeState extends State<PackSoloHome> {
                               ),
                               Padding(
                                   child: AspectRatio(
-                                    aspectRatio: 16 / 13,
+                                    aspectRatio: 10 / 15,
                                     child: Stack(
                                       children: [
                                         DChartLine(
@@ -440,6 +437,26 @@ class _PackSoloHomeState extends State<PackSoloHome> {
                                     ),
                                   ),
                                   padding: EdgeInsets.symmetric(horizontal: 20)
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: Row(
+                                  children: [
+                                    for(int x = 0; x < homeStreamServices.currentheightDates.length; x++)...{
+                                      RotationTransition(
+                                        turns: new AlwaysStoppedAnimation(-90 / 360),
+                                        child: new Text(homeStreamServices.currentheightDates[x],style: TextStyle(fontFamily: "regular",fontSize: 12),),
+                                      )
+                                    }
+                                  ],
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 25,
                               ),
                               subscriptionDetails.currentdata[0]["macro_status"] == false ?
                               Padding(

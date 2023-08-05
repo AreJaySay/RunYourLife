@@ -126,12 +126,13 @@ class _DeleteAccountCodeState extends State<DeleteAccountCode> {
                       inactiveFillColor: AppColors.appmaincolor,
                       inactiveColor: AppColors.appmaincolor
                     ),
+                    keyboardType: TextInputType.text,
                     cursorColor: Colors.black,
                     animationDuration: const Duration(milliseconds: 300),
                     enableActiveFill: true,
                     errorAnimationController: errorController,
                     controller: textEditingController,
-                    keyboardType: TextInputType.number,
+
                     boxShadows: const [
                       BoxShadow(
                         offset: Offset(0, 1),

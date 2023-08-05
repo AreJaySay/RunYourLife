@@ -25,6 +25,7 @@ import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import '../../../../../../widgets/appbar.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
+import '../../../../../functions/fillup_later.dart';
 import '../../../../../services/stream_services/subscriptions/subscription_details.dart';
 import '1st_page.dart';
 
@@ -41,6 +42,7 @@ class _HealthMainPageState extends State<HealthMainPage> {
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final Step3Service _step3service = new Step3Service();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
+  final SignLater _signLater = new SignLater();
   final Routes _routes = new Routes();
   final AppBars _appBars = AppBars();
   int _currentPage = 1;
@@ -133,14 +135,14 @@ class _HealthMainPageState extends State<HealthMainPage> {
                         setState(() {
                           if(_currentPage > (step1subs.gender == "Female" ? 8 : 3)){
                             if(step1subs.gender != "Female"){
-                              step3subs.contraception = "N/A";
-                              step3subs.premenstrual_syndrome = "N/A";
-                              step3subs.gynaecological_condition = "N/A";
-                              step3subs.observe_menstrual_cycle = "N/A";
-                              step3subs.observe_menstrual_cycle = "N/A";
-                              step3subs.regular_cycle = "N/A";
-                              step3subs.cycle_average = "N/A";
-                              step3subs.pregnant = "N/A";
+                              step3subs.contraception = "";
+                              step3subs.premenstrual_syndrome = "";
+                              step3subs.gynaecological_condition = "";
+                              step3subs.observe_menstrual_cycle = "";
+                              step3subs.observe_menstrual_cycle = "";
+                              step3subs.regular_cycle = "";
+                              step3subs.cycle_average = "";
+                              step3subs.pregnant = "";
                             }
                             _screenLoaders.functionLoader(context);
                             if(subscriptionDetails.currentdata[0]["medical_history"] != null){
@@ -173,31 +175,32 @@ class _HealthMainPageState extends State<HealthMainPage> {
                           ),
                         ),
                         onTap: (){
-                          setState((){
-                            if(step1subs.gender != "Female"){
-                              step3subs.contraception = "N/A";
-                              step3subs.premenstrual_syndrome = "N/A";
-                              step3subs.gynaecological_condition = "N/A";
-                              step3subs.observe_menstrual_cycle = "N/A";
-                              step3subs.observe_menstrual_cycle = "N/A";
-                              step3subs.regular_cycle = "N/A";
-                              step3subs.cycle_average = "N/A";
-                              step3subs.pregnant = "N/A";
-                            }
-                            _screenLoaders.functionLoader(context);
-                            if(subscriptionDetails.currentdata[0]["medical_history"] != null){
-                              setState(() {
-                                step3subs.id = subscriptionDetails.currentdata[0]["medical_history"]["id"].toString();
-                              });
-                            }
-                            _step3service.submit(context).then((value){
-                              if(value != null){
-                                _subscriptionServices.getInfos().whenComplete((){
-                                  _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
-                                });
-                              }
-                            });
-                          });
+                          _signLater.signLater(context);
+                          // setState((){
+                          //   if(step1subs.gender != "Female"){
+                          //     step3subs.contraception = "";
+                          //     step3subs.premenstrual_syndrome = "";
+                          //     step3subs.gynaecological_condition = "";
+                          //     step3subs.observe_menstrual_cycle = "";
+                          //     step3subs.observe_menstrual_cycle = "";
+                          //     step3subs.regular_cycle = "";
+                          //     step3subs.cycle_average = "";
+                          //     step3subs.pregnant = "";
+                          //   }
+                          //   _screenLoaders.functionLoader(context);
+                          //   if(subscriptionDetails.currentdata[0]["medical_history"] != null){
+                          //     setState(() {
+                          //       step3subs.id = subscriptionDetails.currentdata[0]["medical_history"]["id"].toString();
+                          //     });
+                          //   }
+                          //   _step3service.submit(context).then((value){
+                          //     if(value != null){
+                          //       _subscriptionServices.getInfos().whenComplete((){
+                          //         _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
+                          //       });
+                          //     }
+                          //   });
+                          // });
                         },
                       ),
                     ],

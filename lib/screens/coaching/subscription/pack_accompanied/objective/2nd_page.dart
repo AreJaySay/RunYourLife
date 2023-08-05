@@ -30,9 +30,12 @@ class _Objective2ndPageState extends State<Objective2ndPage> {
       children: [
         Text("Quel est ton poids désiré ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
-          height: 30,
+          height: 10,
         ),
-        // step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)"  ?
+        // Text(step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" ? "for (une perte de poids)\n- Confortable : 9 à 18 semaines\n- Raisonnable : 4 à 9 semaines\n- Extrême : 3 à 4 semaines" : "for (une prise de masse musculaire, niveau sportif)\n- Débutant : 11 à 16 mois\n- Intermédiaire : 22 à 33 mois\n- Avancé : 44 à 66 moi",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        // SizedBox(
+        //   height: 10,
+        // ),
         TextFields(_weight, hintText: "Poids (kg)",onChanged: (text){
           setState(() {
             step4subs.desired_weight = text;

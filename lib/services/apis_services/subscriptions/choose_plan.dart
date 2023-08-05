@@ -41,34 +41,29 @@ class ChoosePlanService{
     }
   }
 
-  // UPGRADE SUBSCRIPTION
-  Future upgrade(context,{required String planid, required String purchaseToken, required String type, required String transacId})async{
+  // SHARE PROGRAMMATION
+  Future share_Programmation(context,{required String planid})async{
     try{
-      return await http.post(Uri.parse("${_networkUtility.url}/user/api/add-subscription"),
+      return await http.post(Uri.parse("${_networkUtility.url}/user/api/resource/shareProgrammation"),
           headers: {
             HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
             "Accept": "application/json"
           },
           body: {
             "plan_id": planid,
-            "purchaseToken": purchaseToken,
-            "packageName": "com.runyourlife4.runyourlife",
-            "transactionId": transacId,
-            "payment_method": type,
+            "client_id": Auth.loggedUser!["id"].toString(),
           }
       ).then((data)async{
         var respo = json.decode(data.body);
-        print("RETURN SUBS ${respo.toString()}");
+        print("RETURN PROGRAMMATION ${respo.toString()}");
         if(data.statusCode == 200 || data.statusCode == 201){
           return respo;
         }else{
-          Navigator.of(context).pop(null);
-          _snackbarMessage.snackbarMessage(context, message: respo['message'], is_error: true);
+          return null;
         }
       });
     }catch(e){
-      Navigator.of(context).pop(null);
-      print("ERROR UPGRADE ${e.toString()}");
+      print("ERROR PROGRAMMATION ${e.toString()}");
     }
   }
 }

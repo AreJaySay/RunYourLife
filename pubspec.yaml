@@ -27,6 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  intl: ^0.18.0
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -58,17 +59,19 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   scroll_to_index: ^3.0.1
   easy_autocomplete: ^1.5.0
-  clickable_list_wheel_view: ^0.2.0
   flutter_fgbg: ^0.2.0
   bouncy_widget: ^2.0.1
   url_launcher: ^6.1.5
   simple_url_preview: ^3.0.1
-  scroll_date_picker: ^3.6.0
   grouped_list: ^5.1.2
+  grouped_scroll_view: ^0.0.9+3
   photo_gallery: ^1.1.1
   syncfusion_flutter_charts: ^20.3.61
-  workmanager: ^0.5.1
   flutter_local_notifications: ^13.0.0
+  flutter_native_timezone: any
+  month_picker_dialog: ^1.0.0
+  horizontal_center_date_picker: ^2.1.1
+#  permission_handler: ^10.4.3
 
   #HTML AND WEBVIEW
   flutter_widget_from_html: ^0.9.0
@@ -80,25 +83,23 @@ dependencies:
 
   # MULTIMEDIA
   video_player: ^2.4.7
-  image_picker_gallery_camera: ^0.2.2
+  images_picker: ^1.2.11
   image_crop: ^0.4.1
   flutter_share: ^2.0.0
 
   # VALIDATIONS
-#  fl_pin_code: ^0.0.9
   shimmer: ^2.0.0
   cached_network_image: ^3.2.0
   pin_code_fields: ^7.4.0
 
   # PUSH NOTIFICATIONS
-  firebase_messaging: ^14.0.4
-  firebase_core: ^2.1.1
-  firebase_analytics: ^10.0.4
-  firebase_auth: ^4.1.1
+  firebase_messaging: ^14.2.6
+  firebase_core: ^2.7.1
+  firebase_analytics: ^10.1.5
+  firebase_auth: ^4.2.10
 
   #THIRD PARTY
   google_sign_in: ^5.3.3
-  intl: ^0.17.0
 
   #IN APP PURCHASE
   in_app_purchase: ^3.0.8
@@ -118,6 +119,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+dependency_overrides:
+  intl: ^0.18.0
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

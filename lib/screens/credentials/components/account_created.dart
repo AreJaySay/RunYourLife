@@ -71,7 +71,7 @@ class _AccountCreatedState extends State<AccountCreated> with TickerProviderStat
                         SizedBox(
                           height: 15,
                         ),
-                        Text("Ton compte a été créé.\nVérifie tes mails pour continuer !",textAlign: TextAlign.center,style: TextStyle(fontSize: 16,fontFamily: "AppFontStyle"),),
+                        Text("Ton compte a été créé.",textAlign: TextAlign.center,style: TextStyle(fontSize: 16,fontFamily: "AppFontStyle"),),
                         SizedBox(
                           height: 40,
                         ),

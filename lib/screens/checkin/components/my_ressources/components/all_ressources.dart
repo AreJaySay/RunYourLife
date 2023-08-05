@@ -21,13 +21,9 @@ class AllRessources extends StatefulWidget {
   _AllRessourcesState createState() => _AllRessourcesState();
 }
 
-class _AllRessourcesState extends State<AllRessources> with WidgetsBindingObserver, ObjectiveService {
+class _AllRessourcesState extends State<AllRessources>{
   final ObjectiveServices _objectiveServices = new ObjectiveServices();
   final CheckinServices _checkinServices = new CheckinServices();
-
-  void init() async {
-    await fetchObjectiveAndPopulate();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +70,7 @@ class _AllRessourcesState extends State<AllRessources> with WidgetsBindingObserv
                               widget.ressources[index]["status"] = widget.ressources[index]["status"] == 0 ? 1 : 0;
                             });
                             _checkinServices.docStatus(id: widget.ressources[index]["id"].toString(), status:widget.ressources[index]["status"].toString(), isProgrammation: widget.ressources[index].toString().contains("programmation") ? true : false).then((value){
-                              init();
+
                             });
                           },
                         ),
@@ -202,7 +198,7 @@ class _AllRessourcesState extends State<AllRessources> with WidgetsBindingObserv
                 context: context,
                 barrierDismissible: true,
                 builder: (BuildContext context) {
-                  return ViewRessources(ressource: widget.ressources[index],isPdf: true,);
+                  return ViewRessources(ressource: widget.ressources[index],isPdf: widget.ressources[index][widget.ressources[index].toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "application/pdf" ? true : false,);
                 });
             // _routes.navigator_push(context, ViewRessources());
           },

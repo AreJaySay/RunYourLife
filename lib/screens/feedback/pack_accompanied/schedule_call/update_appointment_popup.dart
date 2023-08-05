@@ -36,7 +36,7 @@ class _UpdateAppointmentPopUpState extends State<UpdateAppointmentPopUp> {
             _screenLoaders.functionLoader(context);
             _feedbackServices.submit(date_id: widget.details["id_date"].toString(), time: widget.hour).then((value){
               if(value != null){
-                _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
+                _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
                 _homeServices.getSchedule().whenComplete((){
                   Navigator.of(context).pop(null);
                   Navigator.of(context).pop(null);

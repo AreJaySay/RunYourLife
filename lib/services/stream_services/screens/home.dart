@@ -65,6 +65,13 @@ class HomeStreamServices{
   updateGraphHeight({required List<Measurement> data}){
     graphHeight.add(data);
   }
+
+  BehaviorSubject<List> heightDates = new BehaviorSubject();
+  List get currentheightDates => heightDates.value;
+
+  updateDateHeight({required List data}){
+    heightDates.add(data);
+  }
 }
 
 HomeStreamServices homeStreamServices = HomeStreamServices.instance;

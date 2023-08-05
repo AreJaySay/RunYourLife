@@ -34,7 +34,7 @@ class _Health7thPageState extends State<Health7thPage> {
           decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
               border: InputBorder.none,
-              hintText: "Syndrome prémenstruel",
+              hintText: "Gynécologique spécifique",
               hintStyle: TextStyle(color: Colors.grey,fontFamily: "AppFontStyle"),
               fillColor: Colors.white,
               filled: true,

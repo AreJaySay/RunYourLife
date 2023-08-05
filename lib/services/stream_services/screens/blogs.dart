@@ -14,6 +14,33 @@ class BlogStreamServices{
     currentdata.addAll(data);
   }
 
+  // RECETTES
+  final BehaviorSubject<List> recettes = new BehaviorSubject();
+  Stream get streamRecettes => recettes.stream;
+  List get currentRecettes => recettes.value;
+
+  updateRecettes({required List data}){
+    recettes.add(data);
+  }
+
+  // LIFESTYLE
+  final BehaviorSubject<List> lifestyle = new BehaviorSubject();
+  Stream get streamLifestyle => lifestyle.stream;
+  List get currentLifestyle => lifestyle.value;
+
+  updateLifestyle({required List data}){
+    lifestyle.add(data);
+  }
+
+  // NUTRITION
+  final BehaviorSubject<List> nutrition = new BehaviorSubject();
+  Stream get streamNutrition => nutrition.stream;
+  List get currentNutrition => nutrition.value;
+
+  updateNutrition({required List data}){
+    nutrition.add(data);
+  }
+
   // BLOGS BY CATEGORY
   final BehaviorSubject<List> blogsCat = new BehaviorSubject.seeded([]);
   Stream get streamBlogsCat => blogsCat.stream;

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:run_your_life/models/subscription_models/step5_subs.dart';
-import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
-import '../../../../../../../widgets/appbar.dart';
-import '../../../../../../../widgets/materialbutton.dart';
 import '../../../../../../../widgets/textfields.dart';
 
 class Pregnant1stPage extends StatefulWidget {
@@ -17,8 +14,10 @@ class _Pregnant1stPageState extends State<Pregnant1stPage> {
     // TODO: implement initState
     super.initState();
     // if(step5subs.sports[0].text.isEmpty){
-      step5subs.sports.add(TextEditingController());
-      step5subs.duration.add(TextEditingController());
+    step5subs.sports.clear();
+    step5subs.duration.clear();
+    step5subs.sports.add(TextEditingController());
+    step5subs.duration.add(TextEditingController());
     // }
   }
 

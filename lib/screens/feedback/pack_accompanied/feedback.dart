@@ -37,7 +37,7 @@ class _PackAccompaniedFeedBackState extends State<PackAccompaniedFeedBack> with 
   @override
   void initState() {
     _homeServices.getSchedule();
-    _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
+    _feedbackServices.getTime(date: DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))), coach_id: subscriptionDetails.currentdata[0]['coach_id'].toString());
     _feedbackServices.getFeedback().then((value){
       coachFeedBack.currentWeek.clear();
       coachFeedBack.lastWeek.clear();

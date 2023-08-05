@@ -17,6 +17,10 @@ import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import '../../../../../../functions/loaders.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
 
+import '../../../../../functions/fillup_later.dart';
+import '../../../../../models/subscription_models/step2_subs.dart';
+import '../../../../../services/stream_services/subscriptions/subscription_details.dart';
+
 class PackSoloEatingMainPage extends StatefulWidget {
   @override
   _PackSoloEatingMainPageState createState() => _PackSoloEatingMainPageState();
@@ -30,6 +34,7 @@ class _PackSoloEatingMainPageState extends State<PackSoloEatingMainPage> {
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final Routes _routes = new Routes();
+  final SignLater _signLater = new SignLater();
   int _currentPage = 1;
 
   @override
@@ -120,6 +125,11 @@ class _PackSoloEatingMainPageState extends State<PackSoloEatingMainPage> {
                         setState(() {
                           if(_currentPage > 3){
                             _screenLoaders.functionLoader(context);
+                            if(subscriptionDetails.currentdata[0]["food_preference"] != null){
+                              setState(() {
+                                step2subs.id = subscriptionDetails.currentdata[0]["food_preference"]["id"].toString();
+                              });
+                            }
                             _step2service.submit(context).then((value){
                               if(value != null){
                                 Navigator.of(context).pop(null);
@@ -143,14 +153,15 @@ class _PackSoloEatingMainPageState extends State<PackSoloEatingMainPage> {
                           ),
                         ),
                         onTap: (){
-                          _screenLoaders.functionLoader(context);
-                          _step2service.submit(context).then((value){
-                            if(value != null){
-                              _subscriptionServices.getInfos().whenComplete((){
-                                _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
-                              });
-                            }
-                          });
+                          _signLater.signLater(context);
+                          // _screenLoaders.functionLoader(context);
+                          // _step2service.submit(context).then((value){
+                          //   if(value != null){
+                          //     _subscriptionServices.getInfos().whenComplete((){
+                          //       _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
+                          //     });
+                          //   }
+                          // });
                         },
                       ),
                     ],

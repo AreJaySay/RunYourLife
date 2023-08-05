@@ -3,18 +3,22 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:run_your_life/screens/coaching/subscription/pack_accompanied/presentation/main_page.dart';
+import 'package:run_your_life/services/apis_services/subscriptions/subscriptions.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import '../../../functions/loaders.dart';
 import '../../../models/device_model.dart';
 import '../../../services/apis_services/subscriptions/choose_plan.dart';
 import '../../../services/stream_services/screens/coaching.dart';
+import '../../../services/stream_services/subscriptions/subscription_details.dart';
 import '../../../utils/palettes/app_colors.dart';
 import '../../../utils/palettes/app_gradient_colors.dart';
 import '../../coaching/components/enter_card.dart';
 import '../../coaching/components/view_details.dart';
 import 'package:in_app_purchase_storekit/in_app_purchase_storekit.dart';
 import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
+
+import '../../profile/components/subscription_modal.dart';
 
 class SendTracking extends StatefulWidget {
   @override
@@ -24,6 +28,7 @@ class SendTracking extends StatefulWidget {
 class _SendTrackingState extends State<SendTracking> {
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final ChoosePlanService _choosePlanService = new ChoosePlanService();
+  final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final Routes _routes = new Routes();
   final InAppPurchase _iap = InAppPurchase.instance;
   bool _isAvailable = false;
@@ -98,32 +103,20 @@ class _SendTrackingState extends State<SendTracking> {
         showPendingUI();
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
-          handleError(purchaseDetails.error!);
-          print(purchaseDetails.verificationData.serverVerificationData);
-          print(purchaseDetails.verificationData.source);
-          print(purchaseDetails.status);
-          print(purchaseDetails.purchaseID);
-          print(purchaseDetails.productID);
-          print(purchaseDetails.transactionDate);
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
           bool valid = await _verifyPurchase(purchaseDetails);
           if (valid) {
-            print(purchaseDetails.verificationData.serverVerificationData);
-            print(purchaseDetails.verificationData.source);
-            print(purchaseDetails.status);
-            print(purchaseDetails.purchaseID);
-            print(purchaseDetails.productID);
-            print(purchaseDetails.transactionDate);
-            _screenLoaders.functionLoader(context);
-            _choosePlanService.upgrade(context, planid: "3",
+            _choosePlanService.choosePlan(context, planid: "3",
               purchaseToken: purchaseDetails.verificationData
                   .serverVerificationData.toString(),
               transacId: "accompagned_subs",
               type: Platform.isIOS ? "appstore" : "playstore",).then((value) {
-              if (value != null) {
-                _routes.navigator_pushreplacement(context, PresentationMainPage());
-              }
+              _subscriptionServices.cancelSubscription(context, subs_id: subscriptionDetails.currentdata[subscriptionDetails.currentdata.length - 1]["id"].toString()).then((upgrade){
+                if(upgrade != null){
+                  _routes.navigator_pushreplacement(context, PresentationMainPage());
+                }
+              });
             });
           } else {
             _handleInvalidPurchase(purchaseDetails);
@@ -224,20 +217,31 @@ class _SendTrackingState extends State<SendTracking> {
                   SizedBox(
                     height: 50,
                   ),
-                  ZoomTapAnimation(
+                  subscriptionDetails.currentdata[0]["stripe_id"].toString().contains("mobile-subs") ? Container() : ZoomTapAnimation(
                     end: 0.99,
                     onTap: ()async{
-                      setState((){
-                        planDetails = coachingStreamServices.currentdata[1];
-                      });
-                      if(Platform.isIOS){
-                        var paymentWrapper = SKPaymentQueueWrapper();
-                        var transactions = await paymentWrapper.transactions();
-                        transactions.forEach((transaction) async {
-                          await paymentWrapper.finishTransaction(transaction);
+                      if(subscriptionDetails.currentdata[0]["stripe_id"].toString().contains("mobile-subs")){
+                        showModalBottomSheet(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
+                            isScrollControlled: true,
+                            context: context, builder: (context){
+                          return SubscriptionModal();
                         });
+                      }else{
+                        setState((){
+                          planDetails = coachingStreamServices.currentdata[1];
+                        });
+                        if(Platform.isIOS){
+                          var paymentWrapper = SKPaymentQueueWrapper();
+                          var transactions = await paymentWrapper.transactions();
+                          transactions.forEach((transaction) async {
+                            await paymentWrapper.finishTransaction(transaction);
+                          });
+                        }
+                        _buyProduct(_products[_products.length - 1]);
                       }
-                      _buyProduct(_products[_products.length - 1]);
                     },
                     child: Container(
                       width: double.infinity,

@@ -33,7 +33,8 @@ class _ViewCoachingDetailsState extends State<ViewCoachingDetails> {
   final ParameterServices _parameterServices = new ParameterServices();
   final ProfileServices _profileServices = new ProfileServices();
   final Routes _routes = new Routes();
-  List _bulletnames = ['Suivi débloqué','Calcul de macro','Accès à des ressources','Feedback','Appel','Objectifs et ressources hebdomadaires'];
+  List _macrobulletnames = ['Questionnaire d’entrée personnalisé','Calcul des besoins en macro-nutriments par un coach','Progression autonome','Parcours éducatif automatisé quotidien','Objectifs automatisés chaque jour','Suivi de ses données au jour le jour via l’app : macros, sommeil, hydratation,stress, suivi de cycle, entraînements, complémentation, photos','Suivi de l’évolution de sa courbe de poids et mesures','Appel groupé des abonnés « Macro solos » mensuel d’une heure'];
+  List _bulletnames = ['Calcul des besoins en macro-nutriments par ton coach','Appel hebdomadaire','Ressources individualisées','Objectifs individualisés','Echanges via le chat','Suivi de ses données au jour le jour via l’app : macros, sommeil,hydratation, stress, suivi de cycle, entraînements,complémentation, photos','Suivi de l’évolution de sa courbe de poids et mesures'];
   late StreamSubscription _subscription;
   final InAppPurchase _iap = InAppPurchase.instance;
 
@@ -66,53 +67,27 @@ class _ViewCoachingDetailsState extends State<ViewCoachingDetails> {
             purchaseDetails.status == PurchaseStatus.restored) {
           bool valid = await _verifyPurchase(purchaseDetails);
           if (valid) {
-            print(purchaseDetails.verificationData.serverVerificationData);
-            print(purchaseDetails.verificationData.source);
-            print(purchaseDetails.status);
-            print(purchaseDetails.purchaseID);
-            print(purchaseDetails.productID);
-            print(purchaseDetails.transactionDate);
             Navigator.of(context).pop(null);
             _screenLoaders.functionLoader(context);
             if(purchaseDetails.productID == "accompagned_subs"){
               _choosePlanService.choosePlan(context,planid: "3", purchaseToken: purchaseDetails.verificationData.serverVerificationData.toString(), transacId: purchaseDetails.productID, type: Platform.isIOS ? "appstore" : "playstore" ,).then((value){
                 if(value != null){
                   _parameterServices.submit(context).whenComplete((){
-                    if(widget.planDetails["id"] == 3){
-                      _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString()).then((result){
-                        if(result != null){
-                          _routes.navigator_pushreplacement(context, PresentationMainPage(),);
-                        }else{
-                          Navigator.of(context).pop(null);
-                        }
-                      });
-                    }else{
-                      _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString()).then((result){
-                        if(result != null){
-                          _routes.navigator_pushreplacement(context, PackSoloPresentationMainPage(),);
-                        }else{
-                          Navigator.of(context).pop(null);
-                        }
-                      });
-                    }
+                    _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString()).then((result){
+                      if(result != null){
+                        _routes.navigator_pushreplacement(context, PresentationMainPage(),);
+                      }else{
+                        Navigator.of(context).pop(null);
+                      }
+                    });
                   });
                 }
               });
             }else{
               _choosePlanService.choosePlan(context,planid: "4", purchaseToken: purchaseDetails.verificationData.serverVerificationData.toString(), transacId: purchaseDetails.productID, type: Platform.isIOS ? "appstore" : "playstore",).then((value){
-                if(value != null){
-                  _parameterServices.submit(context).whenComplete((){
-                    if(widget.planDetails["id"] == 3){
-                      _screenLoaders.functionLoader(context);
-                      _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString()).then((result){
-                        if(result != null){
-                          Navigator.of(context).pop(null);
-                          _routes.navigator_pushreplacement(context, PresentationMainPage(),);
-                        }else{
-                          Navigator.of(context).pop(null);
-                        }
-                      });
-                    }else{
+                _choosePlanService.share_Programmation(context, planid: "4").whenComplete((){
+                  if(value != null){
+                    _parameterServices.submit(context).whenComplete((){
                       _profileServices.getProfile(clientid: Auth.loggedUser!["id"].toString()).then((result){
                         if(result != null){
                           Navigator.of(context).pop(null);
@@ -121,9 +96,9 @@ class _ViewCoachingDetailsState extends State<ViewCoachingDetails> {
                           Navigator.of(context).pop(null);
                         }
                       });
-                    }
-                  });
-                }
+                    });
+                  }
+                });
               });
             }
             // deliverProduct(purchaseDetails);
@@ -169,12 +144,16 @@ class _ViewCoachingDetailsState extends State<ViewCoachingDetails> {
             ),
             SafeArea(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: ListView(
                   children: [
-                    PageBackButton(margin: 0,),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: PageBackButton(margin: 0,),
+                    ),
                     SizedBox(
                       height: 30,
                     ),
@@ -183,7 +162,10 @@ class _ViewCoachingDetailsState extends State<ViewCoachingDetails> {
                     SizedBox(
                       height: 20,
                     ),
-                    Text(widget.planDetails["description"].toString().replaceAll("Ressources", "\nRessources").replaceAll("Feedback", "\nFeedback").replaceAll("Appel", "\nAppel").replaceAll("Accès", "\nAccès"),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
+                    widget.planDetails['name'].toString().contains("macro solo") ?
+                    Text("Dans le parcours Macro solo tu auras des ressources et objectifs qui te seront envoyés quotidiennement, ils t’aideront à atteindre tes besoins en macro-nutriments de manière quantitative, mais aussi qualitative. Tu sauras aussi comment ajuster tes besoins en fonction de tes résultats dans l’avancée du parcours",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle")) :
+                    Text("Ce suivi te met en relation avec un coach qui te permettra d’atteindre tes objectifs",style: TextStyle(fontSize: 15,fontWeight: FontWeight.w600,fontFamily: "AppFontStyle"),),
+                    // Text(widget.planDetails["description"].toString().replaceAll("Ressources", "\nRessources").replaceAll("Feedback", "\nFeedback").replaceAll("Appel", "\nAppel").replaceAll("Accès", "\nAccès"),style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500,fontFamily: "AppFontStyle"),),
                     SizedBox(
                       height: 20,
                     ),
@@ -203,49 +185,63 @@ class _ViewCoachingDetailsState extends State<ViewCoachingDetails> {
                     SizedBox(
                       height: 20,
                     ),
-                    for(var x = 0; x < _bulletnames.length;x++)...{
+                    for(var x = 0; widget.planDetails['name'].toString().contains("macro solo") ? x <  _macrobulletnames.length : x < _bulletnames.length;x++)...{
                       Row(
                         children: [
-                           widget.planDetails['name'].toString().contains("macro solo") ? Container(
-                            child: x == 4 || x == 3 || x == 5 ?
-                            Icon(Icons.close_rounded,size: 23,color: Colors.grey,) :
-                            Icon(Icons.check_circle,size: 23,color: AppColors.pinkColor,),
-                          ) : Container(
-                            child: Icon(Icons.check_circle,size: 23,color: AppColors.pinkColor,),
-                          ),
+                          Icon(Icons.circle,size: 10,color: Colors.blueGrey,),
                           SizedBox(
                             width: 7,
                           ),
-                          Text(_bulletnames[x],style: TextStyle(
-                            color: widget.planDetails['name'].toString().contains("macro solo") ? x == 4 || x == 3 || x == 5 ? Colors.grey : Colors.black : Colors.black,
-                            fontSize: 15,
-                            fontWeight: x == 2 || x == 5 ? FontWeight.w500 : FontWeight.bold,
-                            fontFamily: "AppFontStyle"
-                          ),),
-                          x == 0 || x == 2 ? Container() :
-                          Text(x == 4 ? " hebdomadaire" : x == 3 ? " personnalisé" : "",style: TextStyle(
-                              color:  widget.planDetails['name'].toString().contains("macro solo") ? x == 4 || x == 3 || x == 5 ? Colors.grey : Colors.black : Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: "AppFontStyle"
-                          ),)
+                          Expanded(
+                            child: widget.planDetails['name'].toString().contains("macro solo") ?
+                            Text(_macrobulletnames[x],style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, fontFamily: "AppFontStyle"),) :
+                            Text(_bulletnames[x],style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, fontFamily: "AppFontStyle"),),
+                          )
+                          //  widget.planDetails['name'].toString().contains("macro solo") ? Container(
+                          //   child: x == 4 || x == 3 || x == 5 ?
+                          //   Icon(Icons.close_rounded,size: 23,color: Colors.grey,) :
+                          //   Icon(Icons.check_circle,size: 23,color: AppColors.pinkColor,),
+                          // ) : Container(
+                          //   child: Icon(Icons.check_circle,size: 23,color: AppColors.pinkColor,),
+                          // ),
+                          // SizedBox(
+                          //   width: 7,
+                          // ),
+                          // Text(_bulletnames[x],style: TextStyle(
+                          //   color: widget.planDetails['name'].toString().contains("macro solo") ? x == 4 || x == 3 || x == 5 ? Colors.grey : Colors.black : Colors.black,
+                          //   fontSize: 15,
+                          //   fontWeight: x == 2 || x == 5 ? FontWeight.w500 : FontWeight.bold,
+                          //   fontFamily: "AppFontStyle"
+                          // ),),
+                          // x == 0 || x == 2 ? Container() :
+                          // Text(x == 4 ? " hebdomadaire" : x == 3 ? " personnalisé" : "",style: TextStyle(
+                          //     color:  widget.planDetails['name'].toString().contains("macro solo") ? x == 4 || x == 3 || x == 5 ? Colors.grey : Colors.black : Colors.black,
+                          //     fontSize: 15,
+                          //     fontWeight: FontWeight.w500,
+                          //     fontFamily: "AppFontStyle"
+                          // ),)
                         ],
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                       ),
                       SizedBox(
-                        height: 10,
+                        height: 8,
                       )
                     },
-                    Spacer(),
+                    Text("Renouvelable mensuellement / Sans durée d’engagement",style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, fontFamily: "AppFontStyle",fontStyle: FontStyle.italic),),
+                    SizedBox(
+                      height: 50,
+                    ),
                     Container(
                       child: _materialbutton.materialButton("ACHETER", ()async {
-                        setState((){
-                          parameters.trackings[0] = "Oui";
-                          parameters.trackings[1] = "Oui";
-                          parameters.trackings[2] = "Oui";
-                          parameters.trackings[3] = "Oui";
-                          parameters.trackings[4] = "Oui";
-                          parameters.trackings[5] = "Oui";
-                        });
+                        // setState((){
+                        //   parameters.trackings[0] = "Oui";
+                        //   parameters.trackings[1] = "Oui";
+                        //   parameters.trackings[2] = "Oui";
+                        //   parameters.trackings[3] = "Oui";
+                        //   parameters.trackings[4] = "Oui";
+                        //   parameters.trackings[5] = "Oui";
+                        // });
                         if(Platform.isIOS){
                           var paymentWrapper = SKPaymentQueueWrapper();
                           var transactions = await paymentWrapper.transactions();

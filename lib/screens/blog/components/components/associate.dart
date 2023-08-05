@@ -80,8 +80,7 @@ class _ArticlesAssociateState extends State<ArticlesAssociate> {
             ),
           ),
           onTap: (){
-            print(widget.related[index].toString());
-              // _routes.navigator_push(context, ViewArticle(articledetails: widget.related[index], isRelated: false,), transitionType: PageTransitionType.bottomToTop);
+              _routes.navigator_push(context, ViewArticle(articledetails: widget.related[index]["article"], isRelated: false,), transitionType: PageTransitionType.bottomToTop);
           },
         );
       },

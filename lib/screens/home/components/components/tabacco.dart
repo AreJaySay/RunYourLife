@@ -100,7 +100,7 @@ class _TabaccoTrackingState extends State<TabaccoTracking> {
                     _screenLoaders.functionLoader(context);
                     _homeServices.submit_tracking(context).then((value){
                       if(value != null){
-                        _homeServices.getTracking(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(homeTracking.date))).then((value){
+                        _homeServices.getTracking(date: DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.parse(homeTracking.date))).then((value){
                           Navigator.of(context).pop(null);
                           Navigator.of(context).pop(null);
                         });

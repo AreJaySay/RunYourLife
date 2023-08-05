@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:run_your_life/functions/fillup_later.dart';
 import 'package:run_your_life/models/auths_model.dart';
 import 'package:run_your_life/models/subscription_models/step2_subs.dart';
 import 'package:run_your_life/models/subscription_models/step3_subs.dart';
@@ -19,6 +20,7 @@ import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
 import '../../../../../functions/loaders.dart';
 import '../../../../../models/subscription_models/step4_subs.dart';
+import '../../../../../services/stream_services/subscriptions/subscription_details.dart';
 
 class PackSoloObjectiveMainPage extends StatefulWidget {
   @override
@@ -33,6 +35,7 @@ class _PackSoloObjectiveMainPageState extends State<PackSoloObjectiveMainPage> {
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
   final Step4Service _step4service = new Step4Service();
+  final SignLater _signLater = new SignLater();
   final Routes _routes = new Routes();
   int _currentPage = 1;
 
@@ -126,6 +129,11 @@ class _PackSoloObjectiveMainPageState extends State<PackSoloObjectiveMainPage> {
                         setState(() {
                           if( _currentPage > (step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" || step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)" ? 2 : 1)){
                             _screenLoaders.functionLoader(context);
+                            if(subscriptionDetails.currentdata[0]["goal"] != null){
+                              setState(() {
+                                step4subs.id = subscriptionDetails.currentdata[0]["goal"]["id"].toString();
+                              });
+                            }
                             _step4service.submit(context).then((value){
                               if(value != null){
                                 Navigator.of(context).pop(null);
@@ -149,14 +157,15 @@ class _PackSoloObjectiveMainPageState extends State<PackSoloObjectiveMainPage> {
                           ),
                         ),
                         onTap: (){
-                          _screenLoaders.functionLoader(context);
-                          _step4service.submit(context).then((value){
-                            if(value != null){
-                              _subscriptionServices.getInfos().whenComplete((){
-                                _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
-                              });
-                            }
-                          });
+                          _signLater.signLater(context);
+                          // _screenLoaders.functionLoader(context);
+                          // _step4service.submit(context).then((value){
+                          //   if(value != null){
+                          //     _subscriptionServices.getInfos().whenComplete((){
+                          //       _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
+                          //     });
+                          //   }
+                          // });
                         },
                       ),
                       SizedBox(

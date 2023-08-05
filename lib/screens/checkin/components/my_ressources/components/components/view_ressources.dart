@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
 import '../../../../../../utils/palettes/app_colors.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 class ViewRessources extends StatefulWidget {
   final Map ressource;
@@ -38,7 +39,7 @@ class _ViewRessourcesState extends State<ViewRessources> {
           // },
         ),
       )
-      ..loadRequest(Uri.parse(widget.isPdf ? 'https://docs.google.com/gview?embedded=true&url=${widget.isMessage ? widget.ressource["file"] : widget.ressource[widget.ressource.toString().contains("programmation") ? "programmation" : "documents"]["file_path"]}' : widget.isMessage ? widget.ressource["file"] : widget.ressource["programmation"]["file_path"]));
+      ..loadRequest(Uri.parse(widget.isPdf ? 'https://docs.google.com/gview?embedded=true&url=${widget.isMessage ? widget.ressource["file"] : widget.ressource[widget.ressource.toString().contains("programmation") ? "programmation" : "documents"]["file_path"]}' : widget.isMessage ? widget.ressource["file"] : widget.ressource[widget.ressource.toString().contains("programmation") ? "programmation" : "documents"]["file_path"]));
   }
 
   @override

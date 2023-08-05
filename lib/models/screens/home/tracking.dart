@@ -1,34 +1,30 @@
 import 'dart:convert';
 
 import 'package:run_your_life/models/screens/checkin/tracking.dart';
+import 'package:run_your_life/models/subscription_models/step5_subs.dart';
 
 import '../../../services/stream_services/subscriptions/subscription_details.dart';
 
 class HomeTracking{
-  String trainingChecker;
   double stress;
   double sleep;
   double smoke;
   double alcohol;
-  List performances = [];
-  List sports = [];
-  List durations = [];
   String medication;
   String supplements;
   String menstruation;
   double coffee;
   double water;
   String date;
+  static String? currentDate;
+  static int? selected;
+  static bool hasTraining = true;
 
   HomeTracking({
-    this.trainingChecker = "",
     this.stress = 0,
     this.sleep = 0,
     this.smoke = 0,
     this.alcohol = 0,
-    required this.performances,
-    required this.sports,
-    required this.durations,
     this.medication = "",
     this.supplements = "",
     this.menstruation = "",
@@ -44,14 +40,14 @@ class HomeTracking{
     "coffee": coffee.toString(),
     "water": water.toString(),
     "alcohol": alcohol.toString(),
-    if(trainingChecker != "null" && trainingChecker != "")...{
-      for(int x = 0; x < sports.length; x++)...{
-        "training[$x][sport]": sports[x].toString(),
-        "training[$x][duration]": durations[x].toString(),
-        "training[$x][performance]": performances[x].toString(),
+    if(hasTraining)...{
+      for(int x = 0; x < step5subs.sports.length; x++)...{
+        "training[$x][sport]": step5subs.sports[x].text.toString(),
+        "training[$x][duration]": step5subs.duration[x].text,
+        "training[$x][performance]": step5subs.performances[x].toString(),
       },
     }else...{
-      "training": "null",
+      "training": "No training",
     },
     "medication": medication,
     "date": date,
@@ -61,4 +57,4 @@ class HomeTracking{
   };
 }
 
-HomeTracking homeTracking = new HomeTracking(sports: [], durations: [], performances: []);
+HomeTracking homeTracking = new HomeTracking();

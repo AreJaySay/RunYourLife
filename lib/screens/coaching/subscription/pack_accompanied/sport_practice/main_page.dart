@@ -22,6 +22,7 @@ import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
+import '../../../../../functions/fillup_later.dart';
 import '../../../../../functions/loaders.dart';
 import '../../../../../services/stream_services/subscriptions/subscription_details.dart';
 import 'pregnant/5th_page.dart';
@@ -32,13 +33,14 @@ class SportMainPage extends StatefulWidget {
 }
 
 class _SportMainPageState extends State<SportMainPage> {
-  List<Widget> _notpregnant = [Container(),SportMakeChoices(),NotPregnant1stPage()];
+  List<Widget> _notpregnant = [Container(),SportMakeChoices(),NotPregnant1stPage(),Pregnant2ndPage()];
   List<Widget> _pregnant = [Container(),SportMakeChoices(),Pregnant1stPage(),Pregnant2ndPage(),Pregnant3rdPage(),Pregnant4thPage(),Pregnant5thPage(),Pregnant6thPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final Step5Service _step5service = new Step5Service();
   final ProfileServices _profileServices = new ProfileServices();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
+  final SignLater _signLater = new SignLater();
   final Routes _routes = new Routes();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   int _currentPage = 1;
@@ -64,7 +66,7 @@ class _SportMainPageState extends State<SportMainPage> {
               ListView(
                 padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
                 children: [
-                  MyStepper(snapshot.data ? 7 : 2,range: double.parse(_currentPage.toString()),),
+                  MyStepper(snapshot.data ? 7 : 3,range: double.parse(_currentPage.toString()),),
                   SizedBox(
                     height: 30,
                   ),
@@ -136,8 +138,7 @@ class _SportMainPageState extends State<SportMainPage> {
                         ),
                         _materialbutton.materialButton("SUIVANT", () {
                           setState(() {
-                            if(_currentPage > (snapshot.data ? 6 : 1)){
-                              print(step5subs.toMap());
+                            if(_currentPage > (snapshot.data ? 6 : 2)){
                               _screenLoaders.functionLoader(context);
                               if(subscriptionDetails.currentdata[0]["sport"] != null){
                                 setState(() {
@@ -170,20 +171,21 @@ class _SportMainPageState extends State<SportMainPage> {
                             ),
                           ),
                           onTap: (){
-                            _screenLoaders.functionLoader(context);
-                            if(subscriptionDetails.currentdata[0]["sport"] != null){
-                              setState(() {
-                                step5subs.id = subscriptionDetails.currentdata[0]["sport"]["id"].toString();
-                              });
-                            }
-                            _step5service.submit(context).then((value){
-                              if(value != null){
-                                Navigator.of(context).pop(null);
-                                _routes.navigator_push(context, Landing(), transitionType: PageTransitionType.fade);
-                              }else{
-                                Navigator.of(context).pop(null);
-                              }
-                            });
+                            _signLater.signLater(context);
+                            // _screenLoaders.functionLoader(context);
+                            // if(subscriptionDetails.currentdata[0]["sport"] != null){
+                            //   setState(() {
+                            //     step5subs.id = subscriptionDetails.currentdata[0]["sport"]["id"].toString();
+                            //   });
+                            // }
+                            // _step5service.submit(context).then((value){
+                            //   if(value != null){
+                            //     Navigator.of(context).pop(null);
+                            //     _routes.navigator_push(context, Landing(), transitionType: PageTransitionType.fade);
+                            //   }else{
+                            //     Navigator.of(context).pop(null);
+                            //   }
+                            // });
                           },
                         ),
                         SizedBox(

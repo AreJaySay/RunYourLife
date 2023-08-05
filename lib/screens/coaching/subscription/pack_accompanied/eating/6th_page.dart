@@ -14,7 +14,7 @@ class Eating6thPage extends StatefulWidget {
 }
 
 class _Eating6thPageState extends State<Eating6thPage> {
-  TextEditingController _religion = new TextEditingController()..text=step2subs.cultural_adaptations_diet == "Non" || step2subs.cultural_adaptations_diet == "none" || step2subs.cultural_adaptations_diet == "N/A" ? "" : step2subs.cultural_adaptations_diet;
+  TextEditingController _religion = new TextEditingController()..text=step2subs.cultural_adaptations_diet == "Non" || step2subs.cultural_adaptations_diet == "none" || step2subs.cultural_adaptations_diet == "" ? "" : step2subs.cultural_adaptations_diet;
 
   @override
   void dispose() {

@@ -18,6 +18,7 @@ class LogoutUser{
    subStreamServices.addSubs(data: {});
    Auth.accessToken = null;
    DeviceModel.devicefcmToken = null;
-   prefs.clear();
+   prefs.remove('email');
+   prefs.remove('password');
  }
 }

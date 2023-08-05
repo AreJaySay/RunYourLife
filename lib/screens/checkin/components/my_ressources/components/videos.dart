@@ -19,14 +19,9 @@ class MyRessourcesVideos extends StatefulWidget {
   _MyRessourcesVideosState createState() => _MyRessourcesVideosState();
 }
 
-class _MyRessourcesVideosState extends State<MyRessourcesVideos> with WidgetsBindingObserver, ObjectiveService  {
+class _MyRessourcesVideosState extends State<MyRessourcesVideos>{
   final ObjectiveServices _objectiveServices = new ObjectiveServices();
   final CheckinServices _checkinServices = new CheckinServices();
-
-  void init() async {
-    await fetchObjectiveAndPopulate();
-  }
-
   final Materialbutton _materialButton = new Materialbutton();
 
   @override
@@ -82,7 +77,7 @@ class _MyRessourcesVideosState extends State<MyRessourcesVideos> with WidgetsBin
                               widget.videos[index]["status"] = widget.videos[index]["status"] == 0 ? 1 : 0;
                             });
                             _checkinServices.docStatus(id: widget.videos[index]["id"].toString(), status:widget.videos[index]["status"].toString(), isProgrammation: widget.videos[index].toString().contains("programmation") ? true : false).then((value){
-                              init();
+
                             });
                           },
                         ),

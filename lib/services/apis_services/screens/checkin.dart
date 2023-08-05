@@ -28,7 +28,7 @@ class CheckinServices{
         body: {
           "subscription_id": subscriptionDetails.currentdata[0]["id"].toString(),
           "weight": weight,
-          "date": DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString(),
+          "date": DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString(),
         },
       ).then((respo) async {
         var data = json.decode(respo.body);
@@ -107,6 +107,7 @@ class CheckinServices{
         body: measures.toMap(),
       ).then((respo) async {
         var data = json.decode(respo.body);
+        print("ADD MEASURE ${data}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           return data;
         }else{
@@ -241,13 +242,13 @@ class CheckinServices{
         var data = json.decode(respo.body);
         print("RESSOURCES ${data.toString()}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
-          checkInStreamServices.updateRessources(data: data["data"]);
+          return data;
         }else{
           return null;
         }
       });
     } catch (e) {
-      print("ERROR GET PHOTOS${e.toString()}");
+      print("ERROR GET DOCS${e.toString()}");
     }
   }
   // DOCUMENTS STATUS
@@ -287,9 +288,7 @@ class CheckinServices{
         var data = json.decode(respo.body);
         print("PROGRAMMATION ${data.toString()}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
-          for(int x = 0; x < data["data"].length; x++){
-            checkInStreamServices.addRessources(data: data["data"][x]);
-          }
+          return data;
         }else{
           return null;
         }
@@ -309,7 +308,7 @@ class CheckinServices{
         },
       ).then((respo) async {
         var data = json.decode(respo.body);
-        print("LAST UPDATED DATA ${data.toString()}");
+        print("LAST UPDATED DATAS ${data.toString()}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           checkInStreamServices.updatelastUpdated(data: data);
           return data;
@@ -331,7 +330,7 @@ class CheckinServices{
         },
         body: {
           "subscription_id": subscriptionDetails.currentdata[0]["id"].toString(),
-          "date": DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString()
+          "date": DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString()
         }
       ).then((respo) async {
         var data = json.decode(respo.body);
@@ -349,7 +348,7 @@ class CheckinServices{
 
   Future subsCheckInStatus()async{
     try {
-      return await http.get(Uri.parse("${_networkUtility.url}/user/api/checkin/${subscriptionDetails.currentdata[0]["id"].toString()}?date=${DateFormat("yyyy-MM-dd","fr").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString()}"),
+      return await http.get(Uri.parse("${_networkUtility.url}/user/api/checkin/${subscriptionDetails.currentdata[0]["id"].toString()}?date=${DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString()}"),
           headers: {
             HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
             "Accept": "application/json"
@@ -357,10 +356,10 @@ class CheckinServices{
       ).then((respo) async {
         var data = json.decode(respo.body);
         if (data.toString().contains("Existed")){
-          CheckinServices.checkinSelected = ['MON POIDS',"MES MESURES","MES MACROS","MES PHOTOS","MES OBJECTIFS DE LA SEMAINE"];
+          // CheckinServices.checkinSelected = ['MON POIDS',"MES MESURES","MES MACROS","MES PHOTOS","MES OBJECTIFS DE LA SEMAINE"];
           return data;
         }else{
-          CheckinServices.checkinSelected.clear();
+          // CheckinServices.checkinSelected.clear();
           return null;
         }
       });

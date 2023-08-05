@@ -51,13 +51,26 @@ class _Eating11thPageState extends State<Eating11thPage> {
                 ),
             ),
             onChanged: (text){
+              // setState(() {
+              //   if(x == 0){
+              //     step2subs.breakfast = text;
+              //   }else if(x == 1){
+              //     step2subs.morning_snack = text;
+              //   }else if(x == 2){
+              //     step2subs.lunch = text;
+              //   }else if(x == 3){
+              //     step2subs.afternoon_snack = text;
+              //   }else{
+              //     step2subs.dinner = text;
+              //   }
+              // });
               setState(() {
                 if(x == 0){
                   step2subs.breakfast = text;
                 }else if(x == 1){
-                  step2subs.morning_snack = text;
-                }else if(x == 2){
                   step2subs.lunch = text;
+                }else if(x == 2){
+                  step2subs.morning_snack = text;
                 }else if(x == 3){
                   step2subs.afternoon_snack = text;
                 }else{

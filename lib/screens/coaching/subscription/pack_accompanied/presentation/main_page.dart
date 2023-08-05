@@ -21,6 +21,7 @@ import '../../../../../../utils/palettes/app_colors.dart';
 import '../../../../../../widgets/appbar.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
 
+import '../../../../../functions/fillup_later.dart';
 import '../../../../../services/stream_services/subscriptions/subscription_details.dart';
 
 class PresentationMainPage extends StatefulWidget {
@@ -36,6 +37,7 @@ class _PresentationMainPageState extends State<PresentationMainPage> {
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final Step1Service _step1service = new Step1Service();
   final Routes _routes = new Routes();
+  final SignLater _signLater = new SignLater();
   int _currentPage = 1;
 
   @override
@@ -134,9 +136,9 @@ class _PresentationMainPageState extends State<PresentationMainPage> {
                       _snackbarMessage.snackbarMessage(context, message: "Le poids et la taille sont requis. Veuillez ne pas le laisser vide !", is_error: true);
                     }else{
                       setState(() {
-                        step1subs.target_weight = "N/A";
+                        step1subs.target_weight = "";
                         if(_currentPage > 1){
-                          // _screenLoaders.functionLoader(context);
+                          _screenLoaders.functionLoader(context);
                           if(subscriptionDetails.currentdata[0]["client_info"] != null){
                             setState(() {
                               step1subs.id = subscriptionDetails.currentdata[0]["client_info"]["id"].toString();
@@ -170,25 +172,26 @@ class _PresentationMainPageState extends State<PresentationMainPage> {
                     ),
                   ),
                   onTap: (){
-                    if(step1subs.weight == "" || step1subs.height == ""){
-                      _snackbarMessage.snackbarMessage(context, message: "Le poids et la taille sont requis. Veuillez ne pas le laisser vide !", is_error: true);
-                    }else{
-                      setState((){
-                        step1subs.target_weight = "N/A";
-                        _screenLoaders.functionLoader(context);
-                        if(subscriptionDetails.currentdata[0]["client_info"] != null){
-                          setState(() {
-                            step1subs.id = subscriptionDetails.currentdata[0]["client_info"]["id"].toString();
-                          });
-                        }
-                        _step1service.submit(context).then((value){
-                          if(value != null){
-                            Navigator.of(context).pop(null);
-                            _routes.navigator_push(context, Landing(), transitionType: PageTransitionType.fade);
-                          }
-                        });
-                      });
-                    }
+                    _signLater.signLater(context);
+                    // if(step1subs.weight == "" || step1subs.height == ""){
+                    //   _snackbarMessage.snackbarMessage(context, message: "Le poids et la taille sont requis. Veuillez ne pas le laisser vide !", is_error: true);
+                    // }else{
+                    //   setState((){
+                    //     step1subs.target_weight = "";
+                    //     _screenLoaders.functionLoader(context);
+                    //     if(subscriptionDetails.currentdata[0]["client_info"] != null){
+                    //       setState(() {
+                    //         step1subs.id = subscriptionDetails.currentdata[0]["client_info"]["id"].toString();
+                    //       });
+                    //     }
+                    //     _step1service.submit(context).then((value){
+                    //       if(value != null){
+                    //         Navigator.of(context).pop(null);
+                    //         _routes.navigator_push(context, Landing(), transitionType: PageTransitionType.fade);
+                    //       }
+                    //     });
+                    //   });
+                    // }
                   },
                 ),
               ],

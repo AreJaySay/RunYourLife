@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:run_your_life/functions/fillup_later.dart';
 import 'package:run_your_life/models/auths_model.dart';
 import 'package:run_your_life/models/subscription_models/step5_subs.dart';
 import 'package:run_your_life/screens/coaching/subscription/form_completed.dart';
@@ -23,6 +24,7 @@ import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
 import '../../../../../functions/loaders.dart';
+import '../../../../../services/stream_services/subscriptions/subscription_details.dart';
 
 class PackSoloSportMainPage extends StatefulWidget {
   @override
@@ -31,11 +33,12 @@ class PackSoloSportMainPage extends StatefulWidget {
 
 class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
   List<Widget> _firstscreen = [Container(),SportMakeChoices(),Pregnant1stPage(),Pregnant2ndPage(),Pregnant3rdPage(),Pregnant6thPage()];
-  List<Widget> _secondscreen = [Container(),SportMakeChoices(),NotPregnant1stPage()];
+  List<Widget> _secondscreen = [Container(),SportMakeChoices(),NotPregnant1stPage(),Pregnant2ndPage()];
   final Materialbutton _materialbutton = new Materialbutton();
   final Step5Service _step5service = new Step5Service();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final SnackbarMessage _snackbarMessage = new SnackbarMessage();
+  final SignLater _signLater = new SignLater();
   final Routes _routes = new Routes();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   int _currentPage = 1;
@@ -60,7 +63,7 @@ class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
               child: ListView(
                 padding: EdgeInsets.symmetric(horizontal: 10,vertical: 30),
                 children: [
-                  MyStepper( step5subs.practice_sport == "Non" ? 2 : 5,range: double.parse(_currentPage.toString()),),
+                  MyStepper(step5subs.practice_sport == "no" ? 3 : 5,range: double.parse(_currentPage.toString()),),
                   SizedBox(
                     height: 30,
                   ),
@@ -126,7 +129,7 @@ class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
                         SizedBox(
                           height: 40,
                         ),
-                        step5subs.practice_sport == "Non" ?
+                        step5subs.practice_sport == "no" ?
                         _secondscreen[_currentPage] :
                         _firstscreen[_currentPage],
                         SizedBox(
@@ -134,17 +137,14 @@ class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
                         ),
                         _materialbutton.materialButton("SUIVANT", () {
                           setState(() {
-                            if(step5subs.practice_sport == "Non" ? _currentPage > 1 : _currentPage > 4){
-                              step5subs.activity_outside_sport_level = "N/A";
-                              step5subs.pain = "N/A";
-                              step5subs.confident_on_athletic_ability = 0.0;
-                              step5subs.comfortable_place = 0.0;
-                              step5subs.place_to_practice = 0.0;
-                              step5subs.energy_to_practice = 0.0;
-                              step5subs.time = 0.0;
-                              step5subs.motivation = 0.0;
+                            if(step5subs.practice_sport == "no" ? _currentPage > 2 : _currentPage > 4){
                               print(step5subs.toMap());
                               _screenLoaders.functionLoader(context);
+                              if(subscriptionDetails.currentdata[0]["sport"] != null){
+                                setState(() {
+                                  step5subs.id = subscriptionDetails.currentdata[0]["sport"]["id"].toString();
+                                });
+                              }
                               _step5service.submit(context).then((value){
                                 if(value != null){
                                   Navigator.of(context).pop(null);
@@ -168,24 +168,25 @@ class _PackSoloSportMainPageState extends State<PackSoloSportMainPage> {
                             ),
                           ),
                           onTap: (){
-                            setState((){
-                              step5subs.activity_outside_sport_level = "N/A";
-                              step5subs.pain = "N/A";
-                              step5subs.confident_on_athletic_ability = 0.0;
-                              step5subs.comfortable_place = 0.0;
-                              step5subs.place_to_practice = 0.0;
-                              step5subs.energy_to_practice = 0.0;
-                              step5subs.time = 0.0;
-                              step5subs.motivation = 0.0;
-                              _screenLoaders.functionLoader(context);
-                              _step5service.submit(context).then((value){
-                                if(value != null){
-                                  _subscriptionServices.getInfos().whenComplete((){
-                                    _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
-                                  });
-                                }
-                              });
-                            });
+                            _signLater.signLater(context);
+                            // setState((){
+                            //   step5subs.activity_outside_sport_level = "";
+                            //   step5subs.pain = "";
+                            //   step5subs.confident_on_athletic_ability = 0.0;
+                            //   step5subs.comfortable_place = 0.0;
+                            //   step5subs.place_to_practice = 0.0;
+                            //   step5subs.energy_to_practice = 0.0;
+                            //   step5subs.time = 0.0;
+                            //   step5subs.motivation = 0.0;
+                            //   _screenLoaders.functionLoader(context);
+                            //   _step5service.submit(context).then((value){
+                            //     if(value != null){
+                            //       _subscriptionServices.getInfos().whenComplete((){
+                            //         _routes.navigator_pushreplacement(context, Landing(), transitionType: PageTransitionType.fade);
+                            //       });
+                            //     }
+                            //   });
+                            // });
                           },
                         ),
                         SizedBox(

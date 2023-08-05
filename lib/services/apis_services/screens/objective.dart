@@ -10,11 +10,9 @@ import 'package:run_your_life/utils/network_util.dart';
 import '../../../data_component/objective_vm.dart';
 
 class ObjectiveServices {
-  // final Auth auth = Auth();
   final NetworkUtility _netUtil = NetworkUtility();
-  final ObjectivesVM _vm = ObjectivesVM.instance;
 
-  Future<List<Objective>?> get() async {
+  Future get() async {
     try {
       return await http.get(
         "${_netUtil.api}/objective".toUri,
@@ -26,22 +24,17 @@ class ObjectiveServices {
         if(response.statusCode == 200 || response.statusCode == 201){
           var data = json.decode(response.body);
           print("OBJECTIVE  ${data}");
-          final List dd = data["data"];
-
-          return dd.map((e) => Objective.fromJson(e)).toList();
-
-          return [];
-
+          return data;
         }
         return null;
       });
     } catch (e) {
-      print("ERROR : $e");
+      print("ERROR OBJECTIVE : $e");
       return null;
     }
   }
 
-  Future<List<Objective>?> get_programmation() async {
+  Future get_programmation() async {
     try {
       return await http.get(
         "${_netUtil.api}/obj_programmation".toUri,
@@ -53,17 +46,12 @@ class ObjectiveServices {
         if(response.statusCode == 200 || response.statusCode == 201){
           var data = json.decode(response.body);
           print("OBJECTIVE PROGRAMMATION ${data}");
-          final List dd = data["data"];
-
-          return dd.map((e) => Objective.fromJson(e)).toList();
-
-          return [];
-
+          return data;
         }
         return null;
       });
     } catch (e) {
-      print("ERROR : $e");
+      print("ERROR PROGRAM OBJECTIVE : $e");
       return null;
     }
   }

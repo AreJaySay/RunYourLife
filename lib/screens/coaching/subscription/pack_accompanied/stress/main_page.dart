@@ -16,6 +16,7 @@ import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/utils/snackbars/snackbar_message.dart';
 import 'package:run_your_life/widgets/materialbutton.dart';
+import '../../../../../functions/fillup_later.dart';
 import '../../../../../functions/loaders.dart';
 import '../../../../../services/stream_services/subscriptions/subscription_details.dart';
 import '../sleep/main_page.dart';
@@ -34,6 +35,7 @@ class _StressMainPageState extends State<StressMainPage> {
   final ProfileServices _profileServices = new ProfileServices();
   final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final Routes _routes = new Routes();
+  final SignLater _signLater = new SignLater();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   int _currentPage = 1;
 
@@ -155,18 +157,19 @@ class _StressMainPageState extends State<StressMainPage> {
                           ),
                         ),
                         onTap: (){
-                          _screenLoaders.functionLoader(context);
-                          if(subscriptionDetails.currentdata[0]["stress"] != null){
-                            setState(() {
-                              step6subs.id = subscriptionDetails.currentdata[0]["stress"]["id"].toString();
-                            });
-                          }
-                          _step6service.submit(context).then((value){
-                            if(value != null){
-                              Navigator.of(context).pop(null);
-                              _routes.navigator_push(context, Landing(), transitionType: PageTransitionType.fade);
-                            }
-                          });
+                          _signLater.signLater(context);
+                          // _screenLoaders.functionLoader(context);
+                          // if(subscriptionDetails.currentdata[0]["stress"] != null){
+                          //   setState(() {
+                          //     step6subs.id = subscriptionDetails.currentdata[0]["stress"]["id"].toString();
+                          //   });
+                          // }
+                          // _step6service.submit(context).then((value){
+                          //   if(value != null){
+                          //     Navigator.of(context).pop(null);
+                          //     _routes.navigator_push(context, Landing(), transitionType: PageTransitionType.fade);
+                          //   }
+                          // });
                         },
                       ),
                       SizedBox(

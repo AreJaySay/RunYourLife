@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
-import 'package:scroll_date_picker/scroll_date_picker.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../models/subscription_models/step4_subs.dart';
@@ -44,13 +43,15 @@ class _Objective4thPageState extends State<Objective4thPage> {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("Quel est le délai que vous vous accordez pour atteindre votre objectif ?".toUpperCase(),style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
+        Text("QUEL DÉLAI TU T'ACCORDES POUR ATTEINDRE TON OBJECTIF?",style: TextStyle(color: AppColors.appmaincolor,fontWeight: FontWeight.w600,fontSize: 15,fontFamily: "AppFontStyle"),),
         SizedBox(
           height: 10,
         ),
-        step4subs.goal.contains("Perdre du poids (Tu veux perdre au moins 5 kg)") ?
+        step4subs.goal == "Perdre du poids (Tu veux perdre au moins 5 kg)" ?
         Text("Pour une perte de poids :\n- Confortable : 9 à 18 semaines\n- Raisonnable : 4 à 9 semaines\n- Extrême : 3 à 4 semaines",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),) :
-        Text("Selon ton niveau sportif\n- Débutant : 11 à 16 mois\n- Intermédiaire : 22 à 33 mois\n- Avancé : 44 à 66 mois",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),),
+        step4subs.goal == "Construire du muscle (tu veux construire du muscle et augmenter ton poids de corps)" ?
+        Text("Pour une prise de masse musculaire, niveau sportif :\n- Débutant : 11 à 16 mois\n- Intermédiaire : 22 à 33 mois\n- Avancé : 44 à 66 mois",style: TextStyle(color: Colors.black,fontSize: 13,fontFamily: "AppFontStyle"),) :
+        Container(),
         SizedBox(
           height: 20,
         ),

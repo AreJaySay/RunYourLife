@@ -13,7 +13,9 @@ import 'package:run_your_life/models/screens/profile/parameters.dart';
 import 'package:run_your_life/screens/profile/components/parameter_components/change_hours.dart';
 import 'package:run_your_life/screens/profile/components/parameter_components/settings.dart';
 import 'package:run_your_life/screens/profile/components/parameter_components/unite_measures.dart';
+import 'package:run_your_life/screens/profile/components/subscription_modal.dart';
 import 'package:run_your_life/services/apis_services/screens/parameters.dart';
+import 'package:run_your_life/services/apis_services/subscriptions/subscriptions.dart';
 import 'package:run_your_life/services/other_services/push_notifications.dart';
 import 'package:run_your_life/services/stream_services/screens/coaching.dart';
 import 'package:run_your_life/services/stream_services/screens/parameters.dart';
@@ -45,8 +47,10 @@ class _ParameterPageState extends State<ParameterPage> {
   final Materialbutton _materialbutton = new Materialbutton();
   final ScreenLoaders _screenLoaders = new ScreenLoaders();
   final ShimmeringLoader _shimmeringLoader = new ShimmeringLoader();
+  final PushNotifications _pushNotifications = new PushNotifications();
   final LogoutUser _logoutUser = new LogoutUser();
   final Routes _routes = new Routes();
+  final SubscriptionServices _subscriptionServices = new SubscriptionServices();
   final ChoosePlanService _choosePlanService = new ChoosePlanService();
   final AppBars _appBars = new AppBars();
   List<String> _type = ["Me notifier quand le coach m’a envoyé un message","Me rappeler de faire mon journal de bord journalier à","Me rappeler de faire mes tâches avant mon rendez-vous"];
@@ -75,19 +79,19 @@ class _ParameterPageState extends State<ParameterPage> {
       // handle error here.
     });
     _initialize();
-    _parameterServices.getSetting().then((value){
-      print("NOTIFICATIONS ${value.toString()}");
-      if(value.toString() != "{}"){
-        if(value["notifications"].toString() != "null"){
-          Parameters.notify1st = value["notifications"][0]["value"].toString() == "null" ? "" : value["notifications"][0]["value"].toString();
-          Parameters.notify2nd   = value["notifications"][1]["value"].toString() == "null" ? "" : value["notifications"][1]["value"].toString();
-          Parameters.notify3rd = value["notifications"][2]["value"].toString() == "null" ? "" : value["notifications"][2]["value"].toString();
-          Parameters.hour1st = value["notifications"][0]["hour"].toString();
-          Parameters.hour2nd = value["notifications"][1]["hour"].toString();
-          Parameters.hour3rd = value["notifications"][2]["hour"].toString();
-        }
-      }
-    });
+    // _parameterServices.getSetting().then((value){
+    //   print("NOTIFICATIONS ${value.toString()}");
+    //   if(value.toString() != "{}"){
+    //     if(value["notifications"].toString() != "null"){
+    //       Parameters.notify1st = value["notifications"][0]["value"].toString() == "null" ? "" : value["notifications"][0]["value"].toString();
+    //       Parameters.notify2nd   = value["notifications"][1]["value"].toString() == "null" ? "" : value["notifications"][1]["value"].toString();
+    //       Parameters.notify3rd = value["notifications"][2]["value"].toString() == "null" ? "" : value["notifications"][2]["value"].toString();
+    //       Parameters.hour1st = value["notifications"][0]["hour"].toString();
+    //       Parameters.hour2nd = value["notifications"][1]["hour"].toString();
+    //       Parameters.hour3rd = value["notifications"][2]["hour"].toString();
+    //     }
+    //   }
+    // });
   }
 
   @override
@@ -429,29 +433,29 @@ class _ParameterPageState extends State<ParameterPage> {
               UniteMeasures(details: snapshot.data!,),
             },
             SizedBox(
-              height: 40,
-            ),
-            Container(
-              child: _materialbutton.materialButton("ENREGISTRER", () {
-                if(!Auth.isNotSubs!){
-                  _screenLoaders.functionLoader(context);
-                  _parameterServices.submit(context).then((value){
-                    if(value != null){
-                      _parameterServices.getSetting().whenComplete((){
-                        Navigator.of(context).pop(null);
-                        _snackbarMessage.snackbarMessage(context , message: "Le paramètre a été mis à jour avec succès !");
-                      });
-                    }else{
-                      Navigator.of(context).pop(null);
-                      _snackbarMessage.snackbarMessage(context, message: "Une erreur s'est produite. Veuillez réessayer !", is_error: true);
-                    }
-                  });
-                }
-              }, bckgrndColor: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.5) : AppColors.appmaincolor),
-            ),
-            SizedBox(
               height: 30,
             ),
+            // Container(
+            //   child: _materialbutton.materialButton("ENREGISTRER", () {
+            //     if(!Auth.isNotSubs!){
+            //       _screenLoaders.functionLoader(context);
+            //       _parameterServices.submit(context).then((value){
+            //         if(value != null){
+            //           _parameterServices.getSetting().whenComplete((){
+            //             Navigator.of(context).pop(null);
+            //             _snackbarMessage.snackbarMessage(context , message: "Le paramètre a été mis à jour avec succès !");
+            //           });
+            //         }else{
+            //           Navigator.of(context).pop(null);
+            //           _snackbarMessage.snackbarMessage(context, message: "Une erreur s'est produite. Veuillez réessayer !", is_error: true);
+            //         }
+            //       });
+            //     }
+            //   }, bckgrndColor: Auth.isNotSubs! ? AppColors.appmaincolor.withOpacity(0.5) : AppColors.appmaincolor),
+            // ),
+            // SizedBox(
+            //   height: 30,
+            // ),
             DottedLine(
               dashColor: Colors.grey.shade400,
             ),
@@ -567,10 +571,12 @@ class _ParameterPageState extends State<ParameterPage> {
             print(purchaseDetails.productID);
             print(purchaseDetails.transactionDate);
             _screenLoaders.functionLoader(context);
-            _choosePlanService.upgrade(context,planid: "3", purchaseToken: purchaseDetails.verificationData.serverVerificationData.toString(), transacId: "accompagned_subs", type: Platform.isIOS ? "appstore" : "playstore",).then((value){
-              if(value != null){
-                _routes.navigator_pushreplacement(context, PresentationMainPage());
-              }
+            _choosePlanService.choosePlan(context,planid: "3", purchaseToken: purchaseDetails.verificationData.serverVerificationData.toString(), transacId: "accompagned_subs", type: Platform.isIOS ? "appstore" : "playstore",).then((value){
+              _subscriptionServices.cancelSubscription(context, subs_id: subscriptionDetails.currentdata[subscriptionDetails.currentdata.length - 1]["id"].toString()).then((upgrade){
+                if(upgrade != null){
+                  _routes.navigator_pushreplacement(context, PresentationMainPage());
+                }
+              });
             });
           } else {
             _handleInvalidPurchase(purchaseDetails);
@@ -590,17 +596,28 @@ class _ParameterPageState extends State<ParameterPage> {
        ZoomTapAnimation(
           end: 0.99,
           onTap: ()async{
-            setState(() {
-              planDetails = details;
-            });
-            if(Platform.isIOS){
-              var paymentWrapper = SKPaymentQueueWrapper();
-              var transactions = await paymentWrapper.transactions();
-              transactions.forEach((transaction) async {
-                await paymentWrapper.finishTransaction(transaction);
+            if(subscriptionDetails.currentdata[0]["stripe_id"].toString().contains("mobile-subs")){
+              showModalBottomSheet(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
+                  isScrollControlled: true,
+                  context: context, builder: (context){
+                return SubscriptionModal();
               });
+            }else{
+              setState(() {
+                planDetails = details;
+              });
+              if(Platform.isIOS){
+                var paymentWrapper = SKPaymentQueueWrapper();
+                var transactions = await paymentWrapper.transactions();
+                transactions.forEach((transaction) async {
+                  await paymentWrapper.finishTransaction(transaction);
+                });
+              }
+              _buyProduct(_products[_products.length - 1]);
             }
-            _buyProduct(_products[_products.length - 1]);
           },
           child: Container(
             margin: EdgeInsets.only(bottom: 30),
@@ -676,6 +693,10 @@ class _ParameterPageState extends State<ParameterPage> {
                   _screenLoaders.functionLoader(context);
                   _notifications.firebasemessaging.deleteToken().whenComplete((){
                     _logoutUser.logout().whenComplete((){
+                      _pushNotifications.firebasemessaging.getToken().then((value) => {
+                        DeviceModel.devicefcmToken = value,
+                      });
+                      print("NEW TOKEN ${DeviceModel.devicefcmToken}");
                       _isShown = false;
                       Navigator.of(context).pop(null);
                       _routes.navigator_pushreplacement(context, Welcome(), transitionType: PageTransitionType.leftToRightWithFade);

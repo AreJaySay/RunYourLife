@@ -50,6 +50,7 @@ class HomeServices{
         },
       ).then((respo) async {
         var data = json.decode(respo.body);
+        print("TRACKING ${data}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           homeStreamServices.updateTrack(data: data);
           return data;
@@ -97,6 +98,7 @@ class HomeServices{
         },
       ).then((respo) async {
         var data = json.decode(respo.body);
+        print("MEETING SCHEDULE ${data}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           homeStreamServices.updateMeeting(data: data);
           return data;
@@ -112,16 +114,16 @@ class HomeServices{
   // GRAPH
   Future getWeights()async{
     try {
-      return await http.post(Uri.parse("${_networkUtility.url}/user/api/measurements/weight"),
+      return await http.get(Uri.parse("${_networkUtility.url}/user/api/weights"),
         headers: {
           HttpHeaders.authorizationHeader: "Bearer ${Auth.accessToken}",
           "Accept": "application/json"
         },
-        body: {
-          "subs_id": subscriptionDetails.currentdata[0]["id"].toString(),
-          "week_request[start]": DateFormat("yyyy-MM-dd").format(DateTime.now().toUtc().add(Duration(hours: 2)).add(Duration(days: -7))).toString(),
-          "week_request[end]": DateFormat("yyyy-MM-dd").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString(),
-        },
+        // body: {
+        //   "subs_id": subscriptionDetails.currentdata[0]["id"].toString(),
+        //   // "week_request[start]": DateFormat("yyyy-MM-dd").format(DateTime.parse(subscriptionDetails.currentdata[0]["start_date"].toString()).toUtc()).toString(),
+        //   "date": DateFormat("yyyy-MM-dd").format(DateTime.now().toUtc().add(Duration(hours: 2))).toString(),
+        // },
       ).then((respo) async {
         var data = json.decode(respo.body);
         print("WEIGHT DATA ${data.toString()}");
@@ -147,13 +149,15 @@ class HomeServices{
         },
         body: {
           "subs_id": subscriptionDetails.currentdata[0]["id"].toString(),
-          "date": DateFormat("yyyy-MM-dd","fr").format(DateTime.now()),
+          "date": DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.now()),
         },
       ).then((respo) async {
         var data = json.decode(respo.body);
+        print("HEIGHT DATA ${data.toString()}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           List f = data[1];
           homeStreamServices.updateGraphHeight(data: f.map((e) => Measurement.fromJson(e)).toList());
+          homeStreamServices.updateDateHeight(data: data[0]);
           return data;
         }else{
           homeStreamServices.updateGraphHeight(data: []);

@@ -10,6 +10,7 @@ import 'package:run_your_life/services/other_services/routes.dart';
 import 'package:run_your_life/services/stream_services/screens/home.dart';
 import 'package:zoom_tap_animation/zoom_tap_animation.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
+import '../../../models/subscription_models/step5_subs.dart';
 import '../../../services/stream_services/screens/parameters.dart';
 import '../../../services/stream_services/subscriptions/subscription_details.dart';
 import '../../../widgets/finish_questioner_popup.dart';
@@ -212,16 +213,16 @@ class _HorizontalTrackingListState extends State<HorizontalTrackingList> {
           snapshot.data!.isEmpty ?
           Text("--",style: TextStyle(color: Colors.grey ,fontFamily: "AppFontStyle"),) :
           index == 0 ?
-          Text(snapshot.data!["stress"].toString() == "null" ? "--" : snapshot.data!["stress"].toString() == "0.0" ? "Non" : double.parse(snapshot.data!["stress"].toString()).floor().toString()+"/10",style: TextStyle(color: snapshot.data!["stress"].toString() == "null" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),) :
+          Text(snapshot.data!["stress"].toString() == "null" ? "--" : snapshot.data!["stress"].toString() == "0.0" ? "--" : double.parse(snapshot.data!["stress"].toString()).floor().toString()+"/10",style: TextStyle(color: snapshot.data!["stress"].toString() == "null" || snapshot.data!["stress"].toString() == "0.0" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),) :
           index == 1 ?
-          Text(snapshot.data!["sleep"].toString() == "null" ? "--" : snapshot.data!["sleep"].toString() == "0.0" ? "Non" : double.parse(snapshot.data!["sleep"].toString()).floor().toString()+"H",style: TextStyle(color: snapshot.data!["sleep"].toString() == "null" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),) :
+          Text(snapshot.data!["sleep"].toString() == "null" ? "--" : snapshot.data!["sleep"].toString() == "0.0" ? "--" : double.parse(snapshot.data!["sleep"].toString()).floor().toString()+"H",style: TextStyle(color: snapshot.data!["sleep"].toString() == "null" || snapshot.data!["sleep"].toString() == "0.0" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),) :
           index == 2 ?
-          Text(snapshot.data!["smoke"].toString() == "null" ? "--" : snapshot.data!["smoke"].toString() == "0.0" ? "Non" : double.parse(snapshot.data!["smoke"].toString()).floor().toString()+" cigarett..",style: TextStyle(color: snapshot.data!["smoke"].toString() == "null" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),) :
+          Text(snapshot.data!["smoke"].toString() == "null" ? "--" : snapshot.data!["smoke"].toString() == "0.0" ? "--" : double.parse(snapshot.data!["smoke"].toString()).floor().toString()+" cigarett..",style: TextStyle(color: snapshot.data!["smoke"].toString() == "null" || snapshot.data!["smoke"].toString() == "0.0" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),) :
           index == 3 ?
-          Text(snapshot.data!["coffee"].toString() == "null" ? "--" : snapshot.data!["coffee"].toString() == "0.0" ? "Non" : double.parse(snapshot.data!["coffee"].toString()).floor().toString()+" tasses: ${double.parse(snapshot.data!["coffee"].toString()).floor()*10} cl",style: TextStyle(color: snapshot.data!["coffee"].toString() == "null" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),overflow: TextOverflow.ellipsis,maxLines: 1,) :
+          Text(snapshot.data!["coffee"].toString() == "null" ? "--" : snapshot.data!["coffee"].toString() == "0.0" ? "--" : double.parse(snapshot.data!["coffee"].toString()).floor().toString()+" tasses: ${double.parse(snapshot.data!["coffee"].toString()).floor()*10} cl",style: TextStyle(color: snapshot.data!["coffee"].toString() == "null" || snapshot.data!["coffee"].toString() == "0.0" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),overflow: TextOverflow.ellipsis,maxLines: 1,) :
           index == 4 ?
-          Text(snapshot.data!["water"].toString() == "null" ? "--" : snapshot.data!["water"].toString() == "0.0" ? "Non" : double.parse(snapshot.data!["water"].toString()).floor().toString()+" verres: ${double.parse(snapshot.data!["water"].toString()).floor()*25} cl",style: TextStyle(color: snapshot.data!["water"].toString() == "null" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),overflow: TextOverflow.ellipsis,maxLines: 1,) :
-          Text(snapshot.data!["alcohol"].toString() == "null" ? "--" : snapshot.data!["alcohol"].toString() == "0.0" ? "Non" : snapshot.data!["alcohol"].toString(),style: TextStyle(color: snapshot.data!["alcohol"].toString() == "null" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),overflow: TextOverflow.ellipsis,maxLines: 1,)
+          Text(snapshot.data!["water"].toString() == "null" ? "--" : snapshot.data!["water"].toString() == "0.0" ? "--" : double.parse(snapshot.data!["water"].toString()).floor().toString()+" verres: ${double.parse(snapshot.data!["water"].toString()).floor()*25} cl",style: TextStyle(color: snapshot.data!["water"].toString() == "null" || snapshot.data!["water"].toString() == "0.0" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),overflow: TextOverflow.ellipsis,maxLines: 1,) :
+          Text(snapshot.data!["alcohol"].toString() == "null" ? "--" : snapshot.data!["alcohol"].toString() == "0.0" ? "--" : snapshot.data!["alcohol"].toString(),style: TextStyle(color: snapshot.data!["alcohol"].toString() == "null" || snapshot.data!["alcohol"].toString() == "0.0" ? Colors.grey : Colors.black,fontFamily: "AppFontStyle"),overflow: TextOverflow.ellipsis,maxLines: 1,)
         ],
       ),
     ),
@@ -237,29 +238,47 @@ class _HorizontalTrackingListState extends State<HorizontalTrackingList> {
         });
         }else{
           if(isActive){
-            _screenLoaders.functionLoader(context);
-            _homeServices.getTracking(date: DateFormat("yyyy-MM-dd","fr").format(DateTime.parse(homeTracking.date))).then((value){
-              homeTracking.sports.clear();
-              homeTracking.durations.clear();
-              if(value != null){
-                if(value["training"].toString() != "null" && value["training"].toString() != '"null"' && !value["training"].toString().contains("no")){
-                  for(int x = 0; x < json.decode(value["training"]).length; x++){
-                    if(!homeTracking.sports.contains(json.decode(value["training"])[x]["sport"])){
-                      homeTracking.sports.add(json.decode(value["training"])[x]["sport"]);
-                      homeTracking.durations.add(json.decode(value["training"])[x]["duration"]);
-                    }
+            // _screenLoaders.functionLoader(context);
+            // _homeServices.getTracking(date: DateFormat("yyyy-MM-dd","fr_FR").format(DateTime.parse(homeTracking.date))).then((value){
+            //   if(value != null){
+            //     homeTracking.stress = snapshot.data!["stress"].toString() == "null" ? 0 : double.parse(snapshot.data!["stress"].toString());
+            //     homeTracking.sleep = snapshot.data!["sleep"].toString() == "null" ? 0 : double.parse(snapshot.data!["sleep"].toString());
+            //     homeTracking.smoke = snapshot.data!["smoke"].toString() == "null" ? 0 : double.parse(snapshot.data!["smoke"].toString());
+            //     homeTracking.water = snapshot.data!["water"].toString() == "null" ? 0 : double.parse(snapshot.data!["water"].toString());
+            //     homeTracking.coffee = snapshot.data!["coffee"].toString() == "null" ? 0 : double.parse(snapshot.data!["coffee"].toString());
+            //     homeTracking.alcohol = snapshot.data!["alcohol"].toString() == "null" ? 0 : double.parse(snapshot.data!["alcohol"].toString());
+            //   }
+            //   Navigator.of(context).pop(null);
+            //   _routes.navigator_push(context, _pages[index]);
+            // });
+            if(snapshot.data!["training"] != null && snapshot.data!["training"] != '"null"' && snapshot.data!["training"].toString() != '"No training"'){
+              setState((){
+                step5subs.sports.clear();
+                step5subs.duration.clear();
+                step5subs.performances.clear();
+                for(int x = 0; x < json.decode(snapshot.data!["training"]).length; x++){
+                  if(json.decode(snapshot.data!["training"])[x]["sport"] != null && json.decode(snapshot.data!["training"])[x]["duration"] != null && json.decode(snapshot.data!["training"])[x]["performance"] != null){
+                    step5subs.performances.add(double.parse(json.decode(snapshot.data!["training"])[x]["performance"].toString()));
+                    step5subs.sports.add(TextEditingController()..text=json.decode(snapshot.data!["training"])[x]["sport"]);
+                    step5subs.duration.add(TextEditingController()..text=json.decode(snapshot.data!["training"])[x]["duration"]);
                   }
                 }
-                homeTracking.stress = snapshot.data!["stress"].toString() == "null" ? 0 : double.parse(snapshot.data!["stress"].toString());
-                homeTracking.sleep = snapshot.data!["sleep"].toString() == "null" ? 0 : double.parse(snapshot.data!["sleep"].toString());
-                homeTracking.smoke = snapshot.data!["smoke"].toString() == "null" ? 0 : double.parse(snapshot.data!["smoke"].toString());
-                homeTracking.water = snapshot.data!["water"].toString() == "null" ? 0 : double.parse(snapshot.data!["water"].toString());
-                homeTracking.coffee = snapshot.data!["coffee"].toString() == "null" ? 0 : double.parse(snapshot.data!["coffee"].toString());
-                homeTracking.alcohol = snapshot.data!["alcohol"].toString() == "null" ? 0 : double.parse(snapshot.data!["alcohol"].toString());
-              }
-              Navigator.of(context).pop(null);
-              _routes.navigator_push(context, _pages[index]);
-            });
+              });
+            }else{
+              step5subs.sports.clear();
+              step5subs.duration.clear();
+              step5subs.performances.clear();
+            }
+            homeTracking.stress = snapshot.data!["stress"].toString() == "null" ? 0 : double.parse(snapshot.data!["stress"].toString());
+            homeTracking.sleep = snapshot.data!["sleep"].toString() == "null" ? 0 : double.parse(snapshot.data!["sleep"].toString());
+            homeTracking.smoke = snapshot.data!["smoke"].toString() == "null" ? 0 : double.parse(snapshot.data!["smoke"].toString());
+            homeTracking.water = snapshot.data!["water"].toString() == "null" ? 0 : double.parse(snapshot.data!["water"].toString());
+            homeTracking.coffee = snapshot.data!["coffee"].toString() == "null" ? 0 : double.parse(snapshot.data!["coffee"].toString());
+            homeTracking.alcohol = snapshot.data!["alcohol"].toString() == "null" ? 0 : double.parse(snapshot.data!["alcohol"].toString());
+            homeTracking.medication = snapshot.data!["medication"].toString() == "null" ? "" : snapshot.data!["medication"].toString();
+            homeTracking.supplements = snapshot.data!["supplements"].toString() == "null" ? "" : snapshot.data!["supplements"].toString();
+            homeTracking.menstruation = snapshot.data!["menstruation"].toString() == "null" ? "" : snapshot.data!["menstruation"].toString();
+            _routes.navigator_push(context, _pages[index]);
           }
         }
       },

@@ -1,12 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:image_picker_gallery_camera/image_picker_gallery_camera.dart';
+import 'package:images_picker/images_picker.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/widgets/backbutton.dart';
-
-import '../models/auths_model.dart';
 
 class ImagePicker extends StatefulWidget {
   final bool is_change;
@@ -18,22 +15,29 @@ class ImagePicker extends StatefulWidget {
 
 class _ImagePickerState extends State<ImagePicker> {
 
-  Future getImage(ImgSource source) async {
-    var image = await ImagePickerGC.pickImage(
-      enableCloseButton: true,
-      closeIcon: Icon(
-        Icons.close,
-        color: Colors.red,
-        size: 12,
-      ),
-      context: context,
-      source: source,
-      barrierDismissible: true,
-    );
-    setState(() {
-      Navigator.of(context).pop(File(image.path));
-    });
-  }
+  // Future getImage(ImgSource source) async {
+  //   var status = await Permission.camera.status;
+  //   print(status);
+  //   if (status.isDenied) {
+  //     // Here you can open app settings so that the user can give permission
+  //     openAppSettings();
+  //   }else{
+  //     var image = await ImagePickerGC.pickImage(
+  //       enableCloseButton: true,
+  //       closeIcon: Icon(
+  //         Icons.close,
+  //         color: Colors.red,
+  //         size: 12,
+  //       ),
+  //       context: context,
+  //       source: source,
+  //       barrierDismissible: true,
+  //     );
+  //     setState(() {
+  //       Navigator.of(context).pop(File(image.path));
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -117,8 +121,20 @@ class _ImagePickerState extends State<ImagePicker> {
                 ],
               ),
             ),
-            onTap: (){
-              getImage(ImgSource.Camera);
+            onTap: ()async{
+              List<Media>? res = await ImagesPicker.openCamera(
+                pickType: PickType.image,
+                language: Language.System,
+                maxTime: 30,
+                cropOpt: CropOption(
+                  cropType: CropType.circle,
+                ),
+              );
+              if (res != null) {
+                print(res.map((e) => e.path).toList());
+                Navigator.of(context).pop(File(res.single.path));
+              }
+              // getImage(ImgSource.Camera);
             },
           ),
           SizedBox(
@@ -146,10 +162,19 @@ class _ImagePickerState extends State<ImagePicker> {
                 ],
               ),
             ),
-            onTap: (){
-              setState(() {
-                getImage(ImgSource.Gallery);
-              });
+            onTap: ()async{
+              List<Media>? res = await ImagesPicker.pick(
+                pickType: PickType.image,
+                language: Language.System,
+                maxTime: 30,
+                cropOpt: CropOption(
+                  cropType: CropType.circle,
+                ),
+              );
+              if (res != null) {
+                print(res.map((e) => e.path).toList());
+                Navigator.of(context).pop(File(res.single.path));
+              }
             },
           ),
         ],

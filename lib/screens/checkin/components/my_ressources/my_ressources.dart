@@ -9,6 +9,7 @@ import 'package:run_your_life/services/stream_services/screens/checkin.dart';
 import 'package:run_your_life/utils/palettes/app_colors.dart';
 import 'package:run_your_life/utils/palettes/app_gradient_colors.dart';
 import 'package:run_your_life/widgets/appbar.dart';
+import '../../../../models/device_model.dart';
 import 'components/all_ressources.dart';
 import 'components/images.dart';
 import 'components/videos.dart';
@@ -28,8 +29,31 @@ class _MyRessourcesState extends State<MyRessources> with SingleTickerProviderSt
 
   @override
   void initState() {
-    _checkinServices.getDocuments();
-    _checkinServices.getProgrammation();
+    checkInStreamServices.updateloader(data: true);
+    checkInStreamServices.currentRessources.clear();
+    _checkinServices.getDocuments().then((value){
+      if(value != null){
+        setState(() {
+          for(int x = 0; x < value["data"].length; x++){
+            if(!checkInStreamServices.currentRessources.toString().contains(value["data"][x].toString())){
+              checkInStreamServices.addRessources(data: value["data"][x]);
+            }
+          }
+        });
+      }
+      _checkinServices.getProgrammation().then((value){
+        if(value != null){
+          setState(() {
+            for(int x = 0; x < value["data"].length; x++){
+              if(!checkInStreamServices.currentRessources.toString().contains(value["data"][x].toString())){
+                checkInStreamServices.addRessources(data: value["data"][x]);
+              }
+            }
+          });
+          checkInStreamServices.updateloader(data: false);
+        }
+      });
+    });
     _scrollController = ScrollController()
       ..addListener(() {
         setState(() {
@@ -89,7 +113,7 @@ class _MyRessourcesState extends State<MyRessources> with SingleTickerProviderSt
                                   indicatorColor: AppColors.appmaincolor,
                                   labelColor: AppColors.appmaincolor,
                                   indicatorWeight: 6,
-                                  isScrollable: true,
+                                  isScrollable: DeviceModel.isMobile ? true : false,
                                   tabs: <Widget>[
                                     Tab(
                                       text: "Toutes",
@@ -115,23 +139,23 @@ class _MyRessourcesState extends State<MyRessources> with SingleTickerProviderSt
                       },
                       body: TabBarView(
                         children: <Widget>[
-                          !snapshot.hasData ?
+                          checkInStreamServices.currentLoader ?
                           RessourceShimmerLoader() :
                           AllRessources(ressources: snapshot.data!,),
 
-                          !snapshot.hasData ?
+                          checkInStreamServices.currentLoader ?
                           RessourceShimmerLoader() :
                           MyRessourcesImages(images: snapshot.data!.where((s) => s[s.toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "image/jpeg" || s[s.toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "image/png" || s[s.toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "image/jpg").toList(),),
 
-                          !snapshot.hasData ?
+                          checkInStreamServices.currentLoader ?
                           RessourceShimmerLoader() :
                           MyRessourcesVideos(videos: snapshot.data!.where((s) => s[s.toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "video/mp4").toList(),),
 
-                          !snapshot.hasData ?
+                          checkInStreamServices.currentLoader ?
                           RessourceShimmerLoader() :
                           MyRessourcesUrl(url: snapshot.data!.where((s) => s[s.toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "link/url").toList(),),
 
-                          !snapshot.hasData ?
+                          checkInStreamServices.currentLoader ?
                           RessourceShimmerLoader() :
                           MyRessourcesDocs(docs: snapshot.data!.where((s) => s[s.toString().contains("programmation") ? "programmation" : "documents"]["file_type"] == "application/pdf").toList(),),
                         ],

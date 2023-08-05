@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:run_your_life/models/device_model.dart';
 import 'package:run_your_life/models/screens/checkin/photos.dart';
 import 'package:run_your_life/screens/checkin/components/my_photos/components/add_photos.dart';
 import 'package:run_your_life/screens/checkin/components/my_photos/components/gridview_design.dart';
@@ -46,7 +47,7 @@ class _MyPhotosState extends State<MyPhotos> with SingleTickerProviderStateMixin
           }
         });
       });
-    _controller = new TabController(length: 4, vsync: this);
+    _controller = checkInStreamServices.tags.hasValue ? TabController(length: checkInStreamServices.currentTags.length+1, vsync: this) : TabController(length: 4, vsync: this);
     super.initState();
   }
 
@@ -81,7 +82,7 @@ class _MyPhotosState extends State<MyPhotos> with SingleTickerProviderStateMixin
                             backgroundColor: AppColors.appmaincolor,
                             snap: false,
                             floating: true,
-                            expandedHeight: 80,
+                            expandedHeight: 70,
                             automaticallyImplyLeading: false,
                             flexibleSpace: Container(
                               decoration: BoxDecoration(
@@ -147,7 +148,7 @@ class _MyPhotosState extends State<MyPhotos> with SingleTickerProviderStateMixin
                               ),
                               TabBar(
                                 padding: EdgeInsets.only(left: 20,right: 20,top: 20),
-                                isScrollable: true,
+                                isScrollable: DeviceModel.isMobile ? true : false,
                                 labelStyle: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 16,fontFamily: "AppFontStyle"),
                                 unselectedLabelStyle: TextStyle(
@@ -162,15 +163,22 @@ class _MyPhotosState extends State<MyPhotos> with SingleTickerProviderStateMixin
                                   Tab(
                                     text: "Toutes",
                                   ),
-                                  Tab(
-                                    text: "#Body",
-                                  ),
-                                  Tab(
-                                    text: "#Food",
-                                  ),
-                                  Tab(
-                                    text: "#Sport",
-                                  ),
+                                  if(checkInStreamServices.tags.hasValue)...{
+                                    for(int x = 0; x < checkInStreamServices.currentTags.length;x ++)...{
+                                      Tab(
+                                        text: "#${checkInStreamServices.currentTags[x]["name"][0].toUpperCase()}${checkInStreamServices.currentTags[x]["name"].substring(1).toLowerCase()}",
+                                      ),
+                                    }
+                                  }
+                                  // Tab(
+                                  //   text: "#Body",
+                                  // ),
+                                  // Tab(
+                                  //   text: "#Food",
+                                  // ),
+                                  // Tab(
+                                  //   text: "#Sport",
+                                  // ),
                                 ],
                               )
                             ]),
@@ -181,7 +189,7 @@ class _MyPhotosState extends State<MyPhotos> with SingleTickerProviderStateMixin
                     body: TabBarView(
                       controller: _controller,
                       children: <Widget>[
-                        if(!snapshot.hasData)...{
+                        if(!snapshot.hasData || !checkInStreamServices.tags.hasValue)...{
                           for(int x = 0; x < 4; x++)...{
                             PhotosShimmerLoader()
                           }
@@ -189,9 +197,9 @@ class _MyPhotosState extends State<MyPhotos> with SingleTickerProviderStateMixin
                           snapshot.data!.isEmpty ?
                           NoDataFound(firstString: "PAS DE PHOTO ", secondString: "TROUVÉE ICI...", thirdString: "Vous n'avez pas encore ajouté de photo.") :
                           GridViewDesign(photos: snapshot.data!,index: 0,),
-                          GridViewDesign(photos: snapshot.data!.where((s) => s["taggable"].toString().toLowerCase().contains("body".toLowerCase())).toList(),index: 1,),
-                          GridViewDesign(photos: snapshot.data!.where((s) => s["taggable"].toString().toLowerCase().contains("food".toLowerCase())).toList(),index: 2,),
-                          GridViewDesign(photos: snapshot.data!.where((s) => s["taggable"].toString().toLowerCase().contains("sport".toLowerCase())).toList(),index: 3,),
+                          for(int x = 0; x < checkInStreamServices.currentTags.length; x++)...{
+                            GridViewDesign(photos: snapshot.data!.where((s) => s["taggable"].toString().toLowerCase().contains("name: ${checkInStreamServices.currentTags[x]["name"]}".toLowerCase())).toList(),index: x,),
+                          },
                         },
                       ],
                     )

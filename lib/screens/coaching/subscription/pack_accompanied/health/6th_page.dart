@@ -12,7 +12,7 @@ class Health6thPage extends StatefulWidget {
 }
 
 class _Health6thPageState extends State<Health6thPage> {
-  final TextEditingController _syndrome = new TextEditingController()..text=step3subs.premenstrual_syndrome == "Non" ||  step3subs.premenstrual_syndrome == "none" || step3subs.premenstrual_syndrome == "N/A" ? "" : step3subs.premenstrual_syndrome;
+  final TextEditingController _syndrome = new TextEditingController()..text=step3subs.premenstrual_syndrome == "Non" ||  step3subs.premenstrual_syndrome == "none" || step3subs.premenstrual_syndrome == "" ? "" : step3subs.premenstrual_syndrome;
 
   @override
   void dispose() {
@@ -37,7 +37,7 @@ class _Health6thPageState extends State<Health6thPage> {
           decoration: InputDecoration(
               contentPadding: EdgeInsets.symmetric(horizontal: 15,vertical: 10),
               border: InputBorder.none,
-              hintText: "Syndrome prémenstruel",
+              hintText: "Syndrôme prémenstruel",
               hintStyle: TextStyle(color: Colors.grey,fontFamily: "AppFontStyle"),
               fillColor: Colors.white,
               filled: true,

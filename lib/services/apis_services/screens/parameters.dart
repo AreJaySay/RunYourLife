@@ -43,7 +43,6 @@ class ParameterServices{
         },
       ).then((respo) async {
         var data = json.decode(respo.body);
-        print("SETTING ${data.toString()}");
         if (respo.statusCode == 200 || respo.statusCode == 201){
           parameterStreamServices.update(data: data["data"]);
           return data["data"];
@@ -52,6 +51,7 @@ class ParameterServices{
         }
       });
     } catch (e) {
+      print(e);
       parameterStreamServices.update(data: {});
     }
   }

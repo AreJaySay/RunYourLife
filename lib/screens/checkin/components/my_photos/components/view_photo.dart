@@ -41,11 +41,11 @@ class _ViewPhotoState extends State<ViewPhoto> {
                 GestureDetector(
                   child: Container(
                     width: double.infinity,
-                    height: DeviceModel.isMobile ? 210 : 350,
+                    height: DeviceModel.isMobile ? 210 : 400,
                     decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(fit: BoxFit.cover,
+                      image: DecorationImage(
                         image: NetworkImage("https://api.runyourlife.fr/images/clients/${Auth.loggedUser!['id'].toString()}/${widget.details["file_name"]}")
                       )
                     ),
